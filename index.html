@@ -155,6 +155,15 @@ dialog.detail::backdrop{background:rgba(5,6,8,.8);backdrop-filter:blur(4px)}
 .d-text p,.d-text div{margin:0;line-height:1.65;color:var(--fg)}
 .d-text div{font-size:.95rem;color:#cfccc5}
 @media (max-width:640px){.d-in{grid-template-columns:1fr;padding:20px;gap:18px}.d-in>img{max-width:260px}}
+.spwrap{flex:1;min-width:0}
+.spwrap iframe{width:100%;height:80px;border:0;border-radius:12px;display:block}
+.pnote{max-width:1120px;margin:0 auto 10px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font-family:var(--mono);font-size:.74rem;letter-spacing:.04em;color:var(--fg)}
+.pnote span{flex:1 1 280px}
+.player .pnote button{width:auto;height:auto;min-height:40px;padding:8px 14px;background:var(--sodium);border-color:var(--sodium);color:var(--bg);font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase}
+.player .pnote button:hover,.player .pnote button:focus-visible{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+.pnote a{color:var(--muted)}
+.pnote a:hover,.pnote a:focus-visible{color:var(--fg)}
+body.pnote-on.playing{padding-bottom:190px}
 .player{position:fixed;left:0;right:0;bottom:0;z-index:10;background:rgba(13,14,16,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:10px clamp(16px,4vw,40px) calc(10px + env(safe-area-inset-bottom,0px))}
 .player .in{max-width:1120px;margin:0 auto;display:flex;gap:12px;align-items:center}
 .player iframe{flex:1;min-width:0;height:80px;border:0;border-radius:12px;display:block}
@@ -454,7 +463,13 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
   </div>
 </dialog>
 <div class="player" id="player" hidden>
+  <div class="pnote" id="pnote" hidden>
+    <span>Spotify spielt nur eine 30-Sekunden-Vorschau, weil du nicht angemeldet bist.</span>
+    <button type="button" id="pnote-yt">Ganz auf YouTube hören</button>
+    <a href="https://open.spotify.com/" target="_blank" rel="noopener">Bei Spotify anmelden ↗</a>
+  </div>
   <div class="in">
+    <div class="spwrap" id="spwrap" hidden><div id="spembed"></div></div>
     <iframe id="pframe" title="Spotify-Player" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
     <button type="button" id="pclose" aria-label="Player schliessen">✕</button>
   </div>
@@ -480,17 +495,51 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
       play(a);
     });
   });
+  var spAPI=null,spCtl=null,spWant=null,cur2=null,noteShown=false;
+  var spwrap=document.getElementById('spwrap'),pnote=document.getElementById('pnote');
+  window.onSpotifyIframeApiReady=function(API){spAPI=API};
+  function onUpd(e){
+    var d=e&&e.data;if(!d||noteShown)return;
+    if(d.duration>0&&d.duration<=31000){
+      noteShown=true;
+      document.getElementById('pnote-yt').hidden=!(cur2&&cur2.dataset.yt);
+      pnote.hidden=false;document.body.classList.add('pnote-on');
+      try{localStorage.setItem('abard-preview','1')}catch(err){}
+    }
+  }
+  function spPlay(uri){
+    spWant=uri;
+    if(spCtl){spCtl.loadUri(uri);spCtl.play();return true}
+    if(!spAPI)return false;
+    spAPI.createController(document.getElementById('spembed'),{width:'100%',height:80,uri:uri},function(c){
+      spCtl=c;c.addListener('playback_update',onUpd);
+      c.addListener('ready',function(){if(spWant){c.play()}});
+    });
+    return true;
+  }
   function play(a,forceYt){
+      cur2=a;
       document.querySelectorAll('.rel.active').forEach(function(x){x.classList.remove('active')});
       a.classList.add('active');
       var useYt=a.dataset.yt&&(forceYt===true||(forceYt!==false&&src==='youtube')||!a.dataset.id);
       player.classList.toggle('yt',!!useYt);document.body.classList.toggle('pyt',!!useYt);
-      frame.title=useYt?'YouTube-Player':'Spotify-Player';
-      frame.src=useYt?'https://www.youtube-nocookie.com/embed/'+a.dataset.yt+'?autoplay=1&rel=0':'https://open.spotify.com/embed/album/'+a.dataset.id+'?utm_source=generator&theme=0';
+      pnote.hidden=true;document.body.classList.remove('pnote-on');noteShown=false;
+      if(useYt){
+        if(spCtl){try{spCtl.pause()}catch(err){}}
+        spwrap.hidden=true;frame.hidden=false;frame.title='YouTube-Player';
+        frame.src='https://www.youtube-nocookie.com/embed/'+a.dataset.yt+'?autoplay=1&rel=0';
+      }else if(spPlay('spotify:album:'+a.dataset.id)){
+        frame.src='about:blank';frame.hidden=true;spwrap.hidden=false;
+      }else{
+        spwrap.hidden=true;frame.hidden=false;frame.title='Spotify-Player';
+        frame.src='https://open.spotify.com/embed/album/'+a.dataset.id+'?utm_source=generator&theme=0';
+      }
       player.hidden=false;document.body.classList.add('playing');
   }
+  document.getElementById('pnote-yt').addEventListener('click',function(){setSrc('youtube');if(cur2)play(cur2,true)});
   document.getElementById('pclose').addEventListener('click',function(){
-    frame.src='about:blank';player.hidden=true;document.body.classList.remove('playing');
+    frame.src='about:blank';if(spCtl){try{spCtl.pause()}catch(err){}}
+    player.hidden=true;pnote.hidden=true;document.body.classList.remove('playing','pnote-on');
     document.querySelectorAll('.rel.active').forEach(function(x){x.classList.remove('active')});
   });
 
@@ -543,5 +592,6 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
   document.getElementById('y').textContent=new Date().getFullYear();
 })();
 </script>
+<script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
 </html>
