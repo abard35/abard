@@ -136,7 +136,8 @@ body.yt .rel:not([data-yt]) .only,.rel .yt-only{display:block}
 .player.yt .in{justify-content:flex-end}
 body.pyt.playing{padding-bottom:220px}
 .rel h3,.rel .meta{transition:color .2s}
-.rel h3::after{content:" +";color:var(--muted);font-family:var(--mono);font-size:.8em;font-weight:500}
+.rel::after{content:"Story & Lyrics ›";align-self:flex-start;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sodium);border:1px solid rgba(216,162,63,.45);padding:5px 9px;margin-top:2px;transition:background .2s,color .2s}
+.rel:hover::after,.rel:focus-visible::after{background:var(--sodium);color:var(--bg)}
 dialog.detail{border:1px solid var(--line);background:var(--panel);color:var(--fg);padding:0;width:min(860px,calc(100% - 32px));max-height:calc(100dvh - 32px);overflow:auto}
 dialog.detail::backdrop{background:rgba(5,6,8,.8);backdrop-filter:blur(4px)}
 .d-in{display:grid;grid-template-columns:minmax(0,320px) 1fr;gap:28px;padding:28px;position:relative}
@@ -297,7 +298,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
           <button type="button" data-src="youtube" aria-pressed="false">YouTube</button>
         </div>
       </div>
-      <p class="src-note">Neueste zuerst · Cover antippen zum Abspielen · Titel antippen für Details · YouTube geht ohne Konto</p>
+      <p class="src-note">Neueste zuerst · Cover antippen zum Abspielen · Story & Lyrics antippen für Songtext · YouTube geht ohne Konto</p>
       <div class="releases">
         <a class="rel" data-date="2026-09-02" data-genre="Power Ballad" href="https://open.spotify.com/album/51Fg5RwqLULCizaLdo7bzO" data-id="51Fg5RwqLULCizaLdo7bzO" data-yt="eZ9Jbni70cI" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e027f1f9a236b605972e7c5ed57" srcset="https://i.scdn.co/image/ab67616d00001e027f1f9a236b605972e7c5ed57 300w, https://i.scdn.co/image/ab67616d0000b2737f1f9a236b605972e7c5ed57 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: The Dash Between The Years" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
