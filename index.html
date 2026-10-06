@@ -92,6 +92,17 @@ h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size
 .rel:hover .play,.rel:focus-visible .play,.rel.active .play{opacity:1;transform:none}
 .rel.active .cover::after{box-shadow:inset 0 0 0 2px var(--sodium)}
 .rel.active h3{color:var(--sodium)}
+.next{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:center;background:var(--panel);border:1px solid var(--line);padding:clamp(16px,3vw,28px)}
+.next img{width:clamp(140px,22vw,220px);aspect-ratio:1;object-fit:cover;max-width:100%}
+.next .eyebrow{margin-bottom:6px}
+.next h2{font-size:clamp(2.6rem,7vw,4.6rem)}
+.next .date{font-family:var(--mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:10px 0 18px}
+.cd{display:flex;gap:clamp(14px,3vw,28px);flex-wrap:wrap}
+.cd div{display:flex;flex-direction:column}
+.cd b{font-family:var(--display);font-weight:900;font-size:clamp(2rem,5vw,3rem);line-height:1;font-variant-numeric:tabular-nums;color:var(--sodium)}
+.cd span{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.next .out{font-family:var(--mono);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase}
+@media (max-width:520px){.next{grid-template-columns:1fr}}
 .featured{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2.5vw,32px)}
 .rel.big h3{font-size:clamp(1.6rem,3vw,2.2rem)}
 .rank{position:absolute;left:0;top:0;z-index:1;background:var(--sodium);color:var(--bg);font-family:var(--display);font-weight:900;font-size:1.5rem;line-height:1;padding:8px 12px}
@@ -178,6 +189,26 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
       </div>
     </div>
   </div>
+
+  <section class="block" id="next">
+    <div class="wrap">
+      <div class="next">
+        <img src="room404.jpg" alt="Cover: Room 404" width="310" height="310">
+        <div>
+          <p class="eyebrow">Next Release · Single</p>
+          <h2>Room 404</h2>
+          <p class="date">8. Oktober 2026 · 13:00</p>
+          <div class="cd" id="cd" aria-live="polite">
+            <div><b id="cd-d">2</b><span>Tage</span></div>
+            <div><b id="cd-h">00</b><span>Std</span></div>
+            <div><b id="cd-m">00</b><span>Min</span></div>
+            <div><b id="cd-s">00</b><span>Sek</span></div>
+          </div>
+          <p class="out" id="cd-out" hidden><a class="btn primary" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener">Jetzt auf Spotify hören</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section class="block" id="top">
     <div class="wrap">
@@ -349,6 +380,19 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
     frame.src='about:blank';player.hidden=true;document.body.classList.remove('playing');
     document.querySelectorAll('.rel.active').forEach(function(x){x.classList.remove('active')});
   });
+  (function(){
+    var t=Date.parse('2026-10-08T13:00:00+02:00'),pad=function(n){return String(n).padStart(2,'0')};
+    function tick(){
+      var s=Math.floor((t-Date.now())/1000);
+      if(s<=0){document.getElementById('cd').hidden=true;document.getElementById('cd-out').hidden=false;return}
+      document.getElementById('cd-d').textContent=Math.floor(s/86400);
+      document.getElementById('cd-h').textContent=pad(Math.floor(s%86400/3600));
+      document.getElementById('cd-m').textContent=pad(Math.floor(s%3600/60));
+      document.getElementById('cd-s').textContent=pad(s%60);
+      setTimeout(tick,1000);
+    }
+    tick();
+  })();
   document.getElementById('y').textContent=new Date().getFullYear();
 })();
 </script>
