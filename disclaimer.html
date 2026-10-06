@@ -22,6 +22,8 @@ h1{font-size:clamp(2rem,6vw,2.8rem);line-height:1.1;margin:28px 0 6px;letter-spa
 .sub{font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 32px}
 h2{font-size:1.05rem;margin:32px 0 8px;color:var(--fg)}
 p,li{color:#cfccc5;font-size:.95rem}
+.mail{font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--fg);border:1px solid var(--line);padding:10px 16px;cursor:pointer}
+.mail:hover,.mail:focus-visible{border-color:var(--sodium);color:var(--sodium)}
 ul{padding-left:20px;margin:8px 0}
 li{margin:4px 0}
 hr{border:0;border-top:1px solid var(--line);margin:48px 0 8px}
@@ -53,6 +55,10 @@ footer{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(-
   <h2>Server-Protokolle</h2>
   <p>Beim Aufruf dieser Website speichert der Hosting-Anbieter technisch bedingt Zugriffsdaten (z. B. IP-Adresse, Datum, Uhrzeit, aufgerufene Seite). Diese werden ausschliesslich für den Betrieb und eine anonyme Besucherstatistik verwendet und nicht an Dritte weitergegeben. Diese Website selbst setzt keine Cookies und verwendet keine Tracking- oder Werbedienste. Lediglich die Wahl zwischen Spotify und YouTube wird lokal in Ihrem Browser gespeichert und nicht übertragen.</p>
 
+  <h2>Kontakt</h2>
+  <p>Fragen zu dieser Website oder zum Datenschutz:</p>
+  <p><button type="button" class="mail" data-m="aGMuc2tjeXdlZHJhYi1laWRAcmV0c2FtYmV3">E-Mail schreiben</button></p>
+
   <h2>Urheberrechte</h2>
   <p>Musik, Songtexte, Cover und weitere Inhalte auf dieser Website sind urheberrechtlich geschützt und gehören ABard, sofern nicht anders angegeben. Jede Verwendung ausserhalb des privaten Gebrauchs bedarf der vorgängigen schriftlichen Zustimmung.</p>
 
@@ -64,10 +70,20 @@ footer{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(-
     <p>The content of this website is provided with care, but without any guarantee of accuracy, completeness or timeliness. Figures such as play counts may differ from those shown on the platforms.</p>
     <p>This website links to and embeds content from third parties, in particular Spotify, YouTube and Google Fonts. When you load this page or play a song, your browser connects to their servers and transmits technical data such as your IP address; these providers may also set cookies or recognise existing logins, and data may be transferred outside Switzerland. We have no influence on this processing and accept no responsibility for third-party content or their privacy practices. Please refer to their privacy policies (<a href="https://www.spotify.com/legal/privacy-policy/" target="_blank" rel="noopener">Spotify</a>, <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google/YouTube</a>). If you prefer, listen directly on the platforms instead.</p>
     <p>This website itself sets no cookies and uses no tracking or advertising. Only your choice between Spotify and YouTube is stored locally in your browser and never transmitted. The hosting provider stores technical access logs for operation and anonymous statistics only.</p>
+    <p>Contact: <button type="button" class="mail" data-m="aGMuc2tjeXdlZHJhYi1laWRAcmV0c2FtYmV3">Send e-mail</button></p>
     <p>All music, lyrics, artwork and other content are protected by copyright and belong to ABard unless stated otherwise.</p>
   </div>
 
   <footer>© 2026 ABard · <a href="./">abard.die-bardewycks.ch</a></footer>
 </main>
+<script>
+// Adresse steht nirgends im Klartext; sie wird erst beim Klick zusammengesetzt und nie angezeigt
+document.querySelectorAll('.mail').forEach(function(b){
+  b.addEventListener('click',function(){
+    var a=atob(b.getAttribute('data-m')).split('').reverse().join('');
+    location.href='mai'+'lto:'+a+'?subject='+encodeURIComponent('ABard Website');
+  });
+});
+</script>
 </body>
 </html>
