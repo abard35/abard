@@ -525,7 +525,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
     if(navigator.share){navigator.share({title:t,url:url}).catch(function(){})}
     else if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){var b=document.getElementById('d-share');b.textContent='Link kopiert ✓';setTimeout(function(){b.textContent='Teilen'},2000)})}
   });
-  if(location.hash.indexOf('#song-')===0){var k0=location.hash.slice(6),a0=document.querySelector('#releases .rel[data-id="'+k0+'"],#releases .rel[data-yt="'+k0+'"]');if(a0)openDetail(a0,true)}
+  if(location.hash.indexOf('#song-')===0){var k0=location.hash.slice(6),a0=document.querySelector('.rel[data-id="'+k0+'"],.rel[data-yt="'+k0+'"]');if(a0)openDetail(a0,true)}
   (function(){
     var t=Date.parse('2026-10-08T13:00:00+02:00'),pad=function(n){return String(n).padStart(2,'0')};
     function tick(){
