@@ -68,21 +68,21 @@ main,header,footer{position:relative;z-index:1}
 .bar nav a:hover,.bar nav a:focus-visible{color:var(--sodium)}
 
 /* Mini-Plattenspieler unten rechts (nur Desktop): zeigt den laufenden Song */
-.vin{position:fixed;right:24px;bottom:calc(var(--pbar,110px) + 18px);z-index:9;width:200px;height:150px;padding:0;border:0;background:none;cursor:pointer;
+.vin{position:fixed;right:24px;bottom:calc(var(--pbar,110px) + 18px);z-index:9;width:280px;height:200px;padding:0;border:0;background:none;cursor:pointer;
   opacity:0;transform:translateY(20px);transition:opacity .4s,transform .4s,bottom .3s;pointer-events:none}
 .vin.show{opacity:1;transform:none;pointer-events:auto}
-.vin .sleeve{position:absolute;right:0;top:0;width:120px;height:120px;z-index:2;background:var(--panel);box-shadow:0 0 0 1px var(--line),10px 12px 28px rgba(0,0,0,.6)}
+.vin .sleeve{position:absolute;right:0;top:0;width:164px;height:164px;z-index:2;background:var(--panel);box-shadow:0 0 0 1px var(--line),10px 12px 28px rgba(0,0,0,.6)}
 .vin .sleeve img,.vin .lbl img{width:100%;height:100%;object-fit:cover;display:block}
 .vin .sleeve::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.10),transparent 40%)}
-.vin .disc{position:absolute;right:4px;top:4px;width:112px;height:112px;z-index:1;transition:right .9s cubic-bezier(.2,.8,.2,1) .15s}
-.vin.show .disc{right:76px}
+.vin .disc{position:absolute;right:6px;top:6px;width:152px;height:152px;z-index:1;transition:right .9s cubic-bezier(.2,.8,.2,1) .15s}
+.vin.show .disc{right:104px}
 .vin .rec{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle,#0e0f11 0 1px,#22242a 1.6px 2.6px),#111;
   box-shadow:0 0 0 1px #000,6px 8px 20px rgba(0,0,0,.6);animation:spin 3s linear infinite;animation-play-state:paused}
 .vin.spin .rec{animation-play-state:running}
 .vin .lbl{position:absolute;inset:33%;border-radius:50%;overflow:hidden;box-shadow:0 0 0 2px #0b0b0c}
 .vin .lbl::after{content:"";position:absolute;left:50%;top:50%;width:12%;height:12%;margin:-6% 0 0 -6%;border-radius:50%;background:var(--bg)}
 .vin .shine{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 20deg,transparent 0 8%,rgba(255,255,255,.09) 12%,transparent 18% 50%,rgba(255,255,255,.07) 62%,transparent 68%)}
-.vin .vt{position:absolute;right:0;top:128px;width:200px;text-align:right;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--sodium);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vin .vt{position:absolute;right:0;top:174px;width:280px;text-align:right;font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--sodium);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .vin .vt b{color:var(--fg);font-weight:500}
 .vin:hover .rec,.vin:focus-visible .rec{animation-duration:1.2s}
 .vin:focus-visible{outline:2px solid var(--sodium);outline-offset:4px}
@@ -100,6 +100,7 @@ main,header,footer{position:relative;z-index:1}
 .wall:hover .col{animation-play-state:paused}
 .wall img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;background:var(--panel);box-shadow:0 0 0 1px var(--line);filter:grayscale(.25) contrast(1.05);transition:filter .3s}
 .wall img:hover{filter:none}
+.wall img.logo{background:#fff;object-fit:contain;padding:6%;filter:none}
 @keyframes wall-up{from{transform:translateY(0)}to{transform:translateY(calc(-50% - 5px))}}
 @keyframes wall-down{from{transform:translateY(calc(-50% - 5px))}to{transform:translateY(0)}}
 @media (prefers-reduced-motion:reduce){.wall .col{animation:none}}
@@ -524,12 +525,16 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
   if(srcs.length<3){wall.hidden=true; return;}
   for(var k=srcs.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1)); var t=srcs[k]; srcs[k]=srcs[j]; srcs[j]=t;}
   var cols=[[],[],[]]; srcs.forEach(function(s,n){cols[n%3].push(s);});
+  // Logo ab und zu: je einmal in der linken und rechten Spalte, versetzt
+  var LOGO='apple-touch-icon.png';
+  cols[0].splice(Math.floor(cols[0].length/3),0,LOGO);
+  cols[2].splice(Math.floor(cols[2].length*2/3),0,LOGO);
   var durs=[46,58,40];
   cols.forEach(function(list,c){
     var col=document.createElement('div'); col.className='col'+(c===1?' down':'');
     col.style.setProperty('--dur',durs[c]+'s');
     list.concat(list).forEach(function(s){
-      var im=document.createElement('img'); im.src=s; im.alt=''; im.decoding='async'; im.width=300; im.height=300;
+      var im=document.createElement('img'); im.src=s; im.alt=''; im.decoding='async'; im.width=300; im.height=300; if(s===LOGO)im.className='logo';
       col.appendChild(im);
     });
     wall.appendChild(col);
