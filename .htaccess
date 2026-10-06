@@ -1,0 +1,25 @@
+# Sicherheitseinstellungen für abard.die-bardewycks.ch
+
+# Keine Verzeichnis-Listen anzeigen
+Options -Indexes
+
+# Interne Dateien nicht ausliefern (Hilfsskripte, Doku, Git)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(tools/|\.git) - [F,L]
+  RewriteRule \.(md|py|sh|bak|log)$ - [F,L]
+</IfModule>
+<FilesMatch "^\.(htaccess|gitignore|gitattributes)$|\.(md|py|sh|bak|log)$">
+  Require all denied
+</FilesMatch>
+
+# Sicherheits-Header
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  # strict-origin-when-cross-origin wird von YouTube für eingebettete Videos verlangt
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://open.spotify.com https://*.spotify.com https://*.spotifycdn.com https://*.scdn.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.scdn.co https://*.spotifycdn.com https://i.ytimg.com https://*.ytimg.com; frame-src https://open.spotify.com https://*.spotify.com https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://*.spotify.com; media-src 'self' https://*.scdn.co https://*.spotifycdn.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+</IfModule>
