@@ -557,7 +557,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
     document.getElementById('d-img').src=a.querySelector('img').currentSrc||a.querySelector('img').src;
     document.getElementById('d-title').textContent=a.querySelector('h3').textContent;
     var meta=[];if(a.dataset.genre)meta.push(a.dataset.genre);if(d)meta.push(+d.slice(8,10)+'. '+M[+d.slice(5,7)-1]+' '+d.slice(0,4));
-    var pl=[];if(a.dataset.sp)pl.push(Number(a.dataset.sp).toLocaleString('de-CH')+' Spotify');if(a.dataset.ytv)pl.push(Number(a.dataset.ytv).toLocaleString('de-CH')+' YouTube');
+    var pl=[];if(a.dataset.sp)pl.push(Number(a.dataset.sp).toLocaleString('de-CH').replace(/'/g,'’')+' Spotify');if(a.dataset.ytv)pl.push(Number(a.dataset.ytv).toLocaleString('de-CH').replace(/'/g,'’')+' YouTube');
     var st=a.querySelector('.streams');if(st)meta.push(st.textContent+(pl.length>1?' ('+pl.join(' + ')+')':''));
     document.getElementById('d-meta').textContent=meta.join(' · ');
     document.getElementById('d-sp').hidden=!a.dataset.id;document.getElementById('d-yt').hidden=!a.dataset.yt;
