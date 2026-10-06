@@ -1,8 +1,9 @@
-// Geschichte und Songtext je Song. Schlüssel = Spotify-ID (oder YouTube-ID bei „nur YouTube“).
-// Felder leer lassen = Abschnitt wird nicht angezeigt.
+// Beschreibung und Songtext je Song. Schlüssel = Spotify-ID (oder YouTube-ID bei „nur YouTube“).
+// Fehlt ein Feld, wird der Abschnitt nicht angezeigt. Zeilenumbruch = \n, Leerzeile = \n\n.
 window.SONGINFO = {
-  // "3N6ymNEVeNwMvv3WlW8c4s": { // Rising
-  //   story: "Worum es im Song geht …",
-  //   lyrics: "Erste Zeile\nZweite Zeile"
-  // },
+  "1c59KMCgfbtalgtODpC0ZK": {
+    "_title": "Fragile Horizons",
+    "story": "A monumental sonic journey across shifting sands, forgotten echoes, and fragile boundaries. “Fragile Horizons” merges the haunting atmosphere of Desert Gothic with the raw power of symphonic rock and a grounded Boom Bap hip-hop groove.\n\nThe track opens with a solitary, haunting oboe melody before sinking into dark, operatic baritone verses. The tension builds relentlessly until it erupts into a soaring tenor hook, propelled by a massive male choir, virtuoso electric violin passages, distorted high-gain guitars, and rapid staccato strings.",
+    "lyrics": "Endless sand beneath a fading sun,\nTracing all the steps of what we’ve done.\nA quiet storm inside the ancient stone,\nWalking through the desert dust alone.\nShadows stretching long across the floor,\nKnocking at an everlasting door.\n\nThe pulse is waking in the golden clay,\nA roaring current washing doubt away...\nFeel the skies ignite!\n\nAcross the dunes... we find our way!\nA sacred light that will not fade!\nBeyond the silence... beyond the cold!\nThe desert wind is turning into gold!\nTurning into gold!\n\nFootsteps disappear within the haze,\nBroken compass of forgotten days.\nNo illusions left behind the glass,\nWatching every fallen shadow pass.\nRise above the weight of all the fears,\nEchoing across a thousand years.\n\nThe pulse is waking in the golden clay,\nA roaring current washing doubt away...\nTake the wheel and set it free!\n\nAcross the dunes... we find our way!\nA sacred light that will not fade!\nBeyond the silence... beyond the cold!\nThe desert wind is turning into gold!\nTurning into gold!\n\nNo more sorrow in the burning land...\nReaching out to take an open hand.\nAnd now the horizon breaks wide open\n\nAcross the dunes... we find our way!\nA sacred light that will not fade!\nBeyond the silence... beyond the cold!\nThe desert wind is turning into gold!\n\nAcross the sand...\nThe gold survives..."
+  }
 };
