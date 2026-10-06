@@ -118,7 +118,7 @@ h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size
 .src button[aria-pressed="true"]{background:var(--sodium);border-color:var(--sodium);color:var(--bg)}
 .src-note{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--muted);margin:-14px 0 22px}
 .rel .only{display:none;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-body.yt .rel:not([data-yt]) .only{display:block}
+body.yt .rel:not([data-yt]) .only,.rel .yt-only{display:block}
 .player.yt iframe{flex:none;width:min(320px,100%);height:auto;aspect-ratio:16/9;border-radius:8px}
 .player.yt .in{justify-content:flex-end}
 body.yt.playing{padding-bottom:220px}
@@ -284,6 +284,10 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e02449b29faaff08cc7a49cc9a8" srcset="https://i.scdn.co/image/ab67616d00001e02449b29faaff08cc7a49cc9a8 300w, https://i.scdn.co/image/ab67616d0000b273449b29faaff08cc7a49cc9a8 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: Passion" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
           <h3>Passion</h3><span class="streams">452 Streams</span>
         </a>
+        <a class="rel" href="https://www.youtube.com/watch?v=rxjvsiwowFE" data-yt="rxjvsiwowFE" target="_blank" rel="noopener">
+          <div class="cover"><img src="https://i.ytimg.com/vi/rxjvsiwowFE/maxresdefault.jpg" alt="Cover: If My Heart Could Speak" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <h3>If My Heart Could Speak</h3><span class="only yt-only">nur YouTube</span>
+        </a>
         <a class="rel" href="https://open.spotify.com/album/5SSCMrxpZp7V9gLizVEROo" data-id="5SSCMrxpZp7V9gLizVEROo" data-yt="Yh7CYG8uuak" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e02d95a957f65aa59fe1a7dae78" srcset="https://i.scdn.co/image/ab67616d00001e02d95a957f65aa59fe1a7dae78 300w, https://i.scdn.co/image/ab67616d0000b273d95a957f65aa59fe1a7dae78 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: Chasing Illusions" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
           <h3>Chasing Illusions</h3>
@@ -292,13 +296,37 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e0218e85f9ff96c8bd8ff2a5983" srcset="https://i.scdn.co/image/ab67616d00001e0218e85f9ff96c8bd8ff2a5983 300w, https://i.scdn.co/image/ab67616d0000b27318e85f9ff96c8bd8ff2a5983 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: When I Saw You" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
           <h3>When I Saw You</h3>
         </a>
+        <a class="rel" href="https://www.youtube.com/watch?v=Hf9kF1ZBRVY" data-yt="Hf9kF1ZBRVY" target="_blank" rel="noopener">
+          <div class="cover"><img src="https://i.ytimg.com/vi/Hf9kF1ZBRVY/maxresdefault.jpg" alt="Cover: Obsession With A Ghost" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <h3>Obsession With A Ghost</h3><span class="only yt-only">nur YouTube</span>
+        </a>
+        <a class="rel" href="https://www.youtube.com/watch?v=zlPg6lTtTk8" data-yt="zlPg6lTtTk8" target="_blank" rel="noopener">
+          <div class="cover"><img src="https://i.ytimg.com/vi/zlPg6lTtTk8/maxresdefault.jpg" alt="Cover: Love Will Haunt Me Forever" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <h3>Love Will Haunt Me Forever</h3><span class="only yt-only">nur YouTube</span>
+        </a>
+        <a class="rel" href="https://www.youtube.com/watch?v=12IP6aQkGCQ" data-yt="12IP6aQkGCQ" target="_blank" rel="noopener">
+          <div class="cover"><img src="https://i.ytimg.com/vi/12IP6aQkGCQ/maxresdefault.jpg" alt="Cover: The Entropy Bell" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <h3>The Entropy Bell</h3><span class="only yt-only">nur YouTube</span>
+        </a>
+        <a class="rel" href="https://www.youtube.com/watch?v=tXlfmhBYxTc" data-yt="tXlfmhBYxTc" target="_blank" rel="noopener">
+          <div class="cover"><img src="https://i.ytimg.com/vi/tXlfmhBYxTc/maxresdefault.jpg" alt="Cover: The Digital Heretic" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <h3>The Digital Heretic</h3><span class="only yt-only">nur YouTube</span>
+        </a>
+        <a class="rel" href="https://www.youtube.com/watch?v=QtXpJNIqY7I" data-yt="QtXpJNIqY7I" target="_blank" rel="noopener">
+          <div class="cover"><img src="https://i.ytimg.com/vi/QtXpJNIqY7I/maxresdefault.jpg" alt="Cover: What Love Should Be" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <h3>What Love Should Be</h3><span class="only yt-only">nur YouTube</span>
+        </a>
+        <a class="rel" href="https://www.youtube.com/watch?v=1-zbIdwE3CU" data-yt="1-zbIdwE3CU" target="_blank" rel="noopener">
+          <div class="cover"><img src="https://i.ytimg.com/vi/1-zbIdwE3CU/maxresdefault.jpg" alt="Cover: The Blind Kings" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <h3>The Blind Kings</h3><span class="only yt-only">nur YouTube</span>
+        </a>
         <a class="rel" href="https://open.spotify.com/album/2pw3sGApj6qmLSkr4jrPW5" data-id="2pw3sGApj6qmLSkr4jrPW5" data-yt="XhYLZsPw-6M" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e02fe094ba8bf9e98fbca34e79f" srcset="https://i.scdn.co/image/ab67616d00001e02fe094ba8bf9e98fbca34e79f 300w, https://i.scdn.co/image/ab67616d0000b273fe094ba8bf9e98fbca34e79f 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: Fading Photographs" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
           <h3>Fading Photographs</h3><span class="streams">433 Streams</span>
         </a>
         <a class="rel" href="https://open.spotify.com/album/0NRWPm24Fq47xe8PsDcnuu" data-id="0NRWPm24Fq47xe8PsDcnuu" data-yt="FYQbLBfWzpM" target="_blank" rel="noopener">
-          <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e02138c2a355411488bf068d920" srcset="https://i.scdn.co/image/ab67616d00001e02138c2a355411488bf068d920 300w, https://i.scdn.co/image/ab67616d0000b273138c2a355411488bf068d920 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: The Quit Space" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
-          <h3>The Quit Space</h3>
+          <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e02138c2a355411488bf068d920" srcset="https://i.scdn.co/image/ab67616d00001e02138c2a355411488bf068d920 300w, https://i.scdn.co/image/ab67616d0000b273138c2a355411488bf068d920 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: The Quiet Space" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <h3>The Quiet Space</h3>
         </a>
         <a class="rel" href="https://open.spotify.com/album/5j8NsdzFkap6UZAPKhyGPt" data-id="5j8NsdzFkap6UZAPKhyGPt" data-yt="aRXbj4Ka3k4" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e02a4e80c20a77168891c725dda" srcset="https://i.scdn.co/image/ab67616d00001e02a4e80c20a77168891c725dda 300w, https://i.scdn.co/image/ab67616d0000b273a4e80c20a77168891c725dda 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: Wings of Wax" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
@@ -391,13 +419,13 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
   }
   document.querySelectorAll('.src button').forEach(function(b){b.addEventListener('click',function(){setSrc(b.dataset.src)})});
   setSrc(src);
-  document.querySelectorAll('.rel[data-id]').forEach(function(a){
+  document.querySelectorAll('.rel[data-id],.rel[data-yt]').forEach(function(a){
     a.addEventListener('click',function(e){
       if(e.metaKey||e.ctrlKey||e.shiftKey)return;
       e.preventDefault();
       document.querySelectorAll('.rel.active').forEach(function(x){x.classList.remove('active')});
       a.classList.add('active');
-      var useYt=src==='youtube'&&a.dataset.yt;
+      var useYt=a.dataset.yt&&(src==='youtube'||!a.dataset.id);
       player.classList.toggle('yt',!!useYt);
       frame.title=useYt?'YouTube-Player':'Spotify-Player';
       frame.src=useYt?'https://www.youtube-nocookie.com/embed/'+a.dataset.yt+'?autoplay=1&rel=0':'https://open.spotify.com/embed/album/'+a.dataset.id+'?utm_source=generator&theme=0';
