@@ -166,6 +166,8 @@ h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size
 body.yt .rel:not([data-yt]) .only,.rel .yt-only{display:block}
 .player.yt iframe{flex:none;width:min(320px,100%);height:auto;aspect-ratio:16/9;border-radius:8px}
 .player.yt .in{justify-content:flex-end}
+.pyt{flex:none;align-self:center;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:9px 12px}
+.pyt:hover,.pyt:focus-visible{color:var(--fg);border-color:var(--fg)}
 body.pyt.playing{padding-bottom:220px}
 .rel h3,.rel .meta{transition:color .2s}
 .rel::after{content:"Story & Lyrics ›";align-self:flex-start;margin-top:auto!important;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sodium);border:1px solid rgba(216,162,63,.45);padding:5px 9px;margin-top:2px;transition:background .2s,color .2s}
@@ -469,7 +471,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
         <a href="https://www.youtube.com/@ABardOfficial?sub_confirmation=1" target="_blank" rel="noopener">Abonnieren auf YouTube →</a>
       </div>
       <div class="embed video">
-        <iframe title="ABard auf YouTube" src="https://www.youtube-nocookie.com/embed/videoseries?list=UUC6Eok-uQstF4LeuWgr6yeA" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        <iframe title="ABard auf YouTube" src="https://www.youtube.com/embed/videoseries?list=UUC6Eok-uQstF4LeuWgr6yeA" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
       </div>
     </div>
   </section>
@@ -510,7 +512,8 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
   </div>
   <div class="in">
     <div class="spwrap" id="spwrap" hidden><div id="spembed"></div></div>
-    <iframe id="pframe" title="Spotify-Player" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+    <iframe id="pframe" title="Spotify-Player" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+    <a class="pyt" id="pyt" href="#" target="_blank" rel="noopener" hidden>Auf YouTube öffnen ↗</a>
     <button type="button" id="pclose" aria-label="Player schliessen">✕</button>
   </div>
 </div>
@@ -608,13 +611,14 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
       if(useYt){
         if(spCtl){try{spCtl.pause()}catch(err){}}
         spwrap.hidden=true;frame.hidden=false;frame.title='YouTube-Player';
-        frame.src='https://www.youtube-nocookie.com/embed/'+a.dataset.yt+'?autoplay=1&rel=0';
+        frame.src='https://www.youtube.com/embed/'+a.dataset.yt+'?autoplay=1&rel=0&playsinline=1&origin='+encodeURIComponent(location.origin);
       }else if(spPlay('spotify:album:'+a.dataset.id)){
         frame.src='about:blank';frame.hidden=true;spwrap.hidden=false;
       }else{
         spwrap.hidden=true;frame.hidden=false;frame.title='Spotify-Player';
         frame.src='https://open.spotify.com/embed/album/'+a.dataset.id+'?utm_source=generator&theme=0';
       }
+      var pyt=document.getElementById('pyt');pyt.hidden=!useYt;if(useYt)pyt.href='https://www.youtube.com/watch?v='+a.dataset.yt;
       player.hidden=false;document.body.classList.add('playing');
       vinShow(a,useYt||!spCtl);
   }
