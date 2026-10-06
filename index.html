@@ -99,7 +99,7 @@ h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size
 
 /* releases */
 .releases{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:clamp(14px,2vw,24px)}
-.rel{text-decoration:none;display:flex;flex-direction:column;gap:10px;cursor:pointer}
+.rel{text-decoration:none;display:flex;flex-direction:column;gap:10px;cursor:pointer;height:100%}
 .rel .play{position:absolute;right:10px;bottom:10px;width:44px;height:44px;border-radius:50%;background:var(--sodium);color:var(--bg);display:grid;place-items:center;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;z-index:1}
 .rel .play svg{width:18px;height:18px;fill:currentColor;margin-left:2px}
 .rel:hover .play,.rel:focus-visible .play,.rel.active .play{opacity:1;transform:none}
@@ -136,7 +136,7 @@ body.yt .rel:not([data-yt]) .only,.rel .yt-only{display:block}
 .player.yt .in{justify-content:flex-end}
 body.pyt.playing{padding-bottom:220px}
 .rel h3,.rel .meta{transition:color .2s}
-.rel::after{content:"Story & Lyrics ›";align-self:flex-start;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sodium);border:1px solid rgba(216,162,63,.45);padding:5px 9px;margin-top:2px;transition:background .2s,color .2s}
+.rel::after{content:"Story & Lyrics ›";align-self:flex-start;margin-top:auto!important;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sodium);border:1px solid rgba(216,162,63,.45);padding:5px 9px;margin-top:2px;transition:background .2s,color .2s}
 .rel:hover::after,.rel:focus-visible::after{background:var(--sodium);color:var(--bg)}
 dialog.detail{border:1px solid var(--line);background:var(--panel);color:var(--fg);padding:0;width:min(860px,calc(100% - 32px));max-height:calc(100dvh - 32px);overflow:auto}
 dialog.detail::backdrop{background:rgba(5,6,8,.8);backdrop-filter:blur(4px)}
@@ -274,15 +274,15 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
       <div class="featured">
         <a class="rel big" data-sp="7213" data-ytv="3498" data-date="2026-01-18" data-genre="Alternative Metal" href="https://open.spotify.com/album/3N6ymNEVeNwMvv3WlW8c4s" data-id="3N6ymNEVeNwMvv3WlW8c4s" data-yt="FUPhL4nVfWc" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d0000b273e32ceaa2429fadd1dd482f13" alt="Cover: Rising" loading="lazy" width="640" height="640"><span class="rank">#1</span><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
-          <h3>Rising</h3><span class="meta">Alternative Metal · Jan 2026</span><span class="streams">10’711 Plays</span>
+          <h3>Rising</h3><span class="meta">Alternative Metal · Jan 2026</span><span class="streams">SP: 7’213 · YT: 3’498</span>
         </a>
         <a class="rel big" data-sp="1119" data-ytv="160" data-date="2026-01-30" data-genre="Power Ballad" href="https://open.spotify.com/album/2QULAXmGPUAPvkfDpXwDTR" data-id="2QULAXmGPUAPvkfDpXwDTR" data-yt="WeoimGK9nAA" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d0000b2739cd9ca6a788798a5abd65561" alt="Cover: Aftermath" loading="lazy" width="640" height="640"><span class="rank">#2</span><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
-          <h3>Aftermath</h3><span class="meta">Power Ballad · Jan 2026</span><span class="streams">1’279 Plays</span>
+          <h3>Aftermath</h3><span class="meta">Power Ballad · Jan 2026</span><span class="streams">SP: 1’119 · YT: 160</span>
         </a>
         <a class="rel big" data-sp="583" data-ytv="687" data-date="2025-12-19" data-genre="80s Power Ballad" href="https://open.spotify.com/album/7DzhjdMcNR8sc7XM88o3wy" data-id="7DzhjdMcNR8sc7XM88o3wy" data-yt="fZklU1bMKtE" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d0000b273b9dd394b7b5d72fec0e4292b" alt="Cover: Still Burning" loading="lazy" width="640" height="640"><span class="rank">#3</span><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
-          <h3>Still Burning</h3><span class="meta">80s Power Ballad · Dez 2025</span><span class="streams">1’270 Plays</span>
+          <h3>Still Burning</h3><span class="meta">80s Power Ballad · Dez 2025</span><span class="streams">SP: 583 · YT: 687</span>
         </a>
       </div>
     </div>
@@ -326,19 +326,19 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
         </a>
         <a class="rel" data-sp="529" data-ytv="98" data-date="2026-03-06" data-genre="Power Ballad" href="https://open.spotify.com/album/7v2lBbmzgdDDDsIXdad4ms" data-id="7v2lBbmzgdDDDsIXdad4ms" data-yt="JfWEGj8u0CA" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e02f8cb145cfb9931269f5a6b9e" srcset="https://i.scdn.co/image/ab67616d00001e02f8cb145cfb9931269f5a6b9e 300w, https://i.scdn.co/image/ab67616d0000b273f8cb145cfb9931269f5a6b9e 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: Shadows of my Yesterday" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
-          <h3>Shadows of my Yesterday</h3><span class="meta">Power Ballad · Mär 2026</span><span class="streams">627 Plays</span>
+          <h3>Shadows of my Yesterday</h3><span class="meta">Power Ballad · Mär 2026</span><span class="streams">SP: 529 · YT: 98</span>
         </a>
         <a class="rel" data-sp="452" data-date="2026-02-21" data-genre="Power Metal" href="https://open.spotify.com/album/6bizYp1fv4DEA0pjERi7o5" data-id="6bizYp1fv4DEA0pjERi7o5" data-yt="k5ByA07nYHc" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e02449b29faaff08cc7a49cc9a8" srcset="https://i.scdn.co/image/ab67616d00001e02449b29faaff08cc7a49cc9a8 300w, https://i.scdn.co/image/ab67616d0000b273449b29faaff08cc7a49cc9a8 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: Passion" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
-          <h3>Passion</h3><span class="meta">Power Metal · Feb 2026</span><span class="streams">452 Plays</span>
+          <h3>Passion</h3><span class="meta">Power Metal · Feb 2026</span><span class="streams">SP: 452</span>
         </a>
         <a class="rel" data-sp="1155" data-ytv="39" data-date="2026-02-13" data-genre="Rock Ballad" href="https://open.spotify.com/album/5CZwr6ueP4E8fCGbl7W4mn" data-id="5CZwr6ueP4E8fCGbl7W4mn" data-ytx="5fPEin7BKWA" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e02a2a1c75a94041578c2083ed7" srcset="https://i.scdn.co/image/ab67616d00001e02a2a1c75a94041578c2083ed7 300w, https://i.scdn.co/image/ab67616d0000b273a2a1c75a94041578c2083ed7 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: Toxic Devotion" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
-          <h3>Toxic Devotion</h3><span class="meta">Rock Ballad · Feb 2026</span><span class="streams">1’194 Plays</span>
+          <h3>Toxic Devotion</h3><span class="meta">Rock Ballad · Feb 2026</span><span class="streams">SP: 1’155 · YT: 39</span>
         </a>
         <a class="rel" data-ytv="759" data-date="2026-01-26" data-genre="Hard Rock Ballad" href="https://www.youtube.com/watch?v=rxjvsiwowFE" data-yt="rxjvsiwowFE" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.ytimg.com/vi/rxjvsiwowFE/maxresdefault.jpg" alt="Cover: If My Heart Could Speak" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
-          <h3>If My Heart Could Speak</h3><span class="meta">Hard Rock Ballad · Jan 2026</span><span class="streams">759 Plays</span><span class="only yt-only">nur YouTube</span>
+          <h3>If My Heart Could Speak</h3><span class="meta">Hard Rock Ballad · Jan 2026</span><span class="streams">YT: 759</span><span class="only yt-only">nur YouTube</span>
         </a>
         <a class="rel" data-ytv="125" data-date="2026-01-14" data-genre="Gothic Rock" href="https://open.spotify.com/album/5SSCMrxpZp7V9gLizVEROo" data-id="5SSCMrxpZp7V9gLizVEROo" data-yt="Yh7CYG8uuak" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e02d95a957f65aa59fe1a7dae78" srcset="https://i.scdn.co/image/ab67616d00001e02d95a957f65aa59fe1a7dae78 300w, https://i.scdn.co/image/ab67616d0000b273d95a957f65aa59fe1a7dae78 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: Chasing Illusions" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
@@ -370,11 +370,11 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
         </a>
         <a class="rel" data-ytv="515" data-date="2026-01-08" data-genre="Symphonic Metal" href="https://www.youtube.com/watch?v=1-zbIdwE3CU" data-yt="1-zbIdwE3CU" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.ytimg.com/vi/1-zbIdwE3CU/maxresdefault.jpg" alt="Cover: The Blind Kings" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
-          <h3>The Blind Kings</h3><span class="meta">Symphonic Metal · Jan 2026</span><span class="streams">515 Plays</span><span class="only yt-only">nur YouTube</span>
+          <h3>The Blind Kings</h3><span class="meta">Symphonic Metal · Jan 2026</span><span class="streams">YT: 515</span><span class="only yt-only">nur YouTube</span>
         </a>
         <a class="rel" data-sp="433" data-ytv="674" data-date="2026-01-05" data-genre="Grunge Ballad" href="https://open.spotify.com/album/2pw3sGApj6qmLSkr4jrPW5" data-id="2pw3sGApj6qmLSkr4jrPW5" data-yt="XhYLZsPw-6M" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e02fe094ba8bf9e98fbca34e79f" srcset="https://i.scdn.co/image/ab67616d00001e02fe094ba8bf9e98fbca34e79f 300w, https://i.scdn.co/image/ab67616d0000b273fe094ba8bf9e98fbca34e79f 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: Fading Photographs" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
-          <h3>Fading Photographs</h3><span class="meta">Grunge Ballad · Jan 2026</span><span class="streams">1’107 Plays</span>
+          <h3>Fading Photographs</h3><span class="meta">Grunge Ballad · Jan 2026</span><span class="streams">SP: 433 · YT: 674</span>
         </a>
         <a class="rel" data-ytv="60" data-date="2026-01-02" data-genre="Power Ballad" href="https://open.spotify.com/album/0NRWPm24Fq47xe8PsDcnuu" data-id="0NRWPm24Fq47xe8PsDcnuu" data-yt="FYQbLBfWzpM" target="_blank" rel="noopener">
           <div class="cover"><img src="https://i.scdn.co/image/ab67616d00001e02138c2a355411488bf068d920" srcset="https://i.scdn.co/image/ab67616d00001e02138c2a355411488bf068d920 300w, https://i.scdn.co/image/ab67616d0000b273138c2a355411488bf068d920 640w" sizes="(max-width:520px) 45vw, 220px" alt="Cover: The Quiet Space" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
@@ -558,7 +558,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
     document.getElementById('d-title').textContent=a.querySelector('h3').textContent;
     var meta=[];if(a.dataset.genre)meta.push(a.dataset.genre);if(d)meta.push(+d.slice(8,10)+'. '+M[+d.slice(5,7)-1]+' '+d.slice(0,4));
     var pl=[];if(a.dataset.sp)pl.push(Number(a.dataset.sp).toLocaleString('de-CH').replace(/'/g,'’')+' Spotify');if(a.dataset.ytv)pl.push(Number(a.dataset.ytv).toLocaleString('de-CH').replace(/'/g,'’')+' YouTube');
-    var st=a.querySelector('.streams');if(st)meta.push(st.textContent+(pl.length>1?' ('+pl.join(' + ')+')':''));
+    if(a.querySelector('.streams'))meta.push(pl.join(' · '));
     document.getElementById('d-meta').textContent=meta.join(' · ');
     document.getElementById('d-sp').hidden=!a.dataset.id;document.getElementById('d-yt').hidden=!a.dataset.yt;
     var l=document.getElementById('d-links');l.innerHTML='';
