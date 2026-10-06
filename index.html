@@ -121,7 +121,7 @@ h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size
 body.yt .rel:not([data-yt]) .only,.rel .yt-only{display:block}
 .player.yt iframe{flex:none;width:min(320px,100%);height:auto;aspect-ratio:16/9;border-radius:8px}
 .player.yt .in{justify-content:flex-end}
-body.yt.playing{padding-bottom:220px}
+body.pyt.playing{padding-bottom:220px}
 .player{position:fixed;left:0;right:0;bottom:0;z-index:10;background:rgba(13,14,16,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:10px clamp(16px,4vw,40px) calc(10px + env(safe-area-inset-bottom,0px))}
 .player .in{max-width:1120px;margin:0 auto;display:flex;gap:12px;align-items:center}
 .player iframe{flex:1;min-width:0;height:80px;border:0;border-radius:12px;display:block}
@@ -426,7 +426,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
       document.querySelectorAll('.rel.active').forEach(function(x){x.classList.remove('active')});
       a.classList.add('active');
       var useYt=a.dataset.yt&&(src==='youtube'||!a.dataset.id);
-      player.classList.toggle('yt',!!useYt);
+      player.classList.toggle('yt',!!useYt);document.body.classList.toggle('pyt',!!useYt);
       frame.title=useYt?'YouTube-Player':'Spotify-Player';
       frame.src=useYt?'https://www.youtube-nocookie.com/embed/'+a.dataset.yt+'?autoplay=1&rel=0':'https://open.spotify.com/embed/album/'+a.dataset.id+'?utm_source=generator&theme=0';
       player.hidden=false;document.body.classList.add('playing');
