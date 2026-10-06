@@ -225,7 +225,7 @@ body.playing{padding-bottom:110px}
 
 footer{border-top:1px solid var(--line);padding-block:32px;font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 footer a{text-decoration:none}
-.legal{margin:0 auto;padding-bottom:24px;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;text-align:center;position:relative;z-index:1}
+.legal{text-transform:uppercase;letter-spacing:.1em}
 .legal a{color:#5c5f66;text-decoration:none}
 .legal a:hover,.legal a:focus-visible{color:var(--fg)}
 footer a:hover,footer a:focus-visible{color:var(--sodium)}
@@ -476,7 +476,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
         <a href="https://www.youtube.com/@ABardOfficial?sub_confirmation=1" target="_blank" rel="noopener">Abonnieren auf YouTube →</a>
       </div>
       <div class="embed video">
-        <iframe title="ABard auf YouTube" src="https://www.youtube.com/embed/videoseries?list=UUC6Eok-uQstF4LeuWgr6yeA" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        <iframe id="ytlist" title="ABard auf YouTube" src="https://www.youtube.com/embed/videoseries?list=UUC6Eok-uQstF4LeuWgr6yeA" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
       </div>
     </div>
   </section>
@@ -484,9 +484,9 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
 
 <footer class="wrap">
   <span>© <span id="y">2026</span> ABard</span>
+  <span class="legal"><a href="disclaimer.html">Disclaimer</a></span>
   <span><a href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener">Spotify</a> · <a href="https://www.youtube.com/@ABardOfficial" target="_blank" rel="noopener">YouTube</a></span>
 </footer>
-<p class="legal wrap"><a href="disclaimer.html">Disclaimer</a></p>
 <dialog class="detail" id="detail" aria-labelledby="d-title">
   <div class="d-in">
     <button type="button" class="d-close" id="d-close" aria-label="Schliessen">✕</button>
@@ -525,7 +525,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
 </div>
 <script src="wall.js?v=1"></script>
 <script src="songs.js"></script>
-<script src="app.js?v=1"></script>
+<script src="app.js?v=2"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
 </html>

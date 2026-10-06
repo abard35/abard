@@ -128,5 +128,13 @@
     }
     tick();
   })();
+  // Video-Liste: eigene Playlist aus allen YouTube-Songs (neueste zuerst) statt der Kanal-Uploads
+  (function(){
+    var f=document.getElementById('ytlist');if(!f)return;
+    var ids=[],seen={};
+    document.querySelectorAll('.rel[data-yt]:not(.big)').forEach(function(r){var v=r.dataset.yt;if(v&&!seen[v]){seen[v]=1;ids.push(v)}});
+    if(!ids.length)return;
+    f.src='https://www.youtube.com/embed/'+ids[0]+'?rel=0&playsinline=1&playlist='+ids.slice(1,50).join(',')+'&origin='+encodeURIComponent(location.origin);
+  })();
   document.getElementById('y').textContent=new Date().getFullYear();
 })();
