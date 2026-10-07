@@ -192,9 +192,9 @@ h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size
 body.yt .rel:not([data-yt]) .only,.rel .yt-only{display:block}
 .player.yt iframe{flex:none;width:min(320px,100%);height:auto;aspect-ratio:16/9;border-radius:8px}
 .player.yt .in{justify-content:flex-end}
-.pyt{flex:none;align-self:center;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:9px 12px}
-.pyt:hover,.pyt:focus-visible{color:var(--fg);border-color:var(--fg)}
-body.pyt.playing{padding-bottom:220px}
+a.pyt{flex:none;align-self:center;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:9px 12px}
+a.pyt:hover,a.pyt:focus-visible{color:var(--fg);border-color:var(--fg)}
+body.playing-yt.playing{padding-bottom:220px}
 .rel h3,.rel .meta{transition:color .2s}
 .rel::after{content:"Story & Lyrics ›";align-self:flex-start;margin-top:auto!important;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sodium);border:1px solid rgba(216,162,63,.45);padding:5px 9px;margin-top:2px;transition:background .2s,color .2s}
 .rel:hover::after,.rel:focus-visible::after{background:var(--sodium);color:var(--bg)}
@@ -1033,7 +1033,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
 <script src="i18n.js?v=1"></script>
 <script src="wall.js?v=1"></script>
 <script src="songs.js"></script>
-<script src="app.js?v=8"></script>
+<script src="app.js?v=9"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
 </html>

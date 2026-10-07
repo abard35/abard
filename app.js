@@ -75,7 +75,7 @@
       document.querySelectorAll('.rel.active').forEach(function(x){x.classList.remove('active')});
       a.classList.add('active');
       var useYt=a.dataset.yt&&(forceYt===true||(forceYt!==false&&src==='youtube')||!a.dataset.id);
-      player.classList.toggle('yt',!!useYt);document.body.classList.toggle('pyt',!!useYt);
+      player.classList.toggle('yt',!!useYt);document.body.classList.toggle('playing-yt',!!useYt);
       pnote.hidden=true;document.body.classList.remove('pnote-on');noteShown=false;
       if(useYt){
         if(spCtl){try{spCtl.pause()}catch(err){}}
