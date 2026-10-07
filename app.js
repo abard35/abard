@@ -17,7 +17,7 @@
       play(a);
     });
   });
-  var spAPI=null,spCtl=null,spWant=null,cur2=null,noteShown=false,spLast=0;
+  var spAPI=null,spCtl=null,spWant=null,cur2=null,noteShown=false,spLast=0,isPreview=false;
   // Mini-Plattenspieler unten rechts
   var vin=document.getElementById('vin');
   function vinSpin(on){vin.classList.toggle('spin',!!on)}
@@ -37,6 +37,7 @@
   function onUpd(e){
     var d=e&&e.data;if(d&&typeof d.isPaused==='boolean')vinSpin(!d.isPaused);
     if(d&&d.duration>0&&!player.classList.contains('yt')){
+      isPreview=d.duration<=31000;
       if(d.position>=d.duration-1200||(d.isPaused&&d.position===0&&spLast>=d.duration-3000))songEnded();
       if(!d.isPaused&&d.position>0&&d.position<d.duration-3000)spLast=d.position;
     }
@@ -59,7 +60,7 @@
     return true;
   }
   function play(a,forceYt){
-      cur2=a;endFired=false;spLast=0;nextCancel();played[key(a)]=1;
+      cur2=a;endFired=false;spLast=0;isPreview=false;nextCancel();played[key(a)]=1;
       document.querySelectorAll('.rel.active').forEach(function(x){x.classList.remove('active')});
       a.classList.add('active');
       var useYt=a.dataset.yt&&(forceYt===true||(forceYt!==false&&src==='youtube')||!a.dataset.id);
@@ -88,16 +89,16 @@
   });
 
   // ---- Autoplay: nach Songende 10 s warten, dann ähnliches Genre spielen ----
-  var ap=true,endFired=false,played={},nextT=null,nextA=null,ytPoll=null;
+  var ap=true,nextYt=false,endFired=false,played={},nextT=null,nextA=null,ytPoll=null;
   try{ap=localStorage.getItem('abard-autoplay')!=='0'}catch(e){}
   var apBtn=document.getElementById('ap'),pnext=document.getElementById('pnext');
   function setAp(v){ap=v;apBtn.setAttribute('aria-pressed',String(v));try{localStorage.setItem('abard-autoplay',v?'1':'0')}catch(e){}if(!v)nextCancel()}
   apBtn.addEventListener('click',function(){setAp(!ap)});setAp(ap);
   function words(g){return (g||'').toLowerCase().split(/[\s\-\/]+/).filter(Boolean)}
-  function pickNext(a){
+  function pickNext(a,ytOnly){
     var g=(a.dataset.genre||'').toLowerCase(),gw=words(g),seen={},best=[],bs=-1,all=[];
     document.querySelectorAll('.rel[data-id],.rel[data-yt]').forEach(function(r){
-      var k=key(r);if(seen[k]||k===key(a))return;seen[k]=1;all.push(r);
+      var k=key(r);if(seen[k]||k===key(a)||(ytOnly&&!r.dataset.yt))return;seen[k]=1;all.push(r);
     });
     var pool=all.filter(function(r){return !played[key(r)]});
     if(!pool.length){played={};played[key(a)]=1;pool=all}
@@ -110,24 +111,26 @@
   }
   function songEnded(){
     if(endFired||!ap||!cur2||player.hidden)return;endFired=true;
-    nextA=pickNext(cur2);if(!nextA)return;
+    nextYt=isPreview&&!player.classList.contains('yt');
+    nextA=pickNext(cur2,nextYt);if(!nextA)return;
     var n=10;
     document.getElementById('pnext-t').textContent=nextA.querySelector('h3').textContent;
-    document.getElementById('pnext-g').textContent=nextA.dataset.genre?'· '+nextA.dataset.genre:'';
+    document.getElementById('pnext-g').textContent=(nextA.dataset.genre?'· '+nextA.dataset.genre:'')+(nextYt?' · über YouTube':'');
     document.getElementById('pnext-s').textContent=n;
     pnote.hidden=true;document.body.classList.remove('pnote-on');
     pnext.hidden=false;pnext.classList.remove('run');void pnext.offsetWidth;pnext.classList.add('run');
     document.body.classList.add('pnext-on');
     nextT=setInterval(function(){
       n--;document.getElementById('pnext-s').textContent=Math.max(n,0);
-      if(n<=0){var b=nextA;nextCancel();play(b)}
+      if(n<=0)playNext()
     },1000);
   }
   function nextCancel(){
     if(nextT){clearInterval(nextT);nextT=null}
     pnext.hidden=true;pnext.classList.remove('run');document.body.classList.remove('pnext-on');
   }
-  document.getElementById('pnext-go').addEventListener('click',function(){var b=nextA;nextCancel();if(b)play(b)});
+  function playNext(){var b=nextA;nextCancel();if(!b)return;if(nextYt)setSrc('youtube');play(b)}
+  document.getElementById('pnext-go').addEventListener('click',playNext);
   document.getElementById('pnext-x').addEventListener('click',nextCancel);
   // YouTube meldet Songende über postMessage (enablejsapi=1)
   function ytListen(){
