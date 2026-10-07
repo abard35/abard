@@ -82,7 +82,8 @@ uniq = {}
 for tr in tracks:
     uniq.setdefault(tr["name"].lower(), tr)
 ld = {"@context": "https://schema.org", "@type": "MusicGroup", "@id": BASE + "/#artist",
-      "name": "ABard", "url": BASE + "/", "image": BASE + "/og.jpg",
+      "name": "ABard", "url": BASE + "/",
+      "description": "ABard is a sound, not a backstory. Rooted in 80s hard rock, sharpened by industrial steel and carried by big, cinematic emotion. Every song tells its own story – press play and decide for yourself.", "image": BASE + "/og.jpg",
       "genre": ["Dark Industrial", "Hard Rock", "Cinematic"],
       "sameAs": ["https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN", "https://www.youtube.com/@ABardOfficial"],
       "track": list(uniq.values())}
