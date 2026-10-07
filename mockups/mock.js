@@ -62,7 +62,7 @@ var B={
   },
   belts:function(st){
     var t=document.createElement('div');t.className='tilt';st.appendChild(t);
-    [[46,false],[60,true],[52,false]].forEach(function(cfg,k){
+    [[46,false],[60,true],[52,false],[66,true]].forEach(function(cfg,k){
       var r=document.createElement('div');r.className='row'+(cfg[1]?' rev':'');r.style.setProperty('--d',cfg[0]+'s');
       var L=shuf(S).slice(0,10);if(k===1)L.splice(4,0,{i:LOGO});
       L.concat(L).forEach(function(s){r.appendChild(img(s.i))});t.appendChild(r)});
