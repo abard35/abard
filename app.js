@@ -204,7 +204,7 @@
   (function(){
     var box=document.getElementById('next');if(!box)return;
     var t=Date.parse(box.dataset.at),pad=function(n){return String(n).padStart(2,'0')};
-    var SHOW_DAYS=0; // 0 = Block verschwindet zur Release-Zeit, der Song steht dann bei den Releases
+    var SHOW_DAYS=21; // so lange bleibt der Block nach dem Release als "Jetzt erschienen" stehen
     var sp=box.dataset.sp,yt=box.dataset.yt;
     if(sp)document.getElementById('out-sp').href='https://open.spotify.com/album/'+sp;
     if(yt)document.getElementById('out-yt').href='https://www.youtube.com/watch?v='+yt;
