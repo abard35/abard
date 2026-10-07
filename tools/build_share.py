@@ -30,7 +30,7 @@ seen = {}
 tracks = []
 def fix(m):
     t = m.group(0)
-    key = attr(t, "data-id") or attr(t, "data-yt") or attr(t, "data-ytx")
+    key = attr(t, "data-id") or attr(t, "data-yt") or attr(t, "data-ytx") or attr(t, "data-key")
     title = html.unescape(re.search(r"<h3>(.*?)</h3>", t).group(1))
     slug = slugify(title)
     img = re.search(r'<img src="([^"]+)"', t).group(1)
@@ -59,6 +59,9 @@ def fix(m):
         btns = f'<a class="btn primary" href="{target}">▶ Play on ABard</a>'
         if sp: btns += f'<a class="btn" href="https://open.spotify.com/album/{e(sp)}" target="_blank" rel="noopener">Spotify</a>'
         if yt: btns += f'<a class="btn" href="https://www.youtube.com/watch?v={e(yt)}" target="_blank" rel="noopener">YouTube</a>'
+        # Noch keine IDs (z. B. Release-Tag): sichere Ausweichlinks auf Künstlerseite/Kanal
+        if not sp and not yt: btns += '<a class="btn" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener">Spotify</a>'
+        if not sp and not yt: btns += '<a class="btn" href="https://www.youtube.com/@ABardOfficial/videos" target="_blank" rel="noopener">YouTube</a>'
         ld_song = {"@context": "https://schema.org", "@type": "MusicRecording", "name": title, "url": url, "image": img,
                    "byArtist": {"@type": "MusicGroup", "name": "ABard", "@id": BASE + "/#artist", "url": BASE + "/"},
                    **({"datePublished": date} if date else {}), **({"genre": genre} if genre else {}),
@@ -145,7 +148,7 @@ for tr in tracks:
 ld = {"@context": "https://schema.org", "@type": "MusicGroup", "@id": BASE + "/#artist",
       "name": "ABard", "url": BASE + "/",
       "description": "ABard is a sound, not a backstory. Rooted in 80s hard rock, sharpened by industrial steel and carried by big, cinematic emotion. Every song tells its own story – press play and decide for yourself.", "image": BASE + "/og.jpg",
-      "genre": ["Dark Industrial", "Hard Rock", "Cinematic"],
+      "genre": ["Hard Rock", "Metal", "Power Ballads"],
       "sameAs": ["https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN", "https://www.youtube.com/@ABardOfficial"],
       "track": list(uniq.values())}
 block = ('<!--LD-->\n<script type="application/ld+json">\n'

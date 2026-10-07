@@ -1,4 +1,5 @@
 (function(){
+  var I=window.ABARD_I18N||{T:function(k){return k},lang:function(){return 'en'}},T=I.T;
   var player=document.getElementById('player'),frame=document.getElementById('pframe');
   var src='spotify';
   try{src=localStorage.getItem('abard-src')||'spotify'}catch(e){}
@@ -9,7 +10,7 @@
   }
   document.querySelectorAll('.src button').forEach(function(b){b.addEventListener('click',function(){setSrc(b.dataset.src)})});
   setSrc(src);
-  document.querySelectorAll('.rel[data-id],.rel[data-yt]').forEach(function(a){
+  document.querySelectorAll('.rel[data-id],.rel[data-yt],.rel[data-key]').forEach(function(a){
     a.addEventListener('click',function(e){
       if(e.metaKey||e.ctrlKey||e.shiftKey)return;
       e.preventDefault();
@@ -29,7 +30,7 @@
   }
   function vinShow(a,assumePlaying,label){
     if(vinSwapT){clearTimeout(vinSwapT);vinSwapT=null;vin.classList.remove('swap')}
-    document.getElementById('vin-p').textContent=label||'Now playing';
+    document.getElementById('vin-p').textContent=label||T('vin.now');
     var im=a.querySelector('.cover img'),u=(im.getAttribute('srcset')||'').split(',').pop().trim().split(' ')[0]||im.getAttribute('src');
     document.getElementById('vin-img').src=u;document.getElementById('vin-lbl').src=u;
     document.getElementById('vin-t').textContent=a.querySelector('h3').textContent;
@@ -68,6 +69,8 @@
     return true;
   }
   function play(a,forceYt){
+      // Noch keine Spotify-/YouTube-ID hinterlegt (z. B. am Release-Tag): Link direkt öffnen statt Player
+      if(!a.dataset.id&&!a.dataset.yt){window.open(a.href,'_blank','noopener');return}
       cur2=a;endFired=false;spLast=0;isPreview=false;nextCancel();played[key(a)]=1;
       document.querySelectorAll('.rel.active').forEach(function(x){x.classList.remove('active')});
       a.classList.add('active');
@@ -123,12 +126,12 @@
     nextA=pickNext(cur2,nextYt);if(!nextA)return;
     var n=5;
     document.getElementById('pnext-t').textContent=nextA.querySelector('h3').textContent;
-    document.getElementById('pnext-g').textContent=(nextA.dataset.genre?'· '+nextA.dataset.genre:'')+(nextYt?' · über YouTube':'');
+    document.getElementById('pnext-g').textContent=(nextA.dataset.genre?'· '+nextA.dataset.genre:'')+(nextYt?' · '+T('nx.viayt'):'');
     document.getElementById('pnext-s').textContent=n;
     pnote.hidden=true;document.body.classList.remove('pnote-on');
     pnext.hidden=false;pnext.classList.remove('run');void pnext.offsetWidth;pnext.classList.add('run');
     document.body.classList.add('pnext-on');
-    vinSwap(nextA,'Up next');
+    vinSwap(nextA,T('vin.next'));
     nextT=setInterval(function(){
       n--;document.getElementById('pnext-s').textContent=Math.max(n,0);
       if(n<=0)playNext()
@@ -140,7 +143,7 @@
   }
   function playNext(){var b=nextA;nextCancel();if(!b)return;if(nextYt)setSrc('youtube');play(b)}
   document.getElementById('pnext-go').addEventListener('click',playNext);
-  document.getElementById('pnext-x').addEventListener('click',function(){var was=!!nextT;nextCancel();if(was&&cur2)vinSwap(cur2,'Zuletzt')});
+  document.getElementById('pnext-x').addEventListener('click',function(){var was=!!nextT;nextCancel();if(was&&cur2)vinSwap(cur2,T('vin.last'))});
   // YouTube meldet Songende über postMessage (enablejsapi=1)
   function ytListen(){
     if(ytPoll)clearInterval(ytPoll);var tries=0;
@@ -160,21 +163,23 @@
   });
 
   var dlg=document.getElementById('detail'),cur=null;
-  var M=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-  function key(a){return a.dataset.id||a.dataset.yt}
+  function key(a){return a.dataset.id||a.dataset.yt||a.dataset.key}
+  function longDate(d){var M=T('monthsLong'),day=+d.slice(8,10),mo=M[+d.slice(5,7)-1],y=d.slice(0,4);return I.lang()==='de'?day+'. '+mo+' '+y:mo+' '+day+', '+y}
+  function num(n){return I.lang()==='de'?Number(n).toLocaleString('de-CH').replace(/'/g,'’'):Number(n).toLocaleString('en-US')}
   function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML}
   function openDetail(a,noHash){
     cur=a;var k=key(a),info=(window.SONGINFO||{})[k]||{},d=a.dataset.date||'';
     document.getElementById('d-img').src=a.querySelector('img').currentSrc||a.querySelector('img').src;
     document.getElementById('d-title').textContent=a.querySelector('h3').textContent;
-    var meta=[];if(a.dataset.genre)meta.push(a.dataset.genre);if(d)meta.push(+d.slice(8,10)+'. '+M[+d.slice(5,7)-1]+' '+d.slice(0,4));
-    var pl=[];if(a.dataset.sp)pl.push(Number(a.dataset.sp).toLocaleString('de-CH').replace(/'/g,'’')+' Spotify');if(a.dataset.ytv)pl.push(Number(a.dataset.ytv).toLocaleString('de-CH').replace(/'/g,'’')+' YouTube');
+    var meta=[];if(a.dataset.genre)meta.push(a.dataset.genre);if(d)meta.push(longDate(d));
+    var pl=[];if(a.dataset.sp)pl.push(num(a.dataset.sp)+' Spotify');if(a.dataset.ytv)pl.push(num(a.dataset.ytv)+' YouTube');
     if(a.querySelector('.streams'))meta.push(pl.join(' · '));
     document.getElementById('d-meta').textContent=meta.join(' · ');
     document.getElementById('d-sp').hidden=!a.dataset.id;document.getElementById('d-yt').hidden=!a.dataset.yt;
     var l=document.getElementById('d-links');l.innerHTML='';
-    if(a.dataset.id)l.innerHTML+='<a href="https://open.spotify.com/album/'+a.dataset.id+'" target="_blank" rel="noopener">In Spotify öffnen ↗</a>';
-    if(a.dataset.yt||a.dataset.ytx)l.innerHTML+='<a href="https://www.youtube.com/watch?v='+(a.dataset.yt||a.dataset.ytx)+'" target="_blank" rel="noopener">In YouTube öffnen ↗</a>';
+    if(a.dataset.id)l.innerHTML+='<a href="https://open.spotify.com/album/'+a.dataset.id+'" target="_blank" rel="noopener">'+esc(T('open.sp'))+'</a>';
+    if(a.dataset.yt||a.dataset.ytx)l.innerHTML+='<a href="https://www.youtube.com/watch?v='+(a.dataset.yt||a.dataset.ytx)+'" target="_blank" rel="noopener">'+esc(T('open.yt'))+'</a>';
+    if(!a.dataset.id&&!a.dataset.yt&&!a.dataset.ytx)l.innerHTML+='<a href="'+esc(a.href)+'" target="_blank" rel="noopener">'+esc(T('open.sp'))+'</a>';
     var story=document.getElementById('d-story'),ly=document.getElementById('d-lyrics');
     story.hidden=!info.story;story.querySelector('p').innerHTML=info.story?esc(info.story).replace(/\n/g,'<br>'):'';
     ly.hidden=!info.lyrics;ly.querySelector('div').innerHTML=info.lyrics?esc(info.lyrics).replace(/\n/g,'<br>'):'';
@@ -190,14 +195,38 @@
   document.getElementById('d-share').addEventListener('click',function(){
     var url=cur.dataset.slug?location.origin+'/s/'+cur.dataset.slug+'/':location.origin+location.pathname+'#song-'+key(cur),t=cur.querySelector('h3').textContent+' – ABard';
     if(navigator.share){navigator.share({title:t,url:url}).catch(function(){})}
-    else if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){var b=document.getElementById('d-share');b.textContent='Link kopiert ✓';setTimeout(function(){b.textContent='Teilen'},2000)})}
+    else if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){var b=document.getElementById('d-share');b.textContent=T('copied');setTimeout(function(){b.textContent=T('share')},2000)})}
   });
-  if(location.hash.indexOf('#song-')===0){var k0=location.hash.slice(6),a0=document.querySelector('.rel[data-id="'+k0+'"],.rel[data-yt="'+k0+'"]');if(a0)openDetail(a0,true)}
+  if(location.hash.indexOf('#song-')===0){var k0=location.hash.slice(6),a0=document.querySelector('.rel[data-id="'+k0+'"],.rel[data-yt="'+k0+'"],.rel[data-key="'+k0+'"]:not([hidden])');if(a0)openDetail(a0,true)}
+  // ---- Nächster Release: Countdown, danach automatisch Buttons + Kachel ----
+  // Alle Angaben stehen im HTML an <section id="next" data-at data-sp data-yt>. Fehlt eine ID,
+  // führen die Buttons trotzdem sicher zum Ziel (Spotify-Künstlerseite / YouTube-Kanal, neuester Release oben).
   (function(){
-    var t=Date.parse('2026-10-08T13:00:00+02:00'),pad=function(n){return String(n).padStart(2,'0')};
+    var box=document.getElementById('next');if(!box)return;
+    var t=Date.parse(box.dataset.at),pad=function(n){return String(n).padStart(2,'0')};
+    var SHOW_DAYS=21; // so lange bleibt der Block nach dem Release als "Jetzt erschienen" stehen
+    var sp=box.dataset.sp,yt=box.dataset.yt;
+    if(sp)document.getElementById('out-sp').href='https://open.spotify.com/album/'+sp;
+    if(yt)document.getElementById('out-yt').href='https://www.youtube.com/watch?v='+yt;
+    document.querySelectorAll('.rel[data-at]').forEach(function(a){
+      if(sp&&!a.dataset.id){a.dataset.id=sp;a.href='https://open.spotify.com/album/'+sp}
+      if(yt&&!a.dataset.yt){a.dataset.yt=yt;if(!sp)a.href='https://www.youtube.com/watch?v='+yt}
+    });
+    function dateText(){
+      var d=new Date(t),l=I.lang()==='de'?'de-CH':'en-GB',o={day:'numeric',month:'long',year:'numeric'};
+      var tm=d.toLocaleTimeString(l,{hour:'2-digit',minute:'2-digit',timeZoneName:'short'});
+      return d.toLocaleDateString(I.lang()==='de'?'de-CH':'en-US',o)+' · '+tm;
+    }
+    function released(){
+      var eye=document.getElementById('next-eye');eye.setAttribute('data-i18n','next.out');eye.textContent=T('next.out');
+      document.getElementById('cd').hidden=true;document.getElementById('cd-out').hidden=false;
+      document.querySelectorAll('.rel[data-at]').forEach(function(a){if(Date.now()>=Date.parse(a.dataset.at))a.hidden=false});
+      if(Date.now()-t>SHOW_DAYS*86400000)box.hidden=true;
+    }
     function tick(){
+      document.getElementById('next-date').textContent=dateText();
       var s=Math.floor((t-Date.now())/1000);
-      if(s<=0){document.getElementById('cd').hidden=true;document.getElementById('cd-out').hidden=false;return}
+      if(isNaN(s)||s<=0){released();return}
       document.getElementById('cd-d').textContent=Math.floor(s/86400);
       document.getElementById('cd-h').textContent=pad(Math.floor(s%86400/3600));
       document.getElementById('cd-m').textContent=pad(Math.floor(s%3600/60));
@@ -205,7 +234,10 @@
       setTimeout(tick,1000);
     }
     tick();
+    document.addEventListener('abard:lang',function(){document.getElementById('next-date').textContent=dateText()});
   })();
+  // Sprache gewechselt: offenen Songdialog neu beschriften
+  document.addEventListener('abard:lang',function(){if(dlg.open&&cur)openDetail(cur,true);var v=document.getElementById('vin-p');if(v&&vin.classList.contains('show')&&!nextT)v.textContent=T('vin.now')});
   // Video-Liste: eigene Playlist aus allen YouTube-Songs (neueste zuerst) statt der Kanal-Uploads
   (function(){
     var f=document.getElementById('ytlist');if(!f)return;
