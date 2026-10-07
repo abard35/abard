@@ -121,7 +121,7 @@
     if(endFired||!ap||!cur2||player.hidden)return;endFired=true;
     nextYt=isPreview&&!player.classList.contains('yt');
     nextA=pickNext(cur2,nextYt);if(!nextA)return;
-    var n=10;
+    var n=5;
     document.getElementById('pnext-t').textContent=nextA.querySelector('h3').textContent;
     document.getElementById('pnext-g').textContent=(nextA.dataset.genre?'· '+nextA.dataset.genre:'')+(nextYt?' · über YouTube':'');
     document.getElementById('pnext-s').textContent=n;
