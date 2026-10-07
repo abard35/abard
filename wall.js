@@ -8,10 +8,10 @@
   if(srcs.length<3){wall.hidden=true; return;}
   for(var k=srcs.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1)); var t=srcs[k]; srcs[k]=srcs[j]; srcs[j]=t;}
   var cols=[[],[],[]]; srcs.forEach(function(s,n){cols[n%3].push(s);});
-  // Logo ab und zu: je einmal in der linken und rechten Spalte, versetzt
-  var LOGO='apple-touch-icon.png';
-  cols[0].splice(Math.floor(cols[0].length/3),0,LOGO);
-  cols[2].splice(Math.floor(cols[2].length*2/3),0,LOGO);
+  // Logo ab und zu: nur EINMAL in der ganzen Wand (zufällige Spalte und Stelle),
+  // damit nie zwei Logos gleichzeitig zu sehen sind
+  var LOGO='apple-touch-icon.png',lc=Math.floor(Math.random()*3);
+  cols[lc].splice(Math.floor(Math.random()*(cols[lc].length+1)),0,LOGO);
   var durs=[46,58,40];
   cols.forEach(function(list,c){
     var col=document.createElement('div'); col.className='col'+(c===1?' down':'');
