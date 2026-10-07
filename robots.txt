@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /tools/
-Disallow: /mockups/
 
 Sitemap: https://abard.die-bardewycks.ch/sitemap.xml
