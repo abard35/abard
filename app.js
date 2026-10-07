@@ -246,5 +246,39 @@
     if(!ids.length)return;
     f.src='https://www.youtube.com/embed/'+ids[0]+'?rel=0&playsinline=1&playlist='+ids.slice(1,50).join(',')+'&origin='+encodeURIComponent(location.origin);
   })();
+  // ---- Disclaimer als Overlay: Seite bleibt, Musik spielt weiter ----
+  (function(){
+    var link=document.getElementById('legal-link'),box=document.getElementById('legal'),body=document.getElementById('legal-body'),parts=null;
+    if(!link||!box||!box.showModal)return;
+    function render(){
+      if(!parts)return;
+      body.innerHTML='';body.appendChild((I.lang()==='de'?parts.de:parts.en).cloneNode(true));
+      body.querySelectorAll('.mail').forEach(function(b){b.addEventListener('click',function(){
+        var a=atob(b.getAttribute('data-m')).split('').reverse().join('');
+        location.href='mai'+'lto:'+a+'?subject='+encodeURIComponent('ABard Website');
+      })});
+      body.querySelectorAll('a[href^="http"]').forEach(function(a){a.target='_blank';a.rel='noopener'});
+    }
+    link.addEventListener('click',function(e){
+      if(e.metaKey||e.ctrlKey||e.shiftKey)return;
+      e.preventDefault();
+      if(parts){render();box.showModal();box.scrollTop=0;return}
+      fetch(link.getAttribute('href')).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){
+        var doc=new DOMParser().parseFromString(t,'text/html'),main=doc.querySelector('main');
+        main.querySelectorAll('.back,footer,script').forEach(function(n){n.remove()});
+        var de=document.createElement('div'),en=document.createElement('div'),cur=de;
+        Array.prototype.slice.call(main.childNodes).forEach(function(n){
+          if(n.nodeName==='HR'){cur=en;return}
+          cur.appendChild(document.importNode(n,true));
+        });
+        // Englischer Teil steckt in einem <div lang="en"> – Überschriften davor bleiben erhalten
+        parts={de:de,en:en.childNodes.length?en:de};
+        render();box.showModal();box.scrollTop=0;
+      }).catch(function(){location.href=link.getAttribute('href')});
+    });
+    document.getElementById('legal-close').addEventListener('click',function(){box.close()});
+    box.addEventListener('click',function(e){if(e.target===box)box.close()});
+    document.addEventListener('abard:lang',function(){if(box.open)render()});
+  })();
   document.getElementById('y').textContent=new Date().getFullYear();
 })();
