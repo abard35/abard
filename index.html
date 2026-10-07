@@ -149,8 +149,8 @@ main,header,footer{position:relative;z-index:1}
 .cine .ti{position:absolute;left:6%;right:6%;bottom:6%;z-index:3}
 .cine .ti small{display:block;font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--sodium);margin-bottom:6px}
 .cine .ti b{display:block;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(1.8rem,4vw,2.6rem);line-height:.95}
-.cine .bar{position:absolute;left:0;bottom:0;height:3px;background:var(--sodium);z-index:3;width:0}
-.cine .bar.run{animation:hbar 6s linear forwards}
+.cine .cbar{position:absolute;left:0;bottom:0;height:3px;background:var(--sodium);z-index:3;width:0}
+.cine .cbar.run{animation:hbar 6s linear forwards}
 @keyframes hbar{to{width:100%}}
 /* Spotlight */
 .spot{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;align-content:center}
@@ -160,7 +160,7 @@ main,header,footer{position:relative;z-index:1}
 .spot .lbl b{color:var(--fg);font-weight:500}
 .stage .logo{background:#fff!important;object-fit:contain!important;padding:6%;filter:none}
 .spot img.logo:not(.lit){filter:grayscale(1) brightness(.35)}
-@media (prefers-reduced-motion:reduce){.flip .t,.cine .sl,.spot img{transition:none}.cine .sl.on img,.cine .bar.run{animation:none}}
+@media (prefers-reduced-motion:reduce){.flip .t,.cine .sl,.spot img{transition:none}.cine .sl.on img,.cine .cbar.run{animation:none}}
 .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--sodium);margin:0 0 12px}
 h1{
   font-family:var(--display);font-weight:900;text-transform:uppercase;
@@ -1062,7 +1062,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
   </div>
 </div>
 <script src="i18n.js?v=1"></script>
-<script src="hero.js?v=1"></script>
+<script src="hero.js?v=2"></script>
 <script src="songs.js"></script>
 <script src="app.js?v=9"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>

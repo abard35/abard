@@ -54,7 +54,7 @@
       st.classList.add('cine');
       var L=shuf(S),cur=0,sl=[],O=['30% 30%','70% 30%','50% 70%','30% 70%','70% 60%'];
       var ti=document.createElement('div');ti.className='ti';ti.innerHTML='<small></small><b></b>';
-      var bar=document.createElement('i');bar.className='bar';
+      var bar=document.createElement('i');bar.className='cbar';
       function slide(k){
         if(sl[k])return sl[k];
         var d=document.createElement('div');d.className='sl';d.appendChild(img(L[k].big));st.insertBefore(d,ti);sl[k]=d;return d;
