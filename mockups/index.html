@@ -89,9 +89,9 @@ img{display:block}
 /* F: Schräge Laufbänder */
 .belts{display:flex;flex-direction:column;justify-content:center;gap:10px}
 .belts .tilt{transform:rotate(-9deg) scale(1.25);display:flex;flex-direction:column;gap:10px}
-.belts .row{display:flex;gap:10px;width:max-content;animation:run var(--d,50s) linear infinite}
+.belts .row{display:flex;align-items:flex-start;gap:10px;width:max-content;flex:none;animation:run var(--d,50s) linear infinite}
 .belts .row.rev{animation-direction:reverse}
-.belts .row img{width:clamp(90px,11vw,130px);aspect-ratio:1;object-fit:cover;box-shadow:0 0 0 1px var(--line);filter:grayscale(.2)}
+.belts .row img{flex:none;width:clamp(90px,11vw,130px);height:auto;aspect-ratio:1;object-fit:cover;box-shadow:0 0 0 1px var(--line);filter:grayscale(.2)}
 @keyframes run{to{transform:translateX(-50%)}}
 .belts{-webkit-mask-image:radial-gradient(ellipse at center,#000 55%,transparent 80%);mask-image:radial-gradient(ellipse at center,#000 55%,transparent 80%)}
 
