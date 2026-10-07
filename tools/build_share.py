@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Erzeugt für jeden Song eine Teilen-Seite unter /s/<titel>/ mit Cover, Titel und Interpret
-(für Vorschauen auf Facebook, WhatsApp usw.) und setzt data-slug in index.html.
+(für Vorschauen auf Facebook, WhatsApp usw.), setzt data-slug in index.html,
+aktualisiert die strukturierten Daten (JSON-LD) im <head> und schreibt sitemap.xml.
 Aufruf im Repo-Ordner:  python3 tools/build_share.py"""
 import re, json, os, html, unicodedata
 BASE = "https://abard.die-bardewycks.ch"
@@ -26,6 +27,7 @@ def short(text, n=170):
     return cut.rstrip(",;:–-") + " …"
 
 seen = {}
+tracks = []
 def fix(m):
     t = m.group(0)
     key = attr(t, "data-id") or attr(t, "data-yt") or attr(t, "data-ytx")
@@ -47,6 +49,7 @@ def fix(m):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(title)} – ABard</title>
 <meta name="description" content="{e(desc)}">
+<meta name="robots" content="noindex, follow">
 <link rel="canonical" href="{url}">
 <meta property="og:type" content="music.song">
 <meta property="og:site_name" content="ABard">
@@ -65,9 +68,35 @@ def fix(m):
 """
         os.makedirs(f"s/{slug}", exist_ok=True)
         open(f"s/{slug}/index.html", "w", encoding="utf-8").write(page)
+    tracks.append({"@type": "MusicRecording", "name": title, "byArtist": {"@id": BASE + "/#artist"},
+                   "url": attr(t, "href"), "image": img,
+                   **({"datePublished": attr(t, "data-date")} if attr(t, "data-date") else {}),
+                   **({"genre": attr(t, "data-genre")} if attr(t, "data-genre") else {})})
     t = re.sub(r'\sdata-slug="[^"]*"', "", t)
     return t.replace("<a ", '<a data-slug="' + slug + '" ', 1)
 
 s2 = re.sub(r'<a [^>]*class="rel[^"]*"[^>]*>.*?</a>', fix, s, flags=re.S)
+
+# Strukturierte Daten für Suchmaschinen (Künstler + Songs) zwischen den Markern im <head>
+uniq = {}
+for tr in tracks:
+    uniq.setdefault(tr["name"].lower(), tr)
+ld = {"@context": "https://schema.org", "@type": "MusicGroup", "@id": BASE + "/#artist",
+      "name": "ABard", "url": BASE + "/", "image": BASE + "/og.jpg",
+      "genre": ["Dark Industrial", "Hard Rock", "Cinematic"],
+      "sameAs": ["https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN", "https://www.youtube.com/@ABardOfficial"],
+      "track": list(uniq.values())}
+block = ('<!--LD-->\n<script type="application/ld+json">\n'
+         + json.dumps(ld, ensure_ascii=False, indent=1).replace("</", "<\\/") + '\n</script>\n<!--/LD-->')
+if "<!--LD-->" in s2:
+    s2 = re.sub(r"<!--LD-->.*?<!--/LD-->", lambda m: block, s2, flags=re.S)
+else:
+    s2 = s2.replace("</head>", block + "\n</head>", 1)
 open("index.html", "w", encoding="utf-8").write(s2)
+
+# Sitemap: nur die Startseite (Teilen-Seiten leiten weiter, Disclaimer ist noindex)
+import datetime
+open("sitemap.xml", "w", encoding="utf-8").write(
+    '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    f'  <url><loc>{BASE}/</loc><lastmod>{datetime.date.today().isoformat()}</lastmod></url>\n</urlset>\n')
 print(len(seen), "Teilen-Seiten erzeugt")
