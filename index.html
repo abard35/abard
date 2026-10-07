@@ -201,6 +201,15 @@ dialog.detail::backdrop{background:rgba(5,6,8,.8);backdrop-filter:blur(4px)}
 .pnote a{color:var(--muted)}
 .pnote a:hover,.pnote a:focus-visible{color:var(--fg)}
 body.pnote-on.playing{padding-bottom:190px}
+.src .ap{margin-left:10px}
+.player .pnote button.ghost{background:transparent;border-color:var(--line);color:var(--muted)}
+.player .pnote button.ghost:hover,.player .pnote button.ghost:focus-visible{color:var(--fg);border-color:var(--fg);background:transparent}
+.pnext{position:relative;padding-bottom:6px}
+.pnext em{font-style:normal;color:var(--sodium);text-transform:uppercase;letter-spacing:.08em}
+.pnext-bar{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--sodium);transform-origin:left;transform:scaleX(0)}
+.pnext.run .pnext-bar{animation:pnext 10s linear forwards}
+@keyframes pnext{to{transform:scaleX(1)}}
+body.pnext-on.playing{padding-bottom:190px}
 .player{position:fixed;left:0;right:0;bottom:0;z-index:10;background:rgba(13,14,16,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:10px clamp(16px,4vw,40px) calc(10px + env(safe-area-inset-bottom,0px))}
 .player .in{max-width:1120px;margin:0 auto;display:flex;gap:12px;align-items:center}
 .player iframe{flex:1;min-width:0;height:80px;border:0;border-radius:12px;display:block}
@@ -333,6 +342,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
           <span class="count">Hören auf</span>
           <button type="button" data-src="spotify" aria-pressed="true">Spotify</button>
           <button type="button" data-src="youtube" aria-pressed="false">YouTube</button>
+          <button type="button" class="ap" id="ap" aria-pressed="true" title="Nach dem Song automatisch einen ähnlichen spielen">Autoplay</button>
         </div>
       </div>
       <p class="src-note">Neueste zuerst · Cover antippen zum Abspielen · Story & Lyrics antippen für Songtext · YouTube geht ohne Konto</p>
@@ -516,6 +526,12 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
     <button type="button" id="pnote-yt">Ganz auf YouTube hören</button>
     <a href="https://open.spotify.com/" target="_blank" rel="noopener">Bei Spotify anmelden ↗</a>
   </div>
+  <div class="pnote pnext" id="pnext" hidden>
+    <span>Als Nächstes in <b id="pnext-s">10</b> s: <b id="pnext-t"></b> <em id="pnext-g"></em></span>
+    <button type="button" id="pnext-go">Jetzt spielen</button>
+    <button type="button" id="pnext-x" class="ghost">Abbrechen</button>
+    <i class="pnext-bar" aria-hidden="true"></i>
+  </div>
   <div class="in">
     <div class="spwrap" id="spwrap" hidden><div id="spembed"></div></div>
     <iframe id="pframe" title="Spotify-Player" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
@@ -525,7 +541,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
 </div>
 <script src="wall.js?v=1"></script>
 <script src="songs.js"></script>
-<script src="app.js?v=2"></script>
+<script src="app.js?v=3"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
 </html>

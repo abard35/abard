@@ -17,7 +17,7 @@
       play(a);
     });
   });
-  var spAPI=null,spCtl=null,spWant=null,cur2=null,noteShown=false;
+  var spAPI=null,spCtl=null,spWant=null,cur2=null,noteShown=false,spLast=0;
   // Mini-Plattenspieler unten rechts
   var vin=document.getElementById('vin');
   function vinSpin(on){vin.classList.toggle('spin',!!on)}
@@ -35,7 +35,12 @@
   var spwrap=document.getElementById('spwrap'),pnote=document.getElementById('pnote');
   window.onSpotifyIframeApiReady=function(API){spAPI=API};
   function onUpd(e){
-    var d=e&&e.data;if(d&&typeof d.isPaused==='boolean')vinSpin(!d.isPaused);if(!d||noteShown)return;
+    var d=e&&e.data;if(d&&typeof d.isPaused==='boolean')vinSpin(!d.isPaused);
+    if(d&&d.duration>0&&!player.classList.contains('yt')){
+      if(d.position>=d.duration-1200||(d.isPaused&&d.position===0&&spLast>=d.duration-3000))songEnded();
+      if(!d.isPaused&&d.position>0&&d.position<d.duration-3000)spLast=d.position;
+    }
+    if(!d||noteShown)return;
     if(d.duration>0&&d.duration<=31000){
       noteShown=true;
       document.getElementById('pnote-yt').hidden=!(cur2&&cur2.dataset.yt);
@@ -54,7 +59,7 @@
     return true;
   }
   function play(a,forceYt){
-      cur2=a;
+      cur2=a;endFired=false;spLast=0;nextCancel();played[key(a)]=1;
       document.querySelectorAll('.rel.active').forEach(function(x){x.classList.remove('active')});
       a.classList.add('active');
       var useYt=a.dataset.yt&&(forceYt===true||(forceYt!==false&&src==='youtube')||!a.dataset.id);
@@ -63,7 +68,8 @@
       if(useYt){
         if(spCtl){try{spCtl.pause()}catch(err){}}
         spwrap.hidden=true;frame.hidden=false;frame.title='YouTube-Player';
-        frame.src='https://www.youtube.com/embed/'+a.dataset.yt+'?autoplay=1&rel=0&playsinline=1&origin='+encodeURIComponent(location.origin);
+        frame.src='https://www.youtube.com/embed/'+a.dataset.yt+'?autoplay=1&rel=0&playsinline=1&enablejsapi=1&origin='+encodeURIComponent(location.origin);
+        ytListen();
       }else if(spPlay('spotify:album:'+a.dataset.id)){
         frame.src='about:blank';frame.hidden=true;spwrap.hidden=false;
       }else{
@@ -77,8 +83,68 @@
   document.getElementById('pnote-yt').addEventListener('click',function(){setSrc('youtube');if(cur2)play(cur2,true)});
   document.getElementById('pclose').addEventListener('click',function(){
     frame.src='about:blank';if(spCtl){try{spCtl.pause()}catch(err){}}
-    player.hidden=true;pnote.hidden=true;document.body.classList.remove('playing','pnote-on');vinHide();
+    nextCancel();player.hidden=true;pnote.hidden=true;document.body.classList.remove('playing','pnote-on');vinHide();
     document.querySelectorAll('.rel.active').forEach(function(x){x.classList.remove('active')});
+  });
+
+  // ---- Autoplay: nach Songende 10 s warten, dann ähnliches Genre spielen ----
+  var ap=true,endFired=false,played={},nextT=null,nextA=null,ytPoll=null;
+  try{ap=localStorage.getItem('abard-autoplay')!=='0'}catch(e){}
+  var apBtn=document.getElementById('ap'),pnext=document.getElementById('pnext');
+  function setAp(v){ap=v;apBtn.setAttribute('aria-pressed',String(v));try{localStorage.setItem('abard-autoplay',v?'1':'0')}catch(e){}if(!v)nextCancel()}
+  apBtn.addEventListener('click',function(){setAp(!ap)});setAp(ap);
+  function words(g){return (g||'').toLowerCase().split(/[\s\-\/]+/).filter(Boolean)}
+  function pickNext(a){
+    var g=(a.dataset.genre||'').toLowerCase(),gw=words(g),seen={},best=[],bs=-1,all=[];
+    document.querySelectorAll('.rel[data-id],.rel[data-yt]').forEach(function(r){
+      var k=key(r);if(seen[k]||k===key(a))return;seen[k]=1;all.push(r);
+    });
+    var pool=all.filter(function(r){return !played[key(r)]});
+    if(!pool.length){played={};played[key(a)]=1;pool=all}
+    pool.forEach(function(r){
+      var rg=(r.dataset.genre||'').toLowerCase(),sc=0;
+      if(rg&&rg===g)sc=100;else words(rg).forEach(function(w){if(gw.indexOf(w)>=0)sc+=(w==='ballad'||w==='metal'||w==='rock'?3:1)});
+      if(sc>bs){bs=sc;best=[r]}else if(sc===bs)best.push(r);
+    });
+    return best.length?best[Math.floor(Math.random()*best.length)]:null;
+  }
+  function songEnded(){
+    if(endFired||!ap||!cur2||player.hidden)return;endFired=true;
+    nextA=pickNext(cur2);if(!nextA)return;
+    var n=10;
+    document.getElementById('pnext-t').textContent=nextA.querySelector('h3').textContent;
+    document.getElementById('pnext-g').textContent=nextA.dataset.genre?'· '+nextA.dataset.genre:'';
+    document.getElementById('pnext-s').textContent=n;
+    pnote.hidden=true;document.body.classList.remove('pnote-on');
+    pnext.hidden=false;pnext.classList.remove('run');void pnext.offsetWidth;pnext.classList.add('run');
+    document.body.classList.add('pnext-on');
+    nextT=setInterval(function(){
+      n--;document.getElementById('pnext-s').textContent=Math.max(n,0);
+      if(n<=0){var b=nextA;nextCancel();play(b)}
+    },1000);
+  }
+  function nextCancel(){
+    if(nextT){clearInterval(nextT);nextT=null}
+    pnext.hidden=true;pnext.classList.remove('run');document.body.classList.remove('pnext-on');
+  }
+  document.getElementById('pnext-go').addEventListener('click',function(){var b=nextA;nextCancel();if(b)play(b)});
+  document.getElementById('pnext-x').addEventListener('click',nextCancel);
+  // YouTube meldet Songende über postMessage (enablejsapi=1)
+  function ytListen(){
+    if(ytPoll)clearInterval(ytPoll);var tries=0;
+    ytPoll=setInterval(function(){
+      if(++tries>20||frame.hidden){clearInterval(ytPoll);ytPoll=null;return}
+      try{frame.contentWindow.postMessage(JSON.stringify({event:'listening',id:1,channel:'widget'}),'*')}catch(e){}
+    },500);
+  }
+  window.addEventListener('message',function(e){
+    if(e.source!==frame.contentWindow||!/^https:\/\/www\.youtube(-nocookie)?\.com$/.test(e.origin))return;
+    var d;try{d=typeof e.data==='string'?JSON.parse(e.data):e.data}catch(err){return}
+    if(!d)return;
+    if(ytPoll&&d.event){clearInterval(ytPoll);ytPoll=null}
+    var st=d.event==='onStateChange'?d.info:(d.info&&typeof d.info.playerState==='number'?d.info.playerState:null);
+    if(st===0)songEnded();
+    if(st===1)vinSpin(true);else if(st===2)vinSpin(false);
   });
 
   var dlg=document.getElementById('detail'),cur=null;
