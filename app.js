@@ -21,7 +21,15 @@
   // Mini-Plattenspieler unten rechts
   var vin=document.getElementById('vin');
   function vinSpin(on){vin.classList.toggle('spin',!!on)}
-  function vinShow(a,assumePlaying){
+  var vinSwapT=null;
+  function vinSwap(a,label){
+    if(vinSwapT)clearTimeout(vinSwapT);
+    vinSpin(false);vin.classList.add('swap');
+    vinSwapT=setTimeout(function(){vinSwapT=null;vinShow(a,false,label);vin.classList.remove('swap')},650);
+  }
+  function vinShow(a,assumePlaying,label){
+    if(vinSwapT){clearTimeout(vinSwapT);vinSwapT=null;vin.classList.remove('swap')}
+    document.getElementById('vin-p').textContent=label||'Now playing';
     var im=a.querySelector('.cover img'),u=(im.getAttribute('srcset')||'').split(',').pop().trim().split(' ')[0]||im.getAttribute('src');
     document.getElementById('vin-img').src=u;document.getElementById('vin-lbl').src=u;
     document.getElementById('vin-t').textContent=a.querySelector('h3').textContent;
@@ -31,7 +39,7 @@
   function vinHide(){vin.classList.remove('show','spin');vin.tabIndex=-1}
   function vinPos(){var p=document.getElementById('player');if(!p.hidden)document.documentElement.style.setProperty('--pbar',p.offsetHeight+'px')}
   if(window.ResizeObserver)new ResizeObserver(vinPos).observe(document.getElementById('player'));
-  vin.addEventListener('click',function(){if(cur2)openDetail(cur2)});
+  vin.addEventListener('click',function(){var t=nextT&&nextA?nextA:cur2;if(t)openDetail(t)});
   var spwrap=document.getElementById('spwrap'),pnote=document.getElementById('pnote');
   window.onSpotifyIframeApiReady=function(API){spAPI=API};
   function onUpd(e){
@@ -120,6 +128,7 @@
     pnote.hidden=true;document.body.classList.remove('pnote-on');
     pnext.hidden=false;pnext.classList.remove('run');void pnext.offsetWidth;pnext.classList.add('run');
     document.body.classList.add('pnext-on');
+    vinSwap(nextA,'Up next');
     nextT=setInterval(function(){
       n--;document.getElementById('pnext-s').textContent=Math.max(n,0);
       if(n<=0)playNext()
@@ -131,7 +140,7 @@
   }
   function playNext(){var b=nextA;nextCancel();if(!b)return;if(nextYt)setSrc('youtube');play(b)}
   document.getElementById('pnext-go').addEventListener('click',playNext);
-  document.getElementById('pnext-x').addEventListener('click',nextCancel);
+  document.getElementById('pnext-x').addEventListener('click',function(){var was=!!nextT;nextCancel();if(was&&cur2)vinSwap(cur2,'Zuletzt')});
   // YouTube meldet Songende über postMessage (enablejsapi=1)
   function ytListen(){
     if(ytPoll)clearInterval(ytPoll);var tries=0;
