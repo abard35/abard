@@ -1,0 +1,37 @@
+{
+  "_hinweis": "Zentrale Künstlerdaten. Nach einer Änderung: python3 tools/build_share.py ausführen (oder Claude Bescheid geben). Daraus entstehen Bio auf der Startseite (EN/DE), Google-Daten und die Profil-Links im Footer.",
+  "bio_en": "ABard is a sound, not a backstory. Rooted in 80s hard rock, sharpened by industrial steel and carried by big, cinematic emotion. Every song tells its own story – press play and decide for yourself.",
+  "bio_de": "ABard ist ein Sound, keine Hintergrundgeschichte. Verwurzelt im Hardrock der 80er, geschärft von industriellem Stahl und getragen von grossen, cineastischen Gefühlen. Jeder Song erzählt seine eigene Geschichte – drück auf Play und entscheide selbst.",
+  "genres": [
+    "Hard Rock",
+    "Metal",
+    "Power Ballads"
+  ],
+  "profiles": [
+    {
+      "name": "Spotify",
+      "url": "https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN",
+      "footer": true
+    },
+    {
+      "name": "YouTube",
+      "url": "https://www.youtube.com/@ABardOfficial",
+      "footer": true
+    },
+    {
+      "name": "Instagram",
+      "url": "https://www.instagram.com/abardewyck/",
+      "footer": true
+    },
+    {
+      "name": "TikTok",
+      "url": "https://www.tiktok.com/@abard85",
+      "footer": true
+    },
+    {
+      "name": "Facebook",
+      "url": "https://www.facebook.com/albert.bardewyck",
+      "footer": false
+    }
+  ]
+}

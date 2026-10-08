@@ -10,6 +10,7 @@ os.chdir(root)
 s = open("index.html", encoding="utf-8").read()
 js = open("songs.js", encoding="utf-8").read()
 info = json.loads(js.split("window.SONGINFO = ", 1)[1].rstrip().rstrip(";"))
+art = json.load(open("artist.json", encoding="utf-8"))
 
 def slugify(t):
     t = t.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue")
@@ -148,9 +149,9 @@ for tr in tracks:
     uniq.setdefault(tr["name"].lower(), tr)
 ld = {"@context": "https://schema.org", "@type": "MusicGroup", "@id": BASE + "/#artist",
       "name": "ABard", "url": BASE + "/",
-      "description": "ABard is a sound, not a backstory. Rooted in 80s hard rock, sharpened by industrial steel and carried by big, cinematic emotion. Every song tells its own story – press play and decide for yourself.", "image": BASE + "/og.jpg",
-      "genre": ["Hard Rock", "Metal", "Power Ballads"],
-      "sameAs": ["https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN", "https://www.youtube.com/@ABardOfficial", "https://www.instagram.com/abardewyck/", "https://www.tiktok.com/@abard85", "https://www.facebook.com/albert.bardewyck"],
+      "description": art["bio_en"], "image": BASE + "/og.jpg",
+      "genre": art["genres"],
+      "sameAs": [p["url"] for p in art["profiles"]],
       "track": list(uniq.values())}
 block = ('<!--LD-->\n<script type="application/ld+json">\n'
          + json.dumps(ld, ensure_ascii=False, indent=1).replace("</", "<\\/") + '\n</script>\n<!--/LD-->')
@@ -158,6 +159,18 @@ if "<!--LD-->" in s2:
     s2 = re.sub(r"<!--LD-->.*?<!--/LD-->", lambda m: block, s2, flags=re.S)
 else:
     s2 = s2.replace("</head>", block + "\n</head>", 1)
+# Bio (EN) auf der Startseite und Profil-Links im Footer aus artist.json
+s2 = re.sub(r'(<p class="lede" data-i18n="lede">).*?(</p>)', lambda m: m.group(1) + html.escape(art["bio_en"], quote=False) + m.group(2), s2, count=1, flags=re.S)
+plinks = " · ".join(f'<a href="{html.escape(p["url"])}" target="_blank" rel="noopener me">{html.escape(p["name"])}</a>' for p in art["profiles"] if p.get("footer"))
+s2 = re.sub(r"<!--PROFILES-->.*?<!--/PROFILES-->", lambda m: "<!--PROFILES--><span>" + plinks + "</span><!--/PROFILES-->", s2, flags=re.S)
+# Bio in der Sprachdatei (EN und DE)
+i18 = open("i18n.js", encoding="utf-8").read()
+q = lambda t: t.replace("\\", "\\\\").replace("'", "\\'")
+parts = re.split(r"('lede':')((?:[^'\\]|\\.)*)(')", i18)
+if len(parts) == 9:
+    parts[2] = q(art["bio_en"]); parts[6] = q(art["bio_de"])
+    open("i18n.js", "w", encoding="utf-8").write("".join(parts))
+
 # Liste aller Songseiten über dem Footer (echte Links, damit Suchmaschinen jede Songseite finden)
 names = {}
 for tr in tracks:
