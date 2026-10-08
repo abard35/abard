@@ -25,7 +25,7 @@
         try{
           var W=600,c=document.createElement('canvas');c.width=c.height=W;var x=c.getContext('2d');
           x.drawImage(im,0,0,W,W);
-          var de=window.I&&I.lang&&I.lang()==='de',d=new Date(s.at);
+          var Ix=window.ABARD_I18N,de=Ix&&Ix.lang&&Ix.lang()==='de',d=new Date(s.at);
           var txt=de?'Ab '+d.toLocaleDateString('de-CH',{day:'numeric',month:'long',timeZone:'Europe/Zurich'}):'Out '+d.toLocaleDateString('en-US',{month:'long',day:'numeric',timeZone:'Europe/Zurich'});
           txt=txt.toUpperCase();
           var g=x.createLinearGradient(0,W*.70,0,W);g.addColorStop(0,'rgba(13,14,16,0)');g.addColorStop(.45,'rgba(13,14,16,.82)');g.addColorStop(1,'rgba(13,14,16,.92)');

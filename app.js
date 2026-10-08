@@ -58,13 +58,22 @@
       try{localStorage.setItem('abard-preview','1')}catch(err){}
     }
   }
+  // Start sicherstellen: Spotify ignoriert play() manchmal, solange der Song noch lädt – dann kurz nachfassen
+  var spTry=null;
+  function spKick(){
+    if(spTry)clearInterval(spTry);var n=0;
+    spTry=setInterval(function(){
+      if(isPlay||++n>6||!spCtl||player.hidden||player.classList.contains('yt')){clearInterval(spTry);spTry=null;return}
+      try{spCtl.play()}catch(e){}
+    },900);
+  }
   function spPlay(uri){
-    spWant=uri;
-    if(spCtl){spCtl.loadUri(uri);spCtl.play();return true}
+    spWant=uri;isPlay=false;
+    if(spCtl){spCtl.loadUri(uri);spCtl.play();spKick();return true}
     if(!spAPI)return false;
     spAPI.createController(document.getElementById('spembed'),{width:'100%',height:80,uri:uri},function(c){
       spCtl=c;c.addListener('playback_update',onUpd);
-      c.addListener('ready',function(){if(spWant){c.play()}});
+      c.addListener('ready',function(){if(spWant){c.play();spKick()}});
     });
     return true;
   }
