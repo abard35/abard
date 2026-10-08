@@ -13,9 +13,41 @@
     var im=a.querySelector('.cover img');if(!im)return;
     var src=im.getAttribute('src');if(!src||seen[src])return;seen[src]=1;
     var big=((im.getAttribute('srcset')||'').split(',').pop().trim().split(' ')[0])||src;
-    S.push({src:src,big:big,t:(a.querySelector('h3')||{}).textContent||'',g:a.dataset.genre||''});
+    var o={src:src,big:big,t:(a.querySelector('h3')||{}).textContent||'',g:a.dataset.genre||''};
+    // Noch nicht erschienen: Erscheinungsdatum in Orange aufs Cover schreiben
+    var at=Date.parse(a.dataset.at||'');if(!isNaN(at)&&Date.now()<at)o.at=at;
+    S.push(o);
   });
   if(S.length<6){st.hidden=true;return}
+  function badge(s){
+    return new Promise(function(done){
+      var im=new Image();im.onload=function(){
+        try{
+          var W=600,c=document.createElement('canvas');c.width=c.height=W;var x=c.getContext('2d');
+          x.drawImage(im,0,0,W,W);
+          var de=window.I&&I.lang&&I.lang()==='de',d=new Date(s.at);
+          var txt=de?'Ab '+d.toLocaleDateString('de-CH',{day:'numeric',month:'long',timeZone:'Europe/Zurich'}):'Out '+d.toLocaleDateString('en-US',{month:'long',day:'numeric',timeZone:'Europe/Zurich'});
+          txt=txt.toUpperCase();
+          var g=x.createLinearGradient(0,W*.70,0,W);g.addColorStop(0,'rgba(13,14,16,0)');g.addColorStop(.45,'rgba(13,14,16,.82)');g.addColorStop(1,'rgba(13,14,16,.92)');
+          x.fillStyle=g;x.fillRect(0,W*.70,W,W*.30);
+          var fs=Math.round(W*.085);x.font='700 '+fs+'px "Big Shoulders Display","Arial Narrow",Impact,sans-serif';
+          while(x.measureText(txt).width>W*.86&&fs>20){fs-=2;x.font='700 '+fs+'px "Big Shoulders Display","Arial Narrow",Impact,sans-serif'}
+          x.textAlign='center';x.textBaseline='alphabetic';x.fillStyle='#d8a23f';
+          if('letterSpacing' in x)x.letterSpacing=Math.round(fs*.08)+'px';
+          x.fillText(txt,W/2,W*.93);
+          s.src=s.big=c.toDataURL('image/jpeg',.88);
+        }catch(e){}
+        done();
+      };
+      im.onerror=function(){done()};im.src=s.src;
+    });
+  }
+  var pend=S.filter(function(s){return s.at}),waits=[];
+  if(pend.length){
+    // Schrift der Seite abwarten (max. 1 s), damit das Datum im Seitenstil erscheint
+    var fontReady=Promise.race([document.fonts&&document.fonts.load?document.fonts.load('700 40px "Big Shoulders Display"').catch(function(){}):0,new Promise(function(r){setTimeout(r,1000)})]);
+    waits=pend.map(function(s){return fontReady.then(function(){return badge(s)})});
+  }
 
   function shuf(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1)),t=a[k];a[k]=a[j];a[j]=t}return a}
   function img(src,cls){var i=document.createElement('img');i.src=src;i.alt='';i.decoding='async';if(cls)i.className=cls;if(src===LOGO)i.classList.add('logo');return i}
@@ -95,6 +127,6 @@
   if(keys.indexOf(v)<0){v=keys[Math.floor(Math.random()*keys.length)];try{sessionStorage.setItem('abard-hero',v)}catch(e){}}
   // Zum Testen: #hero-wall, #hero-flip, #hero-cine, #hero-spot erzwingt eine Variante
   var h=location.hash.match(/^#hero-(wall|flip|cine|spot)$/);if(h)v=h[1];
-  V[v]();
-  st.dataset.variant=v;
+  function start(){V[v]();st.dataset.variant=v}
+  if(waits.length)Promise.race([Promise.all(waits),new Promise(function(r){setTimeout(r,1500)})]).then(start);else start();
 })();
