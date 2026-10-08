@@ -134,7 +134,7 @@ dialog.globe-dlg{width:min(760px,calc(100% - 32px));background:radial-gradient(1
 .g-sub b{color:var(--sodium);font-weight:500}
 .g-hint{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0}
 @media (prefers-reduced-motion:reduce){.gbtn:hover svg{animation:none}}
-@media (max-width:899px){.gbtn{display:none}}
+@media (max-width:899px),(pointer:coarse){.gbtn{display:none}}
 
 /* hero */
 .hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:clamp(24px,5vw,64px);align-items:end;padding-block:clamp(40px,8vw,96px)}
@@ -234,7 +234,8 @@ h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size
 .next-row .cd{gap:clamp(12px,1.5vw,20px)}
 .next-row .next .out .btn{margin-bottom:6px}
 .next-row .next[hidden]+.next,.next-row .next:only-child{grid-column:1/-1}
-@media (max-width:899px){.next-row{grid-template-columns:1fr}}
+/* nur auf echten Desktops (Maus, breiter Bildschirm) nebeneinander – Handys auch im Desktop-Modus untereinander */
+@media (max-width:1099px),(pointer:coarse){.next-row{grid-template-columns:1fr}.next-row .next img{width:clamp(140px,22vw,220px)}.next-row .next h2{font-size:clamp(2.4rem,6vw,3.6rem)}.next-row .cd b{font-size:clamp(2rem,5vw,3rem)}}
 .soon-notime .tm{display:none}
 .sneak{display:inline-flex;align-items:center;gap:10px;margin-top:18px;background:transparent;border:1px solid var(--line);color:var(--fg);font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;padding:8px 14px 8px 10px;cursor:pointer;max-width:100%}
 .sneak:hover,.sneak:focus-visible{border-color:var(--sodium);color:var(--sodium)}
