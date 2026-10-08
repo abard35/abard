@@ -233,6 +233,7 @@ h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size
 .next-row .cd b{font-size:clamp(1.6rem,2.8vw,2.4rem)}
 .next-row .cd{gap:clamp(12px,1.5vw,20px)}
 .next-row .next .out .btn{margin-bottom:6px}
+.sp-soon{display:block;width:100%;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
 .next-row .next[hidden]+.next,.next-row .next:only-child{grid-column:1/-1}
 /* nur auf echten Desktops (Maus, breiter Bildschirm) nebeneinander – Handys auch im Desktop-Modus untereinander */
 @media (max-width:1099px),(pointer:coarse){.next-row{grid-template-columns:1fr}.next-row .next img{width:clamp(140px,22vw,220px)}.next-row .next h2{font-size:clamp(2.4rem,6vw,3.6rem)}.next-row .cd b{font-size:clamp(2rem,5vw,3rem)}}
@@ -845,7 +846,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
     </div>
   </div>
 
-  <section class="block" id="next" data-at="2026-10-08T13:00:00+02:00" data-slug="room-404" data-sp="" data-yt="TBKEIhjdTWY">
+  <section class="block" id="next" data-at="2026-10-08T13:00:00+02:00" data-sp-at="2026-10-09T00:00:00+02:00" data-slug="room-404" data-sp="" data-yt="TBKEIhjdTWY">
     <div class="wrap next-row">
       <div class="next" id="next-card">
         <img src="room404.jpg?v=2" alt="Cover: Room 404" width="600" height="600">
@@ -859,7 +860,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
             <div><b id="cd-m">00</b><span data-i18n="cd.m">Min</span></div>
             <div><b id="cd-s">00</b><span data-i18n="cd.s">Sec</span></div>
           </div>
-          <p class="out cta" id="cd-out" hidden><a class="btn primary" id="out-sp" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener" data-i18n="out.sp">Listen on Spotify</a><a class="btn" id="out-yt" href="https://www.youtube.com/@ABardOfficial/videos" target="_blank" rel="noopener" data-i18n="out.yt">Watch on YouTube</a><a class="btn" id="out-st" href="s/room-404/" data-i18n="out.st">Story &amp; Lyrics</a></p>
+          <p class="out cta" id="cd-out" hidden><span class="sp-soon" id="out-sp-soon" data-i18n="out.spsoon" hidden>On Spotify from October 9</span><a class="btn primary" id="out-sp" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener" data-i18n="out.sp">Listen on Spotify</a><a class="btn" id="out-yt" href="https://www.youtube.com/@ABardOfficial/videos" target="_blank" rel="noopener" data-i18n="out.yt">Watch on YouTube</a><a class="btn" id="out-st" href="s/room-404/" data-i18n="out.st">Story &amp; Lyrics</a></p>
         </div>
       </div>
       <!-- Nächster Release. data-time leer = Uhrzeit noch nicht bestätigt: dann nur Tage-Countdown -->
@@ -1131,10 +1132,10 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
     <button type="button" id="pclose" aria-label="Close player" data-i18n-aria="pclose">✕</button>
   </div>
 </div>
-<script src="i18n.js?v=3"></script>
+<script src="i18n.js?v=4"></script>
 <script src="hero.js?v=2"></script>
 <script src="songs.js"></script>
-<script src="app.js?v=10"></script>
+<script src="app.js?v=11"></script>
 <script src="globe.js?v=2"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>

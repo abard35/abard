@@ -5,7 +5,7 @@
     en:{
       'eyebrow':'Official Artist Site',
       'lede':'ABard is a sound, not a backstory. Rooted in 80s hard rock, sharpened by industrial steel and carried by big, cinematic emotion. Every song tells its own story – press play and decide for yourself.',
-      'next.soon':'Next Release · Single','next.out':'Latest Release · Single','sneak':'Sneak Peek','tba':'time to be announced',
+      'next.soon':'Next Release · Single','next.out':'Latest Release · Single','sneak':'Sneak Peek','out.spsoon':'On Spotify from October 9','tba':'time to be announced',
       'cd.d':'Days','cd.h':'Hrs','cd.m':'Min','cd.s':'Sec',
       'out.sp':'Listen on Spotify','out.yt':'Watch on YouTube','out.st':'Story & Lyrics',
       'top.count':'Most streamed on Spotify & YouTube',
@@ -25,7 +25,7 @@
     de:{
       'eyebrow':'Offizielle Künstlerseite',
       'lede':'ABard ist ein Sound, keine Hintergrundgeschichte. Verwurzelt im Hardrock der 80er, geschärft von industriellem Stahl und getragen von grossen, cineastischen Gefühlen. Jeder Song erzählt seine eigene Geschichte – drück auf Play und entscheide selbst.',
-      'next.soon':'Nächster Release · Single','next.out':'Neuester Release · Single','sneak':'Reinhören','tba':'Uhrzeit folgt',
+      'next.soon':'Nächster Release · Single','next.out':'Neuester Release · Single','sneak':'Reinhören','out.spsoon':'Auf Spotify ab 9. Oktober','tba':'Uhrzeit folgt',
       'cd.d':'Tage','globe.aria':'Wo ABard gehört wird','cd.h':'Std','cd.m':'Min','cd.s':'Sek',
       'out.sp':'Auf Spotify hören','out.yt':'Auf YouTube ansehen','out.st':'Story & Songtext',
       'top.count':'Meistgehört auf Spotify & YouTube',

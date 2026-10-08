@@ -228,6 +228,10 @@
     function released(){
       var eye=document.getElementById('next-eye');eye.setAttribute('data-i18n','next.out');eye.textContent=T('next.out');
       document.getElementById('cd').hidden=true;document.getElementById('cd-out').hidden=false;
+      // Spotify erscheint evtl. später als YouTube: bis dahin Hinweis statt Spotify-Button
+      var spAt=Date.parse(box.dataset.spAt||''),spB=document.getElementById('out-sp'),spS=document.getElementById('out-sp-soon');
+      function spCheck(){var wait=!isNaN(spAt)&&Date.now()<spAt&&!box.dataset.sp;spB.hidden=wait;spS.hidden=!wait;if(wait)setTimeout(spCheck,60000)}
+      spCheck();
       document.querySelectorAll('.rel[data-at]').forEach(function(a){if(Date.now()>=Date.parse(a.dataset.at))a.hidden=false});
       if(Date.now()-t>SHOW_DAYS*86400000)document.getElementById('next-card').hidden=true;
     }
