@@ -116,6 +116,24 @@ main,header,footer{position:relative;z-index:1}
 .legal-dlg .mail{font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--fg);border:1px solid var(--line);padding:10px 16px;cursor:pointer}
 .legal-dlg .mail:hover,.legal-dlg .mail:focus-visible{border-color:var(--sodium);color:var(--sodium)}
 
+/* Weltkugel-Overlay (globe.js): Länder mit Hörern, Musik läuft weiter */
+.gbtn{display:inline-grid;place-items:center;width:34px;height:34px;padding:0;background:transparent;border:1px solid var(--line);color:var(--muted);cursor:pointer}
+.gbtn svg{width:18px;height:18px}
+.gbtn:hover,.gbtn:focus-visible{color:var(--sodium);border-color:var(--sodium)}
+.gbtn:hover svg{animation:gspin 4s linear infinite}
+@keyframes gspin{to{transform:rotate(360deg)}}
+dialog.globe-dlg{width:min(760px,calc(100% - 32px));background:radial-gradient(120% 90% at 50% 40%,#16181c,#0a0b0d 70%)}
+.g-in{position:relative;padding:clamp(20px,4vw,36px);display:grid;gap:10px;justify-items:center;text-align:center}
+.g-eye{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sodium);margin:0}
+.g-h{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(2rem,7vw,3.4rem);line-height:.95;margin:0 44px;text-wrap:balance}
+.g-stage{position:relative;width:100%;display:grid;place-items:center;min-height:260px}
+.g-stage canvas{touch-action:none;cursor:grab;max-width:100%}
+.g-stage canvas:active{cursor:grabbing}
+.g-tip{position:absolute;transform:translate(-50%,calc(-100% - 14px));background:var(--bg);color:var(--fg);border:1px solid var(--sodium);font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;white-space:nowrap;pointer-events:none}
+.g-hint{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0}
+@media (prefers-reduced-motion:reduce){.gbtn:hover svg{animation:none}}
+@media (max-width:899px){.gbtn{display:none}}
+
 /* hero */
 .hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:clamp(24px,5vw,64px);align-items:end;padding-block:clamp(40px,8vw,96px)}
 /* animierte Cover-Wand: drei Spalten laufen gegenläufig */
@@ -774,6 +792,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
     <a href="#top">Top</a>
     <a href="#releases">Releases</a>
     <a href="#watch">Videos</a>
+    <button type="button" class="gbtn" id="globe-btn" aria-label="Where ABard is heard" data-i18n-aria="globe.aria" data-i18n-title="globe.aria" title="Where ABard is heard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.8 2.6 4.2 5.8 4.2 9.5s-1.4 6.9-4.2 9.5c-2.8-2.6-4.2-5.8-4.2-9.5S9.2 5.1 12 2.5Z"/></svg></button>
     <span class="lang" id="lang" role="group" aria-label="Language / Sprache"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="de" aria-pressed="false">DE</button></span>
   </nav>
 </header>
@@ -1037,6 +1056,15 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
     <div id="legal-body"></div>
   </div>
 </dialog>
+<dialog class="detail globe-dlg" id="globe" aria-labelledby="g-h">
+  <div class="g-in">
+    <button type="button" class="d-close g-close" aria-label="Close" data-i18n-aria="close">✕</button>
+    <p class="g-eye">Listeners worldwide</p>
+    <h2 class="g-h" id="g-h">Heard worldwide</h2>
+    <div class="g-stage"><canvas></canvas><div class="g-tip" hidden></div></div>
+    <p class="g-hint">Drag to spin</p>
+  </div>
+</dialog>
 <button type="button" class="vin" id="vin" aria-label="Story &amp; lyrics for the song now playing" data-i18n-aria="vin.aria" tabindex="-1">
   <span class="disc"><span class="rec"><span class="lbl"><img id="vin-lbl" alt=""></span><span class="shine"></span></span></span>
   <span class="sleeve"><img id="vin-img" alt=""></span>
@@ -1065,6 +1093,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
 <script src="hero.js?v=2"></script>
 <script src="songs.js"></script>
 <script src="app.js?v=9"></script>
+<script src="globe.js?v=1"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
 </html>
