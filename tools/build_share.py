@@ -150,7 +150,7 @@ ld = {"@context": "https://schema.org", "@type": "MusicGroup", "@id": BASE + "/#
       "name": "ABard", "url": BASE + "/",
       "description": "ABard is a sound, not a backstory. Rooted in 80s hard rock, sharpened by industrial steel and carried by big, cinematic emotion. Every song tells its own story – press play and decide for yourself.", "image": BASE + "/og.jpg",
       "genre": ["Hard Rock", "Metal", "Power Ballads"],
-      "sameAs": ["https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN", "https://www.youtube.com/@ABardOfficial"],
+      "sameAs": ["https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN", "https://www.youtube.com/@ABardOfficial", "https://www.instagram.com/abardewyck/", "https://www.tiktok.com/@abard85", "https://www.facebook.com/albert.bardewyck"],
       "track": list(uniq.values())}
 block = ('<!--LD-->\n<script type="application/ld+json">\n'
          + json.dumps(ld, ensure_ascii=False, indent=1).replace("</", "<\\/") + '\n</script>\n<!--/LD-->')
