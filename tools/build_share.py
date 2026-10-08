@@ -128,7 +128,7 @@ footer a{{text-decoration:none}}footer a:hover{{color:var(--sodium)}}
 {story_html}
 {lyr_html}
 </main>
-<footer class="wrap"><a href="/">← abard.die-bardewycks.ch</a><a href="/disclaimer.html">Disclaimer</a></footer>
+<footer class="wrap"><a href="/">← abard.die-bardewycks.ch</a><span>© 2025–2026 ABard</span><a href="/disclaimer.html">Disclaimer</a></footer>
 </body></html>
 """
         os.makedirs(f"s/{slug}", exist_ok=True)
