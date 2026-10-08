@@ -225,6 +225,26 @@ h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size
 .cd span{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .next .out{font-family:var(--mono);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase}
 @media (max-width:520px){.next{grid-template-columns:1fr}}
+/* Latest + Next Release nebeneinander (Desktop), untereinander (schmal) */
+.next-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,2.5vw,32px)}
+.next-row .next{grid-template-columns:auto minmax(0,1fr);gap:clamp(16px,2vw,28px);align-items:start}
+.next-row .next img{width:clamp(120px,13vw,180px)}
+.next-row .next h2{font-size:clamp(2rem,3.6vw,3.2rem)}
+.next-row .cd b{font-size:clamp(1.6rem,2.8vw,2.4rem)}
+.next-row .cd{gap:clamp(12px,1.5vw,20px)}
+.next-row .next .out .btn{margin-bottom:6px}
+.next-row .next[hidden]+.next,.next-row .next:only-child{grid-column:1/-1}
+@media (max-width:899px){.next-row{grid-template-columns:1fr}}
+.soon-notime .tm{display:none}
+.sneak{display:inline-flex;align-items:center;gap:10px;margin-top:18px;background:transparent;border:1px solid var(--line);color:var(--fg);font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;padding:8px 14px 8px 10px;cursor:pointer;max-width:100%}
+.sneak:hover,.sneak:focus-visible{border-color:var(--sodium);color:var(--sodium)}
+.sn-ic{width:22px;height:22px;border-radius:50%;background:var(--sodium);position:relative;flex:none}
+.sn-ic::after{content:"";position:absolute;left:8px;top:6px;border-left:8px solid var(--bg);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.sneak[aria-pressed="true"] .sn-ic::after{left:7px;top:6px;width:3px;height:10px;border:0;background:var(--bg);box-shadow:5px 0 0 var(--bg)}
+.sn-bar{width:clamp(50px,8vw,110px);height:2px;background:var(--line);position:relative;overflow:hidden}
+.sn-bar i{position:absolute;inset:0;background:var(--sodium);transform-origin:left;transform:scaleX(0)}
+.sn-t{color:var(--muted);font-variant-numeric:tabular-nums}
+.sn-l{white-space:nowrap}
 .featured{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2.5vw,32px)}
 .rel.big h3{font-size:clamp(1.6rem,3vw,2.2rem)}
 .rank{position:absolute;left:0;top:0;z-index:1;background:var(--sodium);color:var(--bg);font-family:var(--display);font-weight:900;font-size:1.5rem;line-height:1;padding:8px 12px}
@@ -825,8 +845,8 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
   </div>
 
   <section class="block" id="next" data-at="2026-10-08T13:00:00+02:00" data-slug="room-404" data-sp="" data-yt="TBKEIhjdTWY">
-    <div class="wrap">
-      <div class="next">
+    <div class="wrap next-row">
+      <div class="next" id="next-card">
         <img src="room404.jpg?v=2" alt="Cover: Room 404" width="600" height="600">
         <div>
           <p class="eyebrow" id="next-eye" data-i18n="next.soon">Next Release · Single</p>
@@ -839,6 +859,24 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
             <div><b id="cd-s">00</b><span data-i18n="cd.s">Sec</span></div>
           </div>
           <p class="out cta" id="cd-out" hidden><a class="btn primary" id="out-sp" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener" data-i18n="out.sp">Listen on Spotify</a><a class="btn" id="out-yt" href="https://www.youtube.com/@ABardOfficial/videos" target="_blank" rel="noopener" data-i18n="out.yt">Watch on YouTube</a><a class="btn" id="out-st" href="s/room-404/" data-i18n="out.st">Story &amp; Lyrics</a></p>
+        </div>
+      </div>
+      <!-- Nächster Release. data-time leer = Uhrzeit noch nicht bestätigt: dann nur Tage-Countdown -->
+      <div class="next" id="soon" data-day="2026-10-16" data-time="">
+        <img src="no-someday-left.jpg?v=1" alt="Cover: No Someday Left" width="1080" height="1080">
+        <div>
+          <p class="eyebrow" id="soon-eye" data-i18n="next.soon">Next Release · Single</p>
+          <h2>No Someday Left</h2>
+          <p class="date" id="soon-date">October 16, 2026</p>
+          <div class="cd" id="soon-cd" aria-live="polite">
+            <div><b id="soon-d">0</b><span data-i18n="cd.d">Days</span></div>
+            <div class="tm"><b id="soon-h">00</b><span data-i18n="cd.h">Hrs</span></div>
+            <div class="tm"><b id="soon-m">00</b><span data-i18n="cd.m">Min</span></div>
+            <div class="tm"><b id="soon-s">00</b><span data-i18n="cd.s">Sec</span></div>
+          </div>
+          <button type="button" class="sneak" id="sneak" aria-pressed="false"><span class="sn-ic" aria-hidden="true"></span><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-bar" aria-hidden="true"><i id="sneak-p"></i></span><span class="sn-t" id="sneak-t">0:30</span></button>
+          <audio id="sneak-a" src="no-someday-left-sneak.m4a?v=1" preload="none"></audio>
+          <p class="out cta" id="soon-out" hidden><a class="btn primary" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener" data-i18n="out.sp">Listen on Spotify</a><a class="btn" href="https://www.youtube.com/@ABardOfficial/videos" target="_blank" rel="noopener" data-i18n="out.yt">Watch on YouTube</a></p>
         </div>
       </div>
     </div>
@@ -1092,10 +1130,10 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
     <button type="button" id="pclose" aria-label="Close player" data-i18n-aria="pclose">✕</button>
   </div>
 </div>
-<script src="i18n.js?v=2"></script>
+<script src="i18n.js?v=3"></script>
 <script src="hero.js?v=2"></script>
 <script src="songs.js"></script>
-<script src="app.js?v=9"></script>
+<script src="app.js?v=10"></script>
 <script src="globe.js?v=2"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
