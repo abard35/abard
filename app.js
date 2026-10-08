@@ -125,7 +125,8 @@
   function words(g){return (g||'').toLowerCase().split(/[\s\-\/]+/).filter(Boolean)}
   function pickNext(a,ytOnly){
     var g=(a.dataset.genre||'').toLowerCase(),gw=words(g),seen={},best=[],bs=-1,all=[];
-    document.querySelectorAll('.rel[data-id],.rel[data-yt]').forEach(function(r){
+    // Noch nicht erschienene (versteckte) Songs nie automatisch abspielen
+    document.querySelectorAll('.rel[data-id]:not([hidden]),.rel[data-yt]:not([hidden])').forEach(function(r){
       var k=key(r);if(seen[k]||k===key(a)||(ytOnly&&!r.dataset.yt))return;seen[k]=1;all.push(r);
     });
     var pool=all.filter(function(r){return !played[key(r)]});
@@ -212,7 +213,7 @@
     if(navigator.share){navigator.share({title:t,url:url}).catch(function(){})}
     else if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){var b=document.getElementById('d-share');b.textContent=T('copied');setTimeout(function(){b.textContent=T('share')},2000)})}
   });
-  if(location.hash.indexOf('#song-')===0){var k0=location.hash.slice(6),a0=document.querySelector('.rel[data-id="'+k0+'"],.rel[data-yt="'+k0+'"],.rel[data-key="'+k0+'"]:not([hidden])');if(a0)openDetail(a0,true)}
+  if(location.hash.indexOf('#song-')===0){var k0=location.hash.slice(6),a0=document.querySelector('.rel[data-id="'+k0+'"]:not([hidden]),.rel[data-yt="'+k0+'"]:not([hidden]),.rel[data-key="'+k0+'"]:not([hidden])');if(a0)openDetail(a0,true)}
   // ---- Nächster Release: Countdown, danach automatisch Buttons + Kachel ----
   // Alle Angaben stehen im HTML an <section id="next" data-at data-sp data-yt>. Fehlt eine ID,
   // führen die Buttons trotzdem sicher zum Ziel (Spotify-Künstlerseite / YouTube-Kanal, neuester Release oben).
