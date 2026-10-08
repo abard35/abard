@@ -179,10 +179,8 @@
     cur=a;var k=key(a),info=(window.SONGINFO||{})[k]||{},d=a.dataset.date||'';
     document.getElementById('d-img').src=a.querySelector('img').currentSrc||a.querySelector('img').src;
     document.getElementById('d-title').textContent=a.querySelector('h3').textContent;
-    var meta=[];if(a.dataset.genre)meta.push(a.dataset.genre);if(d)meta.push(longDate(d));
-    var pl=[];if(a.dataset.sp)pl.push(num(a.dataset.sp)+' Spotify');if(a.dataset.ytv)pl.push(num(a.dataset.ytv)+' YouTube');
-    if(a.querySelector('.streams'))meta.push(pl.join(' · '));
-    document.getElementById('d-meta').textContent=meta.join(' · ');
+    // Songdetails: nur der Stil (ausführlich wie im YouTube-Titel), sonst das Genre
+    document.getElementById('d-meta').textContent=a.dataset.style||a.dataset.genre||'';
     document.getElementById('d-sp').hidden=!a.dataset.id;document.getElementById('d-yt').hidden=!a.dataset.yt;
     var l=document.getElementById('d-links');l.innerHTML='';
     if(a.dataset.id)l.innerHTML+='<a href="https://open.spotify.com/album/'+a.dataset.id+'" target="_blank" rel="noopener">'+esc(T('open.sp'))+'</a>';

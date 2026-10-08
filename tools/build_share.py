@@ -50,7 +50,8 @@ def fix(m):
         if date:
             y, mo = date.split("-")[:2]
             when = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][int(mo)-1] + " " + y
-        meta_line = " · ".join(x for x in (genre, when) if x)
+        style = attr(t, "data-style") or genre
+        meta_line = style
         info_k = info.get(key) or info.get(attr(t, "data-yt") or "") or {}
         def paras(txt, br):
             return "".join("<p>" + e(p).replace("\n", "<br>") + "</p>" for p in txt.split("\n\n") if p.strip())
@@ -70,7 +71,7 @@ def fix(m):
         page = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{e(title)} – ABard{(" | " + e(genre)) if genre else ""}</title>
+<title>{e(title)} – ABard{(" | " + e(style)) if style else ""}</title>
 <meta name="description" content="{e(desc)}">
 <link rel="canonical" href="{url}">
 <meta property="og:type" content="music.song">
@@ -120,7 +121,7 @@ footer a{{text-decoration:none}}footer a:hover{{color:var(--sodium)}}
 <img src="{e(img)}" alt="Cover: {e(title)}" width="640" height="640">
 <div>
 <h1>{e(title)}</h1>
-<p class="by">by <a href="/">ABard</a>{(" · " + e(meta_line)) if meta_line else ""}</p>
+{('<p class="by">' + e(meta_line) + '</p>') if meta_line else ""}
 <div class="btns">{btns}</div>
 </div>
 </div>
