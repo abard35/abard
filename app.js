@@ -288,8 +288,8 @@
         au.play().catch(function(){done()});btn.setAttribute('aria-pressed','true');
       }else{au.pause();done()}
     });
-    au.addEventListener('timeupdate',function(){var d=au.duration||30;bar.style.transform='scaleX('+(au.currentTime/d)+')';lab.textContent=mmss(d-au.currentTime)});
-    au.addEventListener('ended',function(){au.currentTime=0;bar.style.transform='scaleX(0)';lab.textContent=mmss(au.duration||30);done()});
+    au.addEventListener('timeupdate',function(){var d=au.duration||60;bar.style.transform='scaleX('+(au.currentTime/d)+')';lab.textContent=mmss(d-au.currentTime)});
+    au.addEventListener('ended',function(){au.currentTime=0;bar.style.transform='scaleX(0)';lab.textContent=mmss(au.duration||60);done()});
     // Startet jemand einen Song im Player, Sneak Peek anhalten
     document.addEventListener('click',function(e){if(!au.paused&&e.target.closest&&e.target.closest('.rel')){au.pause();resume=false;btn.setAttribute('aria-pressed','false')}},true);
   })();
