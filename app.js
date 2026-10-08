@@ -214,6 +214,18 @@
     else if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){var b=document.getElementById('d-share');b.textContent=T('copied');setTimeout(function(){b.textContent=T('share')},2000)})}
   });
   if(location.hash.indexOf('#song-')===0){var k0=location.hash.slice(6),a0=document.querySelector('.rel[data-id="'+k0+'"]:not([hidden]),.rel[data-yt="'+k0+'"]:not([hidden]),.rel[data-key="'+k0+'"]:not([hidden])');if(a0)openDetail(a0,true)}
+  // Song-Verzeichnis A–Z: unveröffentlichte Songs ab Release-Zeit zeigen (Trennpunkte nur zwischen sichtbaren)
+  (function(){
+    var p=document.querySelector('nav.songlist p');if(!p)return;
+    function upd(){
+      var nx=Infinity;
+      p.querySelectorAll('a[data-at]').forEach(function(a){var t=Date.parse(a.dataset.at);if(Date.now()>=t)a.hidden=false;else nx=Math.min(nx,t)});
+      var first=true;
+      p.querySelectorAll('a').forEach(function(a){var s=a.previousElementSibling;if(s&&s.classList.contains('sep'))s.hidden=a.hidden||first;if(!a.hidden)first=false});
+      if(nx<Infinity&&nx-Date.now()<864e5)setTimeout(upd,nx-Date.now()+500);
+    }
+    upd();
+  })();
   // ---- Nächster Release: Countdown, danach automatisch Buttons + Kachel ----
   // Alle Angaben stehen im HTML an <section id="next" data-at data-sp data-yt>. Fehlt eine ID,
   // führen die Buttons trotzdem sicher zum Ziel (Spotify-Künstlerseite / YouTube-Kanal, neuester Release oben).

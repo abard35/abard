@@ -172,11 +172,16 @@ if len(parts) == 9:
     open("i18n.js", "w", encoding="utf-8").write("".join(parts))
 
 # Liste aller Songseiten über dem Footer (echte Links, damit Suchmaschinen jede Songseite finden)
-names = {}
+names, ats = {}, {}
 for tr in tracks:
     sl = tr["url"].rstrip("/").rsplit("/", 1)[1]
     names.setdefault(sl, tr["name"])
-links = " · ".join(f'<a href="s/{sl}/">{html.escape(n)}</a>' for sl, n in sorted(names.items(), key=lambda x: x[1].lower()))
+for m in re.finditer(r'<a data-slug="([^"]+)"[^>]*\sdata-at="([^"]+)"', s2):
+    ats[m.group(1)] = m.group(2)
+# Noch nicht erschienene Songs: data-at, die Seite blendet sie bis zur Release-Zeit aus
+links = "<span class=\"sep\"> · </span>".join(
+    f'<a href="s/{sl}/"' + (f' data-at="{ats[sl]}" hidden' if sl in ats else '') + f'>{html.escape(n)}</a>'
+    for sl, n in sorted(names.items(), key=lambda x: x[1].lower()))
 nav = ('<!--SONGS-->\n<nav class="songlist wrap" aria-label="All songs"><h2 data-i18n="songs.az">All songs A–Z</h2><p>'
        + links + '</p></nav>\n<!--/SONGS-->')
 if "<!--SONGS-->" in s2:
