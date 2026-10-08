@@ -130,6 +130,8 @@ dialog.globe-dlg{width:min(760px,calc(100% - 32px));background:radial-gradient(1
 .g-stage canvas{touch-action:none;cursor:grab;max-width:100%}
 .g-stage canvas:active{cursor:grabbing}
 .g-tip{position:absolute;transform:translate(-50%,calc(-100% - 14px));background:var(--bg);color:var(--fg);border:1px solid var(--sodium);font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;white-space:nowrap;pointer-events:none}
+.g-sub{font-family:var(--mono);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:2px 0 0}
+.g-sub b{color:var(--sodium);font-weight:500}
 .g-hint{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0}
 @media (prefers-reduced-motion:reduce){.gbtn:hover svg{animation:none}}
 @media (max-width:899px){.gbtn{display:none}}
@@ -1061,6 +1063,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
     <button type="button" class="d-close g-close" aria-label="Close" data-i18n-aria="close">✕</button>
     <p class="g-eye">Listeners worldwide</p>
     <h2 class="g-h" id="g-h">Heard worldwide</h2>
+    <p class="g-sub"></p>
     <div class="g-stage"><canvas></canvas><div class="g-tip" hidden></div></div>
     <p class="g-hint">Drag to spin</p>
   </div>
@@ -1093,7 +1096,7 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
 <script src="hero.js?v=2"></script>
 <script src="songs.js"></script>
 <script src="app.js?v=9"></script>
-<script src="globe.js?v=1"></script>
+<script src="globe.js?v=2"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
 </html>

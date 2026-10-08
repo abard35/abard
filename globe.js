@@ -5,8 +5,8 @@
   var btn=document.getElementById('globe-btn'),dlg=document.getElementById('globe');
   if(!btn||!dlg||!dlg.showModal)return;
   var S={
-    en:{eye:'Listeners worldwide',h:function(n){return 'Heard in '+n+' countries'},hint:'Drag to spin · tap a light',load:'Loading the world…'},
-    de:{eye:'Hörer weltweit',h:function(n){return 'Gehört in '+n+' Ländern'},hint:'Ziehen zum Drehen · Licht antippen',load:'Die Welt wird geladen…'}
+    en:{eye:'Listeners worldwide',h:function(n){return 'Heard in '+n+' countries'},hint:'Drag to spin · tap a light',more:function(m){return '<b>'+m+'</b> more to go'},load:'Loading the world…'},
+    de:{eye:'Hörer weltweit',h:function(n){return 'Gehört in '+n+' Ländern'},hint:'Ziehen zum Drehen · Licht antippen',more:function(m){return 'Noch <b>'+m+'</b> to go'},load:'Die Welt wird geladen…'}
   };
   function lang(){return (window.ABARD_I18N&&window.ABARD_I18N.lang())||'en'}
   function txt(){
@@ -14,6 +14,8 @@
     dlg.querySelector('.g-eye').textContent=s.eye;
     dlg.querySelector('.g-h').textContent=n?s.h(n):s.load;
     dlg.querySelector('.g-hint').textContent=s.hint;
+    // 195 Staaten (UN-Mitglieder plus Vatikan und Palästina)
+    dlg.querySelector('.g-sub').innerHTML=n?s.more(Math.max(0,195-n)):'';
     try{names=new Intl.DisplayNames([lang()],{type:'region'})}catch(e){names=null}
   }
   var names=null;
