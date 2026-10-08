@@ -266,7 +266,9 @@
       var s=Math.floor((t-Date.now())/1000);
       if(isNaN(s)||s<=0){
         var eye=document.getElementById('soon-eye');eye.setAttribute('data-i18n','next.out');eye.textContent=T('next.out');
-        document.getElementById('soon-cd').hidden=true;document.getElementById('soon-out').hidden=false;return;
+        document.getElementById('soon-cd').hidden=true;document.getElementById('soon-out').hidden=false;
+        // Kacheln mit Release-Zeit bis zu diesem Release einblenden (Countdown endet schon in der letzten Sekunde davor)
+        document.querySelectorAll('.rel[data-at]').forEach(function(a){if(Date.parse(a.dataset.at)<=t)a.hidden=false});return;
       }
       document.getElementById('soon-d').textContent=tm?Math.floor(s/86400):Math.ceil(s/86400);
       document.getElementById('soon-h').textContent=pad(Math.floor(s%86400/3600));

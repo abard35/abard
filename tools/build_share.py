@@ -35,7 +35,7 @@ def fix(m):
     slug = slugify(title)
     img = re.search(r'<img src="([^"]+)"', t).group(1)
     img = img.replace("ab67616d00001e02", "ab67616d0000b273")
-    if img.startswith("room404"): img = BASE + "/" + img.split("?")[0]
+    if not img.startswith("http"): img = BASE + "/" + img.split("?")[0]
     if slug not in seen:
         seen[slug] = True
         st = (info.get(key) or info.get(attr(t, "data-yt") or "") or {}).get("story", "")
