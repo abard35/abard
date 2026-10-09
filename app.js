@@ -109,6 +109,7 @@
         spwrap.hidden=true;frame.hidden=false;frame.title='Spotify-Player';
         frame.src='https://open.spotify.com/embed/album/'+a.dataset.id+'?utm_source=generator&theme=0';
       }
+      document.getElementById('pi-t').textContent=a.querySelector('h3').textContent;
       var pyt=document.getElementById('pyt');pyt.hidden=!useYt;if(useYt)pyt.href='https://www.youtube.com/watch?v='+a.dataset.yt;
       player.hidden=false;document.body.classList.add('playing');favSync();
       vinShow(a,useYt||!spCtl);
