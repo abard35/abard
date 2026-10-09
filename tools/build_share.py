@@ -189,6 +189,11 @@ if "<!--SONGS-->" in s2:
     s2 = re.sub(r"<!--SONGS-->.*?<!--/SONGS-->", lambda m: nav, s2, flags=re.S)
 else:
     s2 = s2.replace('<footer class="wrap">', nav + '\n<footer class="wrap">', 1)
+# Cache-Schutz: songs.js bekommt eine Versionsnummer aus seinem Inhalt, damit Browser
+# nach jeder Änderung an Story/Lyrics/IDs die neue Fassung laden
+import hashlib
+_h = hashlib.md5(open("songs.js", "rb").read()).hexdigest()[:8]
+s2 = re.sub(r'<script src="songs\.js(\?v=[^"]*)?"></script>', f'<script src="songs.js?v={_h}"></script>', s2)
 open("index.html", "w", encoding="utf-8").write(s2)
 
 # Sitemap: Startseite + Songseiten (Disclaimer ist noindex)

@@ -199,7 +199,7 @@
   function num(n){return I.lang()==='de'?Number(n).toLocaleString('de-CH').replace(/'/g,'’'):Number(n).toLocaleString('en-US')}
   function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML}
   function openDetail(a,noHash){
-    cur=a;var k=key(a),info=(window.SONGINFO||{})[k]||{},d=a.dataset.date||'';
+    cur=a;var k=key(a),SI=window.SONGINFO||{},info=SI[a.dataset.id]||SI[a.dataset.yt]||SI[a.dataset.ytx]||SI[a.dataset.key]||{},d=a.dataset.date||'';
     document.getElementById('d-img').src=a.querySelector('img').currentSrc||a.querySelector('img').src;
     document.getElementById('d-title').textContent=a.querySelector('h3').textContent;
     // Songdetails: nur der Stil (ausführlich wie im YouTube-Titel), sonst das Genre
