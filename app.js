@@ -10,8 +10,20 @@
   }
   document.querySelectorAll('.src button').forEach(function(b){b.addEventListener('click',function(){setSrc(b.dataset.src)})});
   setSrc(src);
+  function icon(n){return document.getElementById('ic-'+n).content.firstElementChild.cloneNode(true)}
+  function decorate(a){
+    var c=a.querySelector('.cover');if(!c||c.querySelector('.tshare'))return;
+    var b=document.createElement('button');b.type='button';b.className='tshare';
+    b.setAttribute('data-i18n-aria','share.aria');b.setAttribute('data-i18n-title','share.aria');
+    b.setAttribute('aria-label',T('share.aria'));b.title=T('share.aria');b.appendChild(icon('share'));
+    var m=document.createElement('span');m.className='favmark';m.setAttribute('aria-hidden','true');m.appendChild(icon('heart'));
+    c.appendChild(b);c.appendChild(m);
+  }
+  document.querySelectorAll('.rel').forEach(decorate);
   document.querySelectorAll('.rel[data-id],.rel[data-yt],.rel[data-key]').forEach(function(a){
     a.addEventListener('click',function(e){
+      var sb=e.target.closest('.tshare');
+      if(sb){e.preventDefault();e.stopPropagation();shareSong(a,sb);return}
       if(e.metaKey||e.ctrlKey||e.shiftKey)return;
       e.preventDefault();
       if(!e.target.closest('.cover')){openDetail(a);return}
@@ -98,7 +110,7 @@
         frame.src='https://open.spotify.com/embed/album/'+a.dataset.id+'?utm_source=generator&theme=0';
       }
       var pyt=document.getElementById('pyt');pyt.hidden=!useYt;if(useYt)pyt.href='https://www.youtube.com/watch?v='+a.dataset.yt;
-      player.hidden=false;document.body.classList.add('playing');
+      player.hidden=false;document.body.classList.add('playing');favSync();
       vinShow(a,useYt||!spCtl);
   }
   document.getElementById('pnote-yt').addEventListener('click',function(){setSrc('youtube');if(cur2)play(cur2,true)});
@@ -199,6 +211,7 @@
     var story=document.getElementById('d-story'),ly=document.getElementById('d-lyrics');
     story.hidden=!info.story;story.querySelector('p').innerHTML=info.story?esc(info.story).replace(/\n/g,'<br>'):'';
     ly.hidden=!info.lyrics;ly.querySelector('div').innerHTML=info.lyrics?esc(info.lyrics).replace(/\n/g,'<br>'):'';
+    favSync();
     if(!noHash)history.replaceState(null,'','#song-'+k);
     if(!dlg.open)dlg.showModal();dlg.scrollTop=0;
   }
@@ -208,11 +221,126 @@
   document.getElementById('d-close').addEventListener('click',closeDetail);
   document.getElementById('d-sp').addEventListener('click',function(){play(cur,false);closeDetail()});
   document.getElementById('d-yt').addEventListener('click',function(){play(cur,true);closeDetail()});
-  document.getElementById('d-share').addEventListener('click',function(){
-    var url=cur.dataset.slug?location.origin+'/s/'+cur.dataset.slug+'/':location.origin+location.pathname+'#song-'+key(cur),t=cur.querySelector('h3').textContent+' – ABard';
-    if(navigator.share){navigator.share({title:t,url:url}).catch(function(){})}
-    else if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){var b=document.getElementById('d-share');b.textContent=T('copied');setTimeout(function(){b.textContent=T('share')},2000)})}
+  document.getElementById('d-share').addEventListener('click',function(){if(cur)shareSong(cur,this)});
+  document.getElementById('pshare').addEventListener('click',function(){if(cur2)shareSong(cur2,this)});
+  document.getElementById('d-fav').addEventListener('click',function(){if(cur)favToggle(cur)});
+  document.getElementById('pfav').addEventListener('click',function(){if(cur2)favToggle(cur2)});
+
+  // ---- Teilen: Handy = Teilen-Menü des Telefons, Desktop = kleines Menü ----
+  // Link führt immer auf die eigene Songseite; ?via=share macht geteilte Aufrufe in der Plesk-Statistik sichtbar.
+  function songUrl(a){
+    return a.dataset.slug?location.origin+'/s/'+a.dataset.slug+'/?via=share':location.origin+location.pathname+'?via=share#song-'+key(a);
+  }
+  function songTitle(a){return a.querySelector('h3').textContent}
+  var pop=null,popFor=null;
+  function popClose(){if(pop){pop.hidden=true;popFor=null}}
+  function host(el){var d=el.closest('dialog[open]');return d||document.body}
+  function shareSong(a,btn){
+    var url=songUrl(a),t=songTitle(a)+' – ABard';
+    var touch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+    if(touch&&navigator.share){navigator.share({title:t,text:t,url:url}).catch(function(){});return}
+    if(!pop){
+      pop=document.createElement('div');pop.className='shpop';pop.hidden=true;pop.setAttribute('role','menu');
+      document.addEventListener('click',function(e){if(pop&&!pop.hidden&&!pop.contains(e.target)&&e.target.closest('button')!==popFor)popClose()},true);
+      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&pop&&!pop.hidden){e.stopPropagation();e.preventDefault();var f=popFor;popClose();if(f)f.focus()}},true);
+      window.addEventListener('scroll',popClose,{passive:true});window.addEventListener('resize',popClose);
+    }
+    if(popFor===btn&&!pop.hidden){popClose();return}
+    var msg=T('share.sub')+' '+t+' '+url;
+    pop.innerHTML='';
+    var h=document.createElement('p');h.textContent=songTitle(a);pop.appendChild(h);
+    var cp=document.createElement('button');cp.type='button';cp.setAttribute('role','menuitem');cp.textContent=T('share.copy');
+    cp.addEventListener('click',function(){
+      function ok(){cp.textContent=T('copied');setTimeout(popClose,1200)}
+      if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(url).then(ok,function(){prompt(T('share.copy'),url)});
+      else prompt(T('share.copy'),url);
+    });
+    pop.appendChild(cp);
+    [['WhatsApp','https://wa.me/?text='+encodeURIComponent(msg)],
+     ['Facebook','https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url)],
+     ['X','https://x.com/intent/post?text='+encodeURIComponent(t)+'&url='+encodeURIComponent(url)],
+     [T('share.mail'),'mai'+'lto:?subject='+encodeURIComponent(t)+'&body='+encodeURIComponent(msg)]
+    ].forEach(function(x){
+      var l=document.createElement('a');l.setAttribute('role','menuitem');l.textContent=x[0];l.href=x[1];
+      if(x[1].indexOf('http')===0){l.target='_blank';l.rel='noopener'}
+      l.addEventListener('click',function(){setTimeout(popClose,50)});pop.appendChild(l);
+    });
+    host(btn).appendChild(pop);pop.hidden=false;popFor=btn;
+    var r=btn.getBoundingClientRect(),pw=pop.offsetWidth,ph=pop.offsetHeight,vw=document.documentElement.clientWidth,vh=window.innerHeight;
+    var x=Math.min(Math.max(8,r.right-pw),vw-pw-8),y=r.bottom+8;
+    if(y+ph>vh-8)y=Math.max(8,r.top-ph-8);
+    pop.style.left=x+'px';pop.style.top=y+'px';
+    cp.focus({preventScroll:true});
+  }
+
+  // ---- Merken: Favoriten nur im Browser des Besuchers (localStorage), Schlüssel = Songseiten-Name ----
+  function fkey(a){return a.dataset.slug||key(a)}
+  function favGet(){try{var v=JSON.parse(localStorage.getItem('abard-favs')||'[]');return Array.isArray(v)?v:[]}catch(e){return []}}
+  function favSet(v){try{localStorage.setItem('abard-favs',JSON.stringify(v))}catch(e){}}
+  function isFav(a){return favGet().indexOf(fkey(a))>=0}
+  function favToggle(a){
+    var v=favGet(),k=fkey(a),i=v.indexOf(k),on=i<0;
+    if(on)v.unshift(k);else v.splice(i,1);
+    favSet(v);favSync();favRender();
+    if(on)favToast(a);else toastHide();
+  }
+  function favBtn(b,on,withLabel){
+    b.setAttribute('aria-pressed',String(on));
+    var k=on?'fav.aria.on':'fav.aria';
+    if(withLabel){var sp=b.querySelector('span');sp.setAttribute('data-i18n',on?'fav.on':'fav.add');sp.textContent=T(on?'fav.on':'fav.add')}
+    else{b.setAttribute('data-i18n-aria',k);b.setAttribute('data-i18n-title',k);b.setAttribute('aria-label',T(k));b.title=T(k)}
+  }
+  function favSync(){
+    var v=favGet();
+    document.querySelectorAll('.rel[data-slug]').forEach(function(r){r.classList.toggle('is-fav',v.indexOf(fkey(r))>=0)});
+    if(cur2)favBtn(document.getElementById('pfav'),v.indexOf(fkey(cur2))>=0,false);
+    if(cur)favBtn(document.getElementById('d-fav'),v.indexOf(fkey(cur))>=0,true);
+  }
+  var toast=null,toastT=null;
+  function toastHide(){if(toast)toast.hidden=true;if(toastT){clearTimeout(toastT);toastT=null}}
+  function favToast(a){
+    if(!toast){toast=document.createElement('div');toast.className='ftoast';toast.setAttribute('role','status');toast.hidden=true}
+    toast.innerHTML='';
+    var m=document.createElement('span');m.textContent=T('fav.toast');toast.appendChild(m);
+    // Spotify-Speichern hilft dem Algorithmus – nur anbieten, wenn der Song auf Spotify ist
+    if(a.dataset.id){var l=document.createElement('a');l.href='https://open.spotify.com/album/'+a.dataset.id;l.target='_blank';l.rel='noopener';l.textContent=T('fav.toast.sp');l.addEventListener('click',toastHide);toast.appendChild(l)}
+    var x=document.createElement('button');x.type='button';x.textContent='✕';x.setAttribute('aria-label',T('fav.toast.x'));x.addEventListener('click',toastHide);toast.appendChild(x);
+    host(dlg.open?document.getElementById('d-fav'):document.getElementById('pfav')).appendChild(toast);
+    toast.hidden=false;if(toastT)clearTimeout(toastT);toastT=setTimeout(toastHide,7000);
+  }
+  dlg.addEventListener('close',function(){popClose();if(toast&&toast.parentNode===dlg)toastHide()});
+  // Reihe „Deine Favoriten“: Kopien der Kacheln, Klick wird an die Original-Kachel weitergereicht
+  var favSec=document.getElementById('favs'),favList=document.getElementById('fav-list');
+  function orig(k){
+    var all=document.querySelectorAll('#releases .rel[data-slug],.rel[data-slug]');
+    for(var i=0;i<all.length;i++)if(fkey(all[i])===k&&!all[i].closest('#favs'))return all[i];
+    return null;
+  }
+  function favRender(){
+    if(!favSec)return;
+    favList.innerHTML='';var n=0;
+    favGet().forEach(function(k){
+      var o=orig(k);if(!o||o.hidden)return;
+      var c=o.cloneNode(true);
+      ['data-id','data-yt','data-ytx','data-key','data-at','data-sp','data-ytv'].forEach(function(x){c.removeAttribute(x)});
+      c.classList.remove('active','big');c.dataset.fav=k;c.removeAttribute('target');
+      var rk=c.querySelector('.rank'),st=c.querySelector('.streams');if(rk)rk.remove();if(st)st.remove();
+      var im=c.querySelector('img');if(im)im.loading='eager';
+      favList.appendChild(c);n++;
+    });
+    favSec.hidden=!n;
+  }
+  favList&&favList.addEventListener('click',function(e){
+    var c=e.target.closest('.rel');if(!c)return;
+    var o=orig(c.dataset.fav);if(!o)return;
+    var sb=e.target.closest('.tshare');
+    e.preventDefault();
+    if(sb){e.stopPropagation();shareSong(o,sb);return}
+    if(e.metaKey||e.ctrlKey||e.shiftKey){window.open(c.href,'_blank','noopener');return}
+    if(!e.target.closest('.cover')){openDetail(o);return}
+    play(o);
   });
+  favRender();favSync();
   if(location.hash.indexOf('#song-')===0){var k0=location.hash.slice(6),a0=document.querySelector('.rel[data-id="'+k0+'"]:not([hidden]),.rel[data-yt="'+k0+'"]:not([hidden]),.rel[data-key="'+k0+'"]:not([hidden])');if(a0)openDetail(a0,true)}
   // Song-Verzeichnis A–Z: unveröffentlichte Songs ab Release-Zeit zeigen (Trennpunkte nur zwischen sichtbaren)
   (function(){
@@ -311,7 +439,7 @@
     au.addEventListener('timeupdate',function(){var d=au.duration||60;bar.style.transform='scaleX('+(au.currentTime/d)+')';lab.textContent=mmss(d-au.currentTime)});
     au.addEventListener('ended',function(){au.currentTime=0;bar.style.transform='scaleX(0)';lab.textContent=mmss(au.duration||60);done()});
     // Startet jemand einen Song im Player, Sneak Peek anhalten
-    document.addEventListener('click',function(e){if(!au.paused&&e.target.closest&&e.target.closest('.rel')){au.pause();resume=false;btn.setAttribute('aria-pressed','false')}},true);
+    document.addEventListener('click',function(e){if(!au.paused&&e.target.closest&&e.target.closest('.rel')&&!e.target.closest('.tshare')){au.pause();resume=false;btn.setAttribute('aria-pressed','false')}},true);
   })();
   // Sprache gewechselt: offenen Songdialog neu beschriften
   document.addEventListener('abard:lang',function(){if(dlg.open&&cur)openDetail(cur,true);var v=document.getElementById('vin-p');if(v&&vin.classList.contains('show')&&!nextT)v.textContent=T('vin.now')});

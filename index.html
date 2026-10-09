@@ -350,6 +350,46 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
   .rel h3{font-size:1.25rem}
   .rel .play{opacity:1;transform:none;width:38px;height:38px}
 }
+/* Teilen & Merken */
+.ic{width:18px;height:18px;display:block;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pact{flex:none;display:flex;flex-direction:column}
+.player .pact button{width:40px;height:40px;display:grid;place-items:center}
+.player .pact button+button{margin-top:-1px}
+button.fav[aria-pressed="true"],button.fav[aria-pressed="true"]:hover{color:var(--sodium)}
+button.fav[aria-pressed="true"] .ic{fill:currentColor}
+.player .pact button.fav[aria-pressed="true"]{border-color:rgba(216,162,63,.6)}
+.btn.fav[aria-pressed="true"]{color:var(--sodium);border-color:var(--sodium)}
+.btn.fav[aria-pressed="true"]:hover,.btn.fav[aria-pressed="true"]:focus-visible{color:var(--bg)}
+.btn .ic{width:16px;height:16px}
+.d-actions .btn:not(.primary){background:transparent;color:var(--fg);border-color:var(--line)}
+.d-actions .btn:not(.primary):hover,.d-actions .btn:not(.primary):focus-visible{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.d-actions .btn.fav[aria-pressed="true"]{color:var(--sodium);border-color:var(--sodium)}
+.d-actions .btn.fav[aria-pressed="true"]:hover,.d-actions .btn.fav[aria-pressed="true"]:focus-visible{background:var(--sodium);color:var(--bg)}
+.tshare{position:absolute;right:10px;top:10px;z-index:2;width:36px;height:36px;border-radius:50%;border:1px solid rgba(233,230,223,.25);background:rgba(13,14,16,.72);backdrop-filter:blur(4px);color:var(--fg);display:grid;place-items:center;cursor:pointer;padding:0;opacity:0;transform:translateY(-4px);transition:opacity .25s,transform .25s,background .2s,color .2s}
+.tshare .ic{width:16px;height:16px}
+.rel:hover .tshare,.rel:focus-within .tshare{opacity:1;transform:none}
+.tshare:hover,.tshare:focus-visible{background:var(--sodium);color:var(--bg);border-color:var(--sodium);outline:none}
+@media (hover:none){.tshare{opacity:1;transform:none}}
+.favmark{position:absolute;left:10px;bottom:10px;z-index:1;width:28px;height:28px;border-radius:50%;background:rgba(13,14,16,.72);color:var(--sodium);display:none;place-items:center}
+.favmark .ic{width:14px;height:14px;fill:currentColor}
+.rel.is-fav .favmark{display:grid}
+#favs .head{margin-bottom:20px}
+.shpop{position:fixed;z-index:30;min-width:210px;background:var(--panel);border:1px solid var(--line);box-shadow:0 18px 40px rgba(0,0,0,.6);padding:6px;display:flex;flex-direction:column}
+.shpop[hidden]{display:none}
+.shpop p{margin:4px 10px 6px;font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sodium);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px}
+.shpop button,.shpop a{all:unset;box-sizing:border-box;cursor:pointer;display:block;padding:10px;font-family:var(--mono);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg)}
+.shpop button:hover,.shpop a:hover,.shpop button:focus-visible,.shpop a:focus-visible{background:var(--sodium);color:var(--bg)}
+.ftoast{position:fixed;z-index:30;left:50%;bottom:calc(var(--pbar,0px) + 16px);transform:translateX(-50%);width:max-content;max-width:calc(100% - 32px);background:var(--panel);border:1px solid var(--sodium);box-shadow:0 18px 40px rgba(0,0,0,.6);padding:10px 12px 10px 16px;display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;font-family:var(--mono);font-size:.76rem;letter-spacing:.04em;color:var(--fg)}
+.ftoast[hidden]{display:none}
+.ftoast a{color:var(--sodium);white-space:nowrap}
+.ftoast button{all:unset;cursor:pointer;color:var(--muted);padding:4px 6px}
+.ftoast button:hover,.ftoast button:focus-visible{color:var(--fg)}
+@media (max-width:520px){
+  .player .in{gap:8px}
+  .player.yt iframe{flex:1;width:auto;min-width:0}
+  .player.yt a.pyt{display:none}
+  .tshare{width:32px;height:32px;right:8px;top:8px}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 <!--LD-->
@@ -923,6 +963,16 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
     </div>
   </section>
 
+  <section class="block" id="favs" hidden>
+    <div class="wrap">
+      <div class="head">
+        <h2 data-i18n="fav.h">Your Favorites</h2>
+        <span class="count" data-i18n="fav.note">Saved in this browser only</span>
+      </div>
+      <div class="releases" id="fav-list"></div>
+    </div>
+  </section>
+
   <section class="block" id="releases">
     <div class="wrap">
       <div class="head">
@@ -1107,7 +1157,8 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
       <div class="d-actions">
         <button type="button" class="btn primary" id="d-sp">▶ Spotify</button>
         <button type="button" class="btn primary" id="d-yt">▶ YouTube</button>
-        <button type="button" class="btn" id="d-share" data-i18n="share">Share</button>
+        <button type="button" class="btn fav" id="d-fav" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.6 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.6 0 5.8 3.5 4.5 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg><span data-i18n="fav.add">Save</span></button>
+        <button type="button" class="btn" id="d-share"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.4M8.3 13.2l7.4 4.4"/></svg><span data-i18n="share">Share</span></button>
       </div>
       <p class="d-links" id="d-links"></p>
       <section class="d-text" id="d-story" hidden><h3 data-i18n="d.story">About the song</h3><p></p></section>
@@ -1152,13 +1203,15 @@ a:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
     <div class="spwrap" id="spwrap" hidden><div id="spembed"></div></div>
     <iframe id="pframe" title="Spotify-Player" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
     <a class="pyt" id="pyt" href="#" target="_blank" rel="noopener" hidden data-i18n="pyt">Open on YouTube ↗</a>
+    <div class="pact"><button type="button" class="fav" id="pfav" aria-pressed="false" aria-label="Save to favorites" data-i18n-aria="fav.aria" title="Save to favorites" data-i18n-title="fav.aria"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.6 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.6 0 5.8 3.5 4.5 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg></button><button type="button" id="pshare" aria-label="Share this song" data-i18n-aria="share.aria" title="Share this song" data-i18n-title="share.aria"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.4M8.3 13.2l7.4 4.4"/></svg></button></div>
     <button type="button" id="pclose" aria-label="Close player" data-i18n-aria="pclose">✕</button>
   </div>
 </div>
-<script src="i18n.js?v=5"></script>
+<template id="ic-heart"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.6 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.6 0 5.8 3.5 4.5 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg></template><template id="ic-share"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.4M8.3 13.2l7.4 4.4"/></svg></template>
+<script src="i18n.js?v=6"></script>
 <script src="hero.js?v=4"></script>
 <script src="songs.js"></script>
-<script src="app.js?v=14"></script>
+<script src="app.js?v=15"></script>
 <script src="globe.js?v=2"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
