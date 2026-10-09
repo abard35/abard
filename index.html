@@ -292,6 +292,10 @@ dialog.detail::backdrop{background:rgba(5,6,8,.8);backdrop-filter:blur(4px)}
 .d-text .d-lyhead{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap;margin:0 0 10px;font-size:inherit}
 .d-text .d-lyhead h3{margin:0}
 .lytog{display:inline-flex;border:1px solid var(--line)}
+.d-actions .lytog{margin-left:clamp(14px,3vw,28px);align-self:stretch}
+.d-actions .lytog[hidden]{display:none!important}
+.d-actions .lytog button{min-height:42px;padding:0 14px;font-size:.74rem}
+@media (max-width:520px){.d-actions .lytog{margin-left:0;margin-top:6px;align-self:auto}}
 .lytog button{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--muted);border:0;padding:5px 11px;cursor:pointer;min-height:32px}
 .lytog button:hover,.lytog button:focus-visible{color:var(--fg)}
 .lytog button[aria-pressed="true"]{background:var(--sodium);color:var(--bg)}
@@ -1175,10 +1179,11 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
         <button type="button" class="btn primary" id="d-yt">▶ YouTube</button>
         <button type="button" class="btn fav" id="d-fav" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.6 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.6 0 5.8 3.5 4.5 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg><span data-i18n="fav.add">Save</span></button>
         <button type="button" class="btn" id="d-share"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.4M8.3 13.2l7.4 4.4"/></svg><span data-i18n="share">Share</span></button>
+        <span class="lytog" id="lytog" role="group" aria-label="Songtext-Sprache"><button type="button" data-ly="orig" aria-pressed="true" data-i18n="ly.orig">Original</button><button type="button" data-ly="de" aria-pressed="false" data-i18n="ly.de">Deutsch</button></span>
       </div>
       <p class="d-links" id="d-links"></p>
       <section class="d-text" id="d-story" hidden><h3 data-i18n="d.story">About the song</h3><p></p></section>
-      <section class="d-text" id="d-lyrics" hidden><div class="d-lyhead"><h3 data-i18n="d.lyrics">Lyrics</h3><span class="lytog" id="lytog" role="group" aria-label="Songtext" hidden><button type="button" data-ly="orig" aria-pressed="true" data-i18n="ly.orig">Original</button><button type="button" data-ly="de" aria-pressed="false" data-i18n="ly.de">Deutsch</button></span></div><p class="lynote" id="lynote" hidden data-i18n="ly.note">Sinngemäße Übersetzung</p><div class="lybody"></div></section>
+      <section class="d-text" id="d-lyrics" hidden><div class="d-lyhead"><h3 data-i18n="d.lyrics">Lyrics</h3></div><p class="lynote" id="lynote" hidden data-i18n="ly.note">Sinngemäße Übersetzung</p><div class="lybody"></div></section>
     </div>
   </div>
 </dialog>
@@ -1226,7 +1231,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
 <script src="i18n.js?v=7"></script>
 <script src="hero.js?v=4"></script>
 <script src="songs.js?v=31b9e6c0"></script>
-<script src="app.js?v=21"></script>
+<script src="app.js?v=22"></script>
 <script src="globe.js?v=2"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>

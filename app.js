@@ -196,10 +196,12 @@
   var dlg=document.getElementById('detail'),cur=null;
   function key(a){return a.dataset.id||a.dataset.yt||a.dataset.key}
   function fmtText(t){return esc(t).replace(/\{\{(.+?)\}\}/g,'<span class="orig" lang="en">$1</span>').replace(/\n/g,'<br>')}
-  var lyMode='orig';try{if(localStorage.getItem('abard-ly')==='de')lyMode='de'}catch(e){}
+  // Songtext startet immer im Original; die sinngemäße Übersetzung muss aktiv gewählt werden
+  var lyMode='orig',lyFor=null;
   document.querySelectorAll('#lytog button').forEach(function(b){b.addEventListener('click',function(){
-    lyMode=b.dataset.ly;try{localStorage.setItem('abard-ly',lyMode)}catch(e){}
-    if(cur){var y=dlg.scrollTop;openDetail(cur,true);dlg.scrollTop=y}
+    lyMode=b.dataset.ly;
+    if(cur){var y=dlg.scrollTop;openDetail(cur,true);dlg.scrollTop=y;
+      var ls=document.getElementById('d-lyrics');if(!ls.hidden)ls.scrollIntoView({behavior:'smooth',block:'start'})}
   })});
   function longDate(d){var M=T('monthsLong'),day=+d.slice(8,10),mo=M[+d.slice(5,7)-1],y=d.slice(0,4);return I.lang()==='de'?day+'. '+mo+' '+y:mo+' '+day+', '+y}
   function num(n){return I.lang()==='de'?Number(n).toLocaleString('de-CH').replace(/'/g,'’'):Number(n).toLocaleString('en-US')}
@@ -219,7 +221,8 @@
     // Deutsch: übersetzte Story ({{…}} = englisches Originalzitat, klein/kursiv) und auf Wunsch sinngemäßer Songtext
     var de=I.lang()==='de',st=(de&&info.story_de)||info.story;
     story.hidden=!st;story.querySelector('p').innerHTML=st?fmtText(st):'';
-    var hasDe=de&&!!info.lyrics_de,useDe=hasDe&&lyMode==='de';
+    if(lyFor!==a){lyFor=a;lyMode='orig'}
+    var hasDe=!!info.lyrics_de,useDe=hasDe&&lyMode==='de';
     document.getElementById('lytog').hidden=!hasDe;document.getElementById('lynote').hidden=!useDe;
     document.querySelectorAll('#lytog button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.ly===(useDe?'de':'orig')))});
     var lt=useDe?info.lyrics_de:info.lyrics;
@@ -229,7 +232,7 @@
     if(!dlg.open)dlg.showModal();dlg.scrollTop=0;
   }
   function closeDetail(){dlg.close()}
-  dlg.addEventListener('close',function(){if(location.hash.indexOf('#song-')===0)history.replaceState(null,'',location.pathname+location.search)});
+  dlg.addEventListener('close',function(){lyFor=null;if(location.hash.indexOf('#song-')===0)history.replaceState(null,'',location.pathname+location.search)});
   dlg.addEventListener('click',function(e){if(e.target===dlg)closeDetail()});
   document.getElementById('d-close').addEventListener('click',closeDetail);
   document.getElementById('d-sp').addEventListener('click',function(){play(cur,false);closeDetail()});
