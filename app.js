@@ -196,13 +196,13 @@
   var dlg=document.getElementById('detail'),cur=null;
   function key(a){return a.dataset.id||a.dataset.yt||a.dataset.key}
   function fmtText(t){return esc(t).replace(/\{\{(.+?)\}\}/g,'<span class="orig" lang="en">$1</span>').replace(/\n/g,'<br>')}
-  // Songtext startet immer im Original; die sinngemässe Übersetzung muss aktiv gewählt werden
-  var lyMode='orig',lyFor=null;
-  document.querySelectorAll('#lytog button').forEach(function(b){b.addEventListener('click',function(){
-    lyMode=b.dataset.ly;
-    if(cur){var y=dlg.scrollTop;openDetail(cur,true);dlg.scrollTop=y;
-      var ls=document.getElementById('d-lyrics');if(!ls.hidden)ls.scrollIntoView({behavior:'smooth',block:'start'})}
-  })});
+  // Zwei Schalter im Song-Fenster:
+  //  - oben (#dltog, hinter „Teilen“): Story und Überschriften Englisch/Deutsch; Start = Seitensprache
+  //  - beim Songtext (#lytog): Original / sinngemässe Übersetzung; startet IMMER im Original, nur aktiv per Klick
+  var dlMode='orig',lyMode='orig',lyFor=null;
+  function rerender(){if(cur){var y=dlg.scrollTop;openDetail(cur,true);dlg.scrollTop=y}}
+  document.querySelectorAll('#dltog button').forEach(function(b){b.addEventListener('click',function(){dlMode=b.dataset.dl;rerender()})});
+  document.querySelectorAll('#lytog button').forEach(function(b){b.addEventListener('click',function(){lyMode=b.dataset.ly;rerender()})});
   function longDate(d){var M=T('monthsLong'),day=+d.slice(8,10),mo=M[+d.slice(5,7)-1],y=d.slice(0,4);return I.lang()==='de'?day+'. '+mo+' '+y:mo+' '+day+', '+y}
   function num(n){return I.lang()==='de'?Number(n).toLocaleString('de-CH').replace(/'/g,'’'):Number(n).toLocaleString('en-US')}
   function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML}
@@ -220,12 +220,16 @@
     var story=document.getElementById('d-story'),ly=document.getElementById('d-lyrics');
     // Deutsch: übersetzte Story ({{…}} = englisches Originalzitat, klein/kursiv) und auf Wunsch sinngemässer Songtext
     // Umschalter „Deutsch“ stellt das ganze Fenster auf Deutsch (Überschriften, Story, Songtext), auch wenn die Seite auf EN steht
-    if(lyFor!==a){lyFor=a;lyMode='orig'}
+    if(lyFor!==a){lyFor=a;lyMode='orig';dlMode=I.lang()==='de'?'de':'orig'}
+    var hasSt=!!info.story_de,de=hasSt&&dlMode==='de',st=(de&&info.story_de)||info.story;
     var hasDe=!!info.lyrics_de,useDe=hasDe&&lyMode==='de';
-    var de=I.lang()==='de'||useDe,st=(de&&info.story_de)||info.story;
-    story.querySelector('h3').textContent=de?'Über den Song':T('d.story');
-    ly.querySelector('h3').textContent=useDe?'Songtext':T('d.lyrics');
+    story.querySelector('h3').textContent=de?'Über den Song':'About the song';
+    ly.querySelector('h3').textContent=de?'Songtext':'Lyrics';
+    document.getElementById('ly-de').textContent=de?'Übersetzung':'German';
+    document.getElementById('lynote').textContent=de?'Sinngemässe Übersetzung':'German translation (by meaning, not word for word)';
     story.hidden=!st;story.querySelector('p').innerHTML=st?fmtText(st):'';
+    document.getElementById('dltog').hidden=!hasSt;
+    document.querySelectorAll('#dltog button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.dl===(de?'de':'orig')))});
     document.getElementById('lytog').hidden=!hasDe;document.getElementById('lynote').hidden=!useDe;
     document.querySelectorAll('#lytog button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.ly===(useDe?'de':'orig')))});
     var lt=useDe?info.lyrics_de:info.lyrics;
@@ -477,7 +481,7 @@
     document.addEventListener('click',function(e){if(!au.paused&&e.target.closest&&e.target.closest('.rel')&&!e.target.closest('.tshare')){au.pause();resume=false;btn.setAttribute('aria-pressed','false')}},true);
   })();
   // Sprache gewechselt: offenen Songdialog neu beschriften
-  document.addEventListener('abard:lang',function(){if(dlg.open&&cur)openDetail(cur,true);var v=document.getElementById('vin-p');if(v&&vin.classList.contains('show')&&!nextT)v.textContent=T('vin.now')});
+  document.addEventListener('abard:lang',function(){if(dlg.open&&cur){lyFor=null;openDetail(cur,true)}var v=document.getElementById('vin-p');if(v&&vin.classList.contains('show')&&!nextT)v.textContent=T('vin.now')});
   // Video-Liste: eigene Playlist aus allen YouTube-Songs (neueste zuerst) statt der Kanal-Uploads
   (function(){
     var f=document.getElementById('ytlist');if(!f)return;

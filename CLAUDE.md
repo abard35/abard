@@ -13,7 +13,7 @@ Diese Regeln gelten zusätzlich zum Release-Ablauf (Skill „abard-release-sneak
 - Vor dem Veröffentlichen selbst gegenlesen (und prüfen, dass kein „ß“ vorkommt) – Albert ist Muttersprachler, holprige Stellen wären peinlich.
 - `songs.js` mit `json.dumps(…, ensure_ascii=False, indent=2)` schreiben (Kopfkommentar behalten).
 
-- Song-Fenster: Umschalter „Original | Deutsch“ steht mit Abstand hinter „Teilen“, ist in beiden Sprachen sichtbar und startet bei jedem Song im Original (Übersetzung nur auf Klick). „Deutsch“ stellt das ganze Fenster auf Deutsch (Überschriften, Story, Songtext), auch wenn die Seite auf EN steht. Erstbesucher sehen Englisch.
+- Song-Fenster hat zwei Schalter: (1) oben mit Abstand hinter „Teilen“: „Original | Deutsch“ für „Über den Song“ und die Überschriften, Start = Seitensprache (Erstbesucher Englisch); (2) beim Songtext: „Original | Übersetzung“, startet bei jedem Song IMMER im Original – die sinngemässe Übersetzung nur auf aktiven Klick.
 
 ## Nach jeder Änderung
 - `python3 tools/build_share.py` ausführen (Songseiten, JSON-LD, Sitemap, Versionsnummer `songs.js?v=`).
