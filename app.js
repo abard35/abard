@@ -195,6 +195,12 @@
 
   var dlg=document.getElementById('detail'),cur=null;
   function key(a){return a.dataset.id||a.dataset.yt||a.dataset.key}
+  function fmtText(t){return esc(t).replace(/\{\{(.+?)\}\}/g,'<span class="orig" lang="en">$1</span>').replace(/\n/g,'<br>')}
+  var lyMode='orig';try{if(localStorage.getItem('abard-ly')==='de')lyMode='de'}catch(e){}
+  document.querySelectorAll('#lytog button').forEach(function(b){b.addEventListener('click',function(){
+    lyMode=b.dataset.ly;try{localStorage.setItem('abard-ly',lyMode)}catch(e){}
+    if(cur){var y=dlg.scrollTop;openDetail(cur,true);dlg.scrollTop=y}
+  })});
   function longDate(d){var M=T('monthsLong'),day=+d.slice(8,10),mo=M[+d.slice(5,7)-1],y=d.slice(0,4);return I.lang()==='de'?day+'. '+mo+' '+y:mo+' '+day+', '+y}
   function num(n){return I.lang()==='de'?Number(n).toLocaleString('de-CH').replace(/'/g,'’'):Number(n).toLocaleString('en-US')}
   function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML}
@@ -210,8 +216,14 @@
     if(a.dataset.yt||a.dataset.ytx)l.innerHTML+='<a href="https://www.youtube.com/watch?v='+(a.dataset.yt||a.dataset.ytx)+'" target="_blank" rel="noopener">'+esc(T('open.yt'))+'</a>';
     if(!a.dataset.id&&!a.dataset.yt&&!a.dataset.ytx)l.innerHTML+='<a href="'+esc(a.href)+'" target="_blank" rel="noopener">'+esc(T('open.sp'))+'</a>';
     var story=document.getElementById('d-story'),ly=document.getElementById('d-lyrics');
-    story.hidden=!info.story;story.querySelector('p').innerHTML=info.story?esc(info.story).replace(/\n/g,'<br>'):'';
-    ly.hidden=!info.lyrics;ly.querySelector('div').innerHTML=info.lyrics?esc(info.lyrics).replace(/\n/g,'<br>'):'';
+    // Deutsch: übersetzte Story ({{…}} = englisches Originalzitat, klein/kursiv) und auf Wunsch sinngemäßer Songtext
+    var de=I.lang()==='de',st=(de&&info.story_de)||info.story;
+    story.hidden=!st;story.querySelector('p').innerHTML=st?fmtText(st):'';
+    var hasDe=de&&!!info.lyrics_de,useDe=hasDe&&lyMode==='de';
+    document.getElementById('lytog').hidden=!hasDe;document.getElementById('lynote').hidden=!useDe;
+    document.querySelectorAll('#lytog button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.ly===(useDe?'de':'orig')))});
+    var lt=useDe?info.lyrics_de:info.lyrics;
+    ly.hidden=!info.lyrics;ly.querySelector('.lybody').innerHTML=lt?esc(lt).replace(/\n/g,'<br>'):'';
     favSync();
     if(!noHash)history.replaceState(null,'','#song-'+k);
     if(!dlg.open)dlg.showModal();dlg.scrollTop=0;
