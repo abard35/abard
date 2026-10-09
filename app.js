@@ -380,7 +380,8 @@
     var sp=box.dataset.sp,yt=box.dataset.yt;
     if(sp)document.getElementById('out-sp').href='https://open.spotify.com/album/'+sp;
     if(yt)document.getElementById('out-yt').href='https://www.youtube.com/watch?v='+yt;
-    document.querySelectorAll('.rel[data-at]').forEach(function(a){
+    // Nur die Kachel dieses Releases ergänzen – nicht andere noch unveröffentlichte Songs
+    document.querySelectorAll('.rel[data-at][data-slug="'+box.dataset.slug+'"]').forEach(function(a){
       if(sp&&!a.dataset.id){a.dataset.id=sp;a.href='https://open.spotify.com/album/'+sp}
       if(yt&&!a.dataset.yt){a.dataset.yt=yt;if(!sp)a.href='https://www.youtube.com/watch?v='+yt}
     });
