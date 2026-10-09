@@ -341,6 +341,18 @@
     play(o);
   });
   favRender();favSync();
+  // Von der Songseite („▶ Play on ABard“): Song direkt im Player starten statt nur den Songtext zu zeigen.
+  // Browser erlauben Ton ohne Klick auf der Seite nicht immer – dann steht der Song bereit, ein Tipp auf ▶ im Player genügt.
+  if(location.hash.indexOf('#play-')===0){
+    var sl=decodeURIComponent(location.hash.slice(6)),pa=null;
+    document.querySelectorAll('.rel[data-slug="'+sl.replace(/"/g,'')+'"]').forEach(function(r){if(!r.hidden&&!r.closest('#favs')&&(!pa||pa.classList.contains('big')))pa=r});
+    history.replaceState(null,'',location.pathname+location.search);
+    if(pa){
+      pa.scrollIntoView({block:'center'});
+      var w0=Date.now();
+      (function go(){if(spAPI||src==='youtube'||!pa.dataset.id||Date.now()-w0>3000)play(pa);else setTimeout(go,150)})();
+    }
+  }
   if(location.hash.indexOf('#song-')===0){var k0=location.hash.slice(6),a0=document.querySelector('.rel[data-id="'+k0+'"]:not([hidden]),.rel[data-yt="'+k0+'"]:not([hidden]),.rel[data-key="'+k0+'"]:not([hidden])');if(a0)openDetail(a0,true)}
   // Song-Verzeichnis A–Z: unveröffentlichte Songs ab Release-Zeit zeigen (Trennpunkte nur zwischen sichtbaren)
   (function(){

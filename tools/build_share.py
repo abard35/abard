@@ -43,7 +43,7 @@ def fix(m):
         first = st.split("\n\n")[0] if st else ""
         desc = short(first) if first else f"Listen to {title} by ABard on Spotify and YouTube."
         url = f"{BASE}/s/{slug}/"
-        target = f"/#song-{key}"
+        target = f"/#play-{slug}"
         e = html.escape
         sp = attr(t, "data-id"); yt = attr(t, "data-yt") or attr(t, "data-ytx")
         genre = attr(t, "data-genre") or ""; date = attr(t, "data-date") or ""
