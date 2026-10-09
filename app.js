@@ -196,7 +196,7 @@
   var dlg=document.getElementById('detail'),cur=null;
   function key(a){return a.dataset.id||a.dataset.yt||a.dataset.key}
   function fmtText(t){return esc(t).replace(/\{\{(.+?)\}\}/g,'<span class="orig" lang="en">$1</span>').replace(/\n/g,'<br>')}
-  // Songtext startet immer im Original; die sinngemäße Übersetzung muss aktiv gewählt werden
+  // Songtext startet immer im Original; die sinngemässe Übersetzung muss aktiv gewählt werden
   var lyMode='orig',lyFor=null;
   document.querySelectorAll('#lytog button').forEach(function(b){b.addEventListener('click',function(){
     lyMode=b.dataset.ly;
@@ -218,7 +218,7 @@
     if(a.dataset.yt||a.dataset.ytx)l.innerHTML+='<a href="https://www.youtube.com/watch?v='+(a.dataset.yt||a.dataset.ytx)+'" target="_blank" rel="noopener">'+esc(T('open.yt'))+'</a>';
     if(!a.dataset.id&&!a.dataset.yt&&!a.dataset.ytx)l.innerHTML+='<a href="'+esc(a.href)+'" target="_blank" rel="noopener">'+esc(T('open.sp'))+'</a>';
     var story=document.getElementById('d-story'),ly=document.getElementById('d-lyrics');
-    // Deutsch: übersetzte Story ({{…}} = englisches Originalzitat, klein/kursiv) und auf Wunsch sinngemäßer Songtext
+    // Deutsch: übersetzte Story ({{…}} = englisches Originalzitat, klein/kursiv) und auf Wunsch sinngemässer Songtext
     var de=I.lang()==='de',st=(de&&info.story_de)||info.story;
     story.hidden=!st;story.querySelector('p').innerHTML=st?fmtText(st):'';
     if(lyFor!==a){lyFor=a;lyMode='orig'}
