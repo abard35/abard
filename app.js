@@ -225,8 +225,7 @@
     var hasDe=!!info.lyrics_de,useDe=hasDe&&lyMode==='de';
     story.querySelector('h3').textContent=de?'Über den Song':'About the song';
     ly.querySelector('h3').textContent=de?'Songtext':'Lyrics';
-    document.getElementById('ly-de').textContent=de?'Übersetzung':'German';
-    document.getElementById('lynote').textContent=de?'Sinngemässe Übersetzung':'German translation (by meaning, not word for word)';
+    document.getElementById('lynote').textContent='Sinngemässe Übersetzung';
     story.hidden=!st;story.querySelector('p').innerHTML=st?fmtText(st):'';
     document.getElementById('dltog').hidden=!hasSt;
     document.querySelectorAll('#dltog button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.dl===(de?'de':'orig')))});

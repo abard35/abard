@@ -10,10 +10,11 @@ Diese Regeln gelten zusätzlich zum Release-Ablauf (Skill „abard-release-sneak
 - Deutsche Texte: deutsche Wortwahl und Grammatik, aber **immer „ss“ statt „ß“** (Alberts Wunsch: ß wurde früher in Browsern oft falsch dargestellt). Durchgehend „du“, bei mehreren Angesprochenen „ihr“.
 - `story_de`: natürliche, muttersprachliche Übersetzung. Songtitel und Fachbegriffe (Power Ballad, Wall of Sound …) bleiben englisch, Titel in „…“. Wörtlich zitierte Songzeilen: deutsche Übersetzung im Text, danach das englische Original in `{{…}}` – wird klein und kursiv dahinter angezeigt. Bildhafte Anleihen aus dem Songtext nur übersetzen, nicht markieren.
 - `lyrics_de`: sinngemässe, nicht wörtliche Übersetzung; Zeile für Zeile mit identischer Zeilen- und Strophenstruktur wie `lyrics` (gleiche Leerzeilen), damit man mitlesen kann. Kein Reimzwang, Rock-Ton statt Schlager. Interjektionen (Oh, Yeah, Mmh …) unverändert, Klammern (Backing Vocals) übersetzen. Gleiche englische Zeile → gleiche deutsche Zeile.
+- Kritisch übersetzen: nicht die erste Wörterbuch-Vokabel, sondern das Wort, das im Kontext passt (Beispiel: „ohne ein Geräusch“ statt „ohne einen Laut“, „egoistisch“ statt „selbstsüchtig“).
 - Vor dem Veröffentlichen selbst gegenlesen (und prüfen, dass kein „ß“ vorkommt) – Albert ist Muttersprachler, holprige Stellen wären peinlich.
 - `songs.js` mit `json.dumps(…, ensure_ascii=False, indent=2)` schreiben (Kopfkommentar behalten).
 
-- Song-Fenster hat zwei Schalter: (1) oben mit Abstand hinter „Teilen“: „Original | Deutsch“ für „Über den Song“ und die Überschriften, Start = Seitensprache (Erstbesucher Englisch); (2) beim Songtext: „Original | Übersetzung“, startet bei jedem Song IMMER im Original – die sinngemässe Übersetzung nur auf aktiven Klick.
+- Song-Fenster hat zwei Schalter: (1) oben mit Abstand hinter „Teilen“: „Original | DE“ für „Über den Song“ und die Überschriften, Start = Seitensprache (Erstbesucher Englisch); (2) beim Songtext: „Original | DE“ (Hinweis „Sinngemässe Übersetzung“), startet bei jedem Song IMMER im Original – die sinngemässe Übersetzung nur auf aktiven Klick.
 
 ## Nach jeder Änderung
 - `python3 tools/build_share.py` ausführen (Songseiten, JSON-LD, Sitemap, Versionsnummer `songs.js?v=`).
