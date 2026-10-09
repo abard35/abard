@@ -219,10 +219,13 @@
     if(!a.dataset.id&&!a.dataset.yt&&!a.dataset.ytx)l.innerHTML+='<a href="'+esc(a.href)+'" target="_blank" rel="noopener">'+esc(T('open.sp'))+'</a>';
     var story=document.getElementById('d-story'),ly=document.getElementById('d-lyrics');
     // Deutsch: übersetzte Story ({{…}} = englisches Originalzitat, klein/kursiv) und auf Wunsch sinngemässer Songtext
-    var de=I.lang()==='de',st=(de&&info.story_de)||info.story;
-    story.hidden=!st;story.querySelector('p').innerHTML=st?fmtText(st):'';
+    // Umschalter „Deutsch“ stellt das ganze Fenster auf Deutsch (Überschriften, Story, Songtext), auch wenn die Seite auf EN steht
     if(lyFor!==a){lyFor=a;lyMode='orig'}
     var hasDe=!!info.lyrics_de,useDe=hasDe&&lyMode==='de';
+    var de=I.lang()==='de'||useDe,st=(de&&info.story_de)||info.story;
+    story.querySelector('h3').textContent=de?'Über den Song':T('d.story');
+    ly.querySelector('h3').textContent=useDe?'Songtext':T('d.lyrics');
+    story.hidden=!st;story.querySelector('p').innerHTML=st?fmtText(st):'';
     document.getElementById('lytog').hidden=!hasDe;document.getElementById('lynote').hidden=!useDe;
     document.querySelectorAll('#lytog button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.ly===(useDe?'de':'orig')))});
     var lt=useDe?info.lyrics_de:info.lyrics;
