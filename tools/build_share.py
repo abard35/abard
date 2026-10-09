@@ -74,6 +74,7 @@ def fix(m):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(title)} – ABard{(" | " + e(style)) if style else ""}</title>
 <meta name="description" content="{e(desc)}">
+<script src="/share-go.js"></script>
 <link rel="canonical" href="{url}">
 <meta property="og:type" content="music.song">
 <meta property="og:site_name" content="ABard">
