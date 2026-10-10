@@ -4,6 +4,7 @@
 <title>Lullaby For The Stars – ABard | Cinematic Lullaby / Celestial Ballad</title>
 <meta name="description" content="For billions of years, the stars have watched over us – burning through the cold and the silence, night after night, guiding every wanderer below. “Lullaby For The …">
 <script src="/share-go.js"></script>
+<script src="/song-page.js" defer></script>
 <link rel="canonical" href="https://abard.die-bardewycks.ch/s/lullaby-for-the-stars/">
 <meta property="og:type" content="music.song">
 <meta property="og:site_name" content="ABard">
@@ -42,6 +43,14 @@ h1{font-family:var(--display);font-weight:900;font-size:clamp(2.4rem,7vw,4.2rem)
 section{border-top:1px solid var(--line);padding-block:24px}
 h2{font-family:var(--mono);font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--sodium);margin:0 0 12px}
 section p{margin:0 0 1em;max-width:65ch}.lyrics p{color:#cfccc5}
+[hidden]{display:none!important}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap;margin:0 0 12px;max-width:65ch}.hd h2{margin:0}
+.tog{display:inline-flex;border:1px solid var(--line)}
+.tog button{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--muted);border:0;padding:5px 11px;min-height:36px;cursor:pointer;-webkit-appearance:none;appearance:none;border-radius:0}
+.tog button:hover,.tog button:focus-visible{color:var(--fg)}
+.tog button[aria-pressed="true"]{background:var(--sodium);color:var(--bg)}
+.orig{font-size:.82em;font-style:italic;color:var(--muted);margin-left:.3em}
+.lyrics p.note{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;color:var(--muted)}
 footer{border-top:1px solid var(--line);padding-block:28px;font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 footer a{text-decoration:none}footer a:hover{color:var(--sodium)}
 </style>
@@ -56,8 +65,8 @@ footer a{text-decoration:none}footer a:hover{color:var(--sodium)}
 <div class="btns"><a class="btn primary" href="/#play-lullaby-for-the-stars">▶ Play on ABard</a><a class="btn" href="https://open.spotify.com/album/115Uj11oUNMB2lb0F2lfSy" target="_blank" rel="noopener">Spotify</a><a class="btn" href="https://www.youtube.com/watch?v=OByrrp1MFjA" target="_blank" rel="noopener">YouTube</a></div>
 </div>
 </div>
-<section><h2>The Story</h2><p>For billions of years, the stars have watched over us – burning through the cold and the silence, night after night, guiding every wanderer below. “Lullaby For The Stars” turns the roles around: now it is our turn to sing them to sleep.</p><p>A quiet, tender song for the ancient lights above us. Close your eyes and drift away beneath an endless sky.</p></section>
-<section class="lyrics"><h2>Lyrics</h2><p>Velvet sky begins to fade<br>A billion years, a soft cascade<br>Quiet now, the heavens weep<br>Close your eyes and fall asleep</p><p>Drifting through the endless night<br>Letting go of ancient light<br>Rest your head, my distant fires<br>Time will hush your burning choirs</p><p>Sleep now, burning light<br>Fading softly into night<br>Through the silence and the cold<br>Rest your story, vast and old<br>Lullaby for the stars<br>Lullaby for the stars</p></section>
+<section class="story" data-sw="story"><div class="hd"><h2 data-en="The Story" data-de="Über den Song">The Story</h2><span class="tog" data-tog="story" role="group" aria-label="Sprache" hidden><button type="button" data-v="orig" aria-pressed="true">Original</button><button type="button" data-v="de" aria-pressed="false" title="Sinngemässe deutsche Übersetzung">DE</button></span></div><div class="txt" data-v="orig"><p>For billions of years, the stars have watched over us – burning through the cold and the silence, night after night, guiding every wanderer below. “Lullaby For The Stars” turns the roles around: now it is our turn to sing them to sleep.</p><p>A quiet, tender song for the ancient lights above us. Close your eyes and drift away beneath an endless sky.</p></div><div class="txt" data-v="de" lang="de" hidden><p>Seit Milliarden von Jahren wachen die Sterne über uns – sie brennen durch Kälte und Stille, Nacht für Nacht, und weisen jedem Wanderer hier unten den Weg. „Lullaby For The Stars“ kehrt die Rollen um: Jetzt sind wir an der Reihe, sie in den Schlaf zu singen.</p><p>Ein leiser, zärtlicher Song für die uralten Lichter über uns. Schliess die Augen und lass dich unter einem endlosen Himmel davontreiben.</p></div></section>
+<section class="lyrics" data-sw="lyrics"><div class="hd"><h2 data-en="Lyrics" data-de="Songtext">Lyrics</h2><span class="tog" data-tog="lyrics" role="group" aria-label="Sprache" hidden><button type="button" data-v="orig" aria-pressed="true">Original</button><button type="button" data-v="de" aria-pressed="false" title="Sinngemässe deutsche Übersetzung">DE</button></span></div><div class="txt" data-v="orig"><p>Velvet sky begins to fade<br>A billion years, a soft cascade<br>Quiet now, the heavens weep<br>Close your eyes and fall asleep</p><p>Drifting through the endless night<br>Letting go of ancient light<br>Rest your head, my distant fires<br>Time will hush your burning choirs</p><p>Sleep now, burning light<br>Fading softly into night<br>Through the silence and the cold<br>Rest your story, vast and old<br>Lullaby for the stars<br>Lullaby for the stars</p></div><div class="txt" data-v="de" lang="de" hidden><p class="note">Sinngemässe Übersetzung</p><p>Der Samthimmel beginnt zu verblassen<br>Eine Milliarde Jahre, ein sanftes Rieseln<br>Still jetzt, die Himmel weinen<br>Schliesst die Augen, schlaft nun ein</p><p>Treibt durch die endlose Nacht<br>Lasst los das uralte Licht<br>Legt euch schlafen, meine fernen Feuer<br>Die Zeit lässt eure brennenden Chöre verstummen</p><p>Schlaf jetzt, brennendes Licht<br>Verglüh sanft in die Nacht<br>Durch die Stille und die Kälte<br>Lass deine Geschichte ruhen, so weit und alt<br>Wiegenlied für die Sterne<br>Wiegenlied für die Sterne</p></div></section>
 </main>
 <footer class="wrap"><a href="/">← abard.die-bardewycks.ch</a><span>© 2025–2026 ABard</span><a href="/disclaimer.html">Disclaimer</a></footer>
 </body></html>

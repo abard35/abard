@@ -237,6 +237,13 @@
     if(!noHash)history.replaceState(null,'','#song-'+k);
     if(!dlg.open)dlg.showModal();dlg.scrollTop=0;
   }
+  document.addEventListener('click',function(e){
+    if(e.defaultPrevented||e.button||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
+    var l=e.target.closest&&e.target.closest('#out-st,.songlist a');if(!l)return;
+    var m=(l.getAttribute('href')||'').match(/(?:^|\/)s\/([^\/]+)\/?$/);if(!m)return;
+    var t=document.querySelector('a.rel[data-slug="'+m[1]+'"]');if(!t)return;
+    e.preventDefault();openDetail(t);
+  });
   function closeDetail(){dlg.close()}
   dlg.addEventListener('close',function(){lyFor=null;if(location.hash.indexOf('#song-')===0)history.replaceState(null,'',location.pathname+location.search)});
   dlg.addEventListener('click',function(e){if(e.target===dlg)closeDetail()});

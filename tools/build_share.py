@@ -56,8 +56,35 @@ def fix(m):
         info_k = info.get(key) or info.get(attr(t, "data-yt") or "") or {}
         def paras(txt, br):
             return "".join("<p>" + e(p).replace("\n", "<br>") + "</p>" for p in txt.split("\n\n") if p.strip())
-        story_html = f'<section><h2>The Story</h2>{paras(info_k["story"], True)}</section>' if info_k.get("story") else ""
-        lyr_html = f'<section class="lyrics"><h2>Lyrics</h2>{paras(info_k["lyrics"], True)}</section>' if info_k.get("lyrics") else ""
+        def paras_de(txt):
+            # {{…}} = zitierte Originalzeile, klein und kursiv (wie im Song-Fenster der Startseite)
+            out = ""
+            for p in txt.split("\n\n"):
+                if not p.strip(): continue
+                h = e(p).replace("\n", "<br>")
+                h = re.sub(r"\{\{(.+?)\}\}", r'<span class="orig" lang="en">\1</span>', h)
+                out += "<p>" + h + "</p>"
+            return out
+        def tog(kind):
+            return (f'<span class="tog" data-tog="{kind}" role="group" aria-label="Sprache" hidden>'
+                    '<button type="button" data-v="orig" aria-pressed="true">Original</button>'
+                    '<button type="button" data-v="de" aria-pressed="false" title="Sinngemässe deutsche Übersetzung">DE</button></span>')
+        story_html = ""
+        if info_k.get("story"):
+            if info_k.get("story_de"):
+                story_html = (f'<section class="story" data-sw="story"><div class="hd"><h2 data-en="The Story" data-de="Über den Song">The Story</h2>{tog("story")}</div>'
+                              f'<div class="txt" data-v="orig">{paras(info_k["story"], True)}</div>'
+                              f'<div class="txt" data-v="de" lang="de" hidden>{paras_de(info_k["story_de"])}</div></section>')
+            else:
+                story_html = f'<section><h2>The Story</h2>{paras(info_k["story"], True)}</section>'
+        lyr_html = ""
+        if info_k.get("lyrics"):
+            if info_k.get("lyrics_de"):
+                lyr_html = (f'<section class="lyrics" data-sw="lyrics"><div class="hd"><h2 data-en="Lyrics" data-de="Songtext">Lyrics</h2>{tog("lyrics")}</div>'
+                            f'<div class="txt" data-v="orig">{paras(info_k["lyrics"], True)}</div>'
+                            f'<div class="txt" data-v="de" lang="de" hidden><p class="note">Sinngemässe Übersetzung</p>{paras(info_k["lyrics_de"], True)}</div></section>')
+            else:
+                lyr_html = f'<section class="lyrics"><h2>Lyrics</h2>{paras(info_k["lyrics"], True)}</section>'
         btns = f'<a class="btn primary" href="{target}">▶ Play on ABard</a>'
         if sp: btns += f'<a class="btn" href="https://open.spotify.com/album/{e(sp)}" target="_blank" rel="noopener">Spotify</a>'
         if yt: btns += f'<a class="btn" href="https://www.youtube.com/watch?v={e(yt)}" target="_blank" rel="noopener">YouTube</a>'
@@ -75,6 +102,7 @@ def fix(m):
 <title>{e(title)} – ABard{(" | " + e(style)) if style else ""}</title>
 <meta name="description" content="{e(desc)}">
 <script src="/share-go.js"></script>
+<script src="/song-page.js" defer></script>
 <link rel="canonical" href="{url}">
 <meta property="og:type" content="music.song">
 <meta property="og:site_name" content="ABard">
@@ -113,6 +141,14 @@ h1{{font-family:var(--display);font-weight:900;font-size:clamp(2.4rem,7vw,4.2rem
 section{{border-top:1px solid var(--line);padding-block:24px}}
 h2{{font-family:var(--mono);font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--sodium);margin:0 0 12px}}
 section p{{margin:0 0 1em;max-width:65ch}}.lyrics p{{color:#cfccc5}}
+[hidden]{{display:none!important}}
+.hd{{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap;margin:0 0 12px;max-width:65ch}}.hd h2{{margin:0}}
+.tog{{display:inline-flex;border:1px solid var(--line)}}
+.tog button{{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--muted);border:0;padding:5px 11px;min-height:36px;cursor:pointer;-webkit-appearance:none;appearance:none;border-radius:0}}
+.tog button:hover,.tog button:focus-visible{{color:var(--fg)}}
+.tog button[aria-pressed="true"]{{background:var(--sodium);color:var(--bg)}}
+.orig{{font-size:.82em;font-style:italic;color:var(--muted);margin-left:.3em}}
+.lyrics p.note{{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;color:var(--muted)}}
 footer{{border-top:1px solid var(--line);padding-block:28px;font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}}
 footer a{{text-decoration:none}}footer a:hover{{color:var(--sodium)}}
 </style>
