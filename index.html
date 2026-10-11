@@ -268,7 +268,9 @@ body.yt .rel:not([data-yt]) .only,.rel .yt-only{display:block}
 a.pyt{flex:none;align-self:flex-start;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:9px 12px}
 a.pyt:hover,a.pyt:focus-visible{color:var(--fg);border-color:var(--fg)}
 .pyts{flex:none;display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start}.pyts a.pyt[hidden]{display:none}
-.ps-row{margin-top:14px}.ps-row .btn[hidden]{display:none}
+.ps-row{margin-top:14px}
+.ctools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.ctool{display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--line);color:var(--muted);font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;padding:7px 11px;cursor:pointer}.ctool svg{width:14px;height:14px;fill:currentColor}.ctool:hover,.ctool:focus-visible{border-color:var(--sodium);color:var(--sodium)}.ctool[hidden]{display:none}
+.ps-row .btn[hidden]{display:none}
 body.playing-yt.playing{padding-bottom:220px}
 .rel h3,.rel .meta{transition:color .2s}
 .rel::after{content:"Story & Lyrics ›";align-self:flex-start;margin-top:auto!important;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sodium);border:1px solid rgba(216,162,63,.45);padding:5px 9px;margin-top:2px;transition:background .2s,color .2s}
@@ -957,7 +959,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
         </div>
       </div>
       <!-- Nächster Release. data-time leer = Uhrzeit noch nicht bestätigt: dann nur Tage-Countdown -->
-      <div class="next" id="soon" data-day="2026-10-16" data-time="00:00">
+      <div class="next" id="soon" data-slug="no-someday-left" data-day="2026-10-16" data-time="00:00" data-at="2026-10-16T00:00:00+02:00">
         <img src="no-someday-left.jpg?v=1" alt="Cover: No Someday Left" width="1080" height="1080">
         <div>
           <p class="eyebrow" id="soon-eye" data-i18n="next.soon">Next Release · Single</p>
@@ -972,10 +974,11 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
           <button type="button" class="sneak" id="soon-sneak" aria-pressed="false"><span class="sn-ic" aria-hidden="true"></span><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-bar" aria-hidden="true"><i id="soon-sneak-p"></i></span><span class="sn-t" id="soon-sneak-t">1:00</span></button>
           <audio class="sneak-a" id="soon-sneak-a" src="no-someday-left-sneak.m4a?v=2" preload="none"></audio>
           <p class="cta ps-row"><a class="btn primary" id="soon-ps" href="https://distrokid.com/hyperfollow/abard1/no-someday-left" target="_blank" rel="noopener" data-i18n="soon.ps">Pre-save on Spotify</a></p>
+          <p class="ctools"><button type="button" class="ctool" data-act="share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg><span data-i18n="share">Share</span></button><button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 7h14v10H5V9Zm2 2v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg><span data-i18n="cal">Add to calendar</span></button></p>
           <p class="out cta" id="soon-out" hidden><a class="btn primary" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener" data-i18n="out.sp">Listen on Spotify</a><a class="btn" href="https://www.youtube.com/watch?v=PRjUn0dRNEM" target="_blank" rel="noopener" data-i18n="out.yt">Watch on YouTube</a><a class="btn" href="s/no-someday-left/" data-i18n="out.st">Story &amp; Lyrics</a></p>
         </div>
       </div>
-      <div class="next" id="later" data-day="2026-10-31" data-time="00:00" data-at="2026-10-31T00:00:00+01:00" data-after="2026-10-16T00:00:00+02:00">
+      <div class="next" id="later" data-slug="der-uhrmacher" data-day="2026-10-31" data-time="00:00" data-at="2026-10-31T00:00:00+01:00" data-after="2026-10-16T00:00:00+02:00">
         <img src="der-uhrmacher.jpg?v=1" alt="Cover: Der Uhrmacher" width="1080" height="1080" loading="lazy">
         <div>
           <p class="eyebrow" id="later-eye" data-i18n="next.soon">Next Release · Single</p>
@@ -990,6 +993,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
           <button type="button" class="sneak" id="later-sneak" aria-pressed="false"><span class="sn-ic" aria-hidden="true"></span><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-bar" aria-hidden="true"><i id="later-sneak-p"></i></span><span class="sn-t" id="later-sneak-t">1:00</span></button>
           <audio class="sneak-a" id="later-sneak-a" src="der-uhrmacher-sneak.m4a?v=1" preload="none"></audio>
           <p class="cta ps-row"><a class="btn primary" id="later-ps" href="https://distrokid.com/hyperfollow/abard1/der-uhrmacher" target="_blank" rel="noopener" data-i18n="soon.ps">Pre-save on Spotify</a></p>
+          <p class="ctools"><button type="button" class="ctool" data-act="share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg><span data-i18n="share">Share</span></button><button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 7h14v10H5V9Zm2 2v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg><span data-i18n="cal">Add to calendar</span></button></p>
           <p class="out cta" id="later-out" hidden><a class="btn primary" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener" data-i18n="out.sp">Listen on Spotify</a><a class="btn" href="https://www.youtube.com/watch?v=nGdRuE5QUXs" target="_blank" rel="noopener" data-i18n="out.yt">Watch on YouTube</a><a class="btn" href="s/der-uhrmacher/" data-i18n="out.st">Story &amp; Lyrics</a></p>
         </div>
       </div>
@@ -1268,10 +1272,10 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
   </div>
 </div>
 <template id="ic-heart"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.6 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.6 0 5.8 3.5 4.5 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg></template><template id="ic-share"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.4M8.3 13.2l7.4 4.4"/></svg></template>
-<script src="i18n.js?v=9"></script>
+<script src="i18n.js?v=10"></script>
 <script src="hero.js?v=4"></script>
 <script src="songs.js?v=ee4af142"></script>
-<script src="app.js?v=29"></script>
+<script src="app.js?v=30"></script>
 <script src="globe.js?v=2"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>

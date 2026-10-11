@@ -260,14 +260,14 @@
   function songUrl(a){
     return a.dataset.slug?location.origin+'/s/'+a.dataset.slug+'/?via=share':location.origin+location.pathname+'?via=share#song-'+key(a);
   }
-  function songTitle(a){return a.querySelector('h3').textContent}
+  function songTitle(a){return (a.querySelector('h3')||a.querySelector('h2')).textContent}
   var pop=null,popFor=null;
   function popClose(){if(pop){pop.hidden=true;popFor=null}}
   function host(el){var d=el.closest('dialog[open]');return d||document.body}
-  function shareSong(a,btn){
+  function shareSong(a,btn,items){
     var url=songUrl(a),t=songTitle(a)+' – ABard';
     var touch=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
-    if(touch&&navigator.share){navigator.share({title:t,text:t,url:url}).catch(function(){});return}
+    if(!items&&touch&&navigator.share){navigator.share({title:t,text:t,url:url}).catch(function(){});return}
     if(!pop){
       pop=document.createElement('div');pop.className='shpop';pop.hidden=true;pop.setAttribute('role','menu');
       document.addEventListener('click',function(e){if(pop&&!pop.hidden&&!pop.contains(e.target)&&e.target.closest('button')!==popFor)popClose()},true);
@@ -284,13 +284,14 @@
       if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(url).then(ok,function(){prompt(T('share.copy'),url)});
       else prompt(T('share.copy'),url);
     });
-    pop.appendChild(cp);
-    [['WhatsApp','https://wa.me/?text='+encodeURIComponent(msg)],
+    if(!items)pop.appendChild(cp);
+    (items||[['WhatsApp','https://wa.me/?text='+encodeURIComponent(msg)],
      ['Facebook','https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url)],
      ['X','https://x.com/intent/post?text='+encodeURIComponent(t)+'&url='+encodeURIComponent(url)],
      [T('share.mail'),'mai'+'lto:?subject='+encodeURIComponent(t)+'&body='+encodeURIComponent(msg)]
-    ].forEach(function(x){
+    ]).forEach(function(x){
       var l=document.createElement('a');l.setAttribute('role','menuitem');l.textContent=x[0];l.href=x[1];
+      if(x[2])l.setAttribute('download','');
       if(x[1].indexOf('http')===0){l.target='_blank';l.rel='noopener'}
       l.addEventListener('click',function(){setTimeout(popClose,50)});pop.appendChild(l);
     });
@@ -299,8 +300,23 @@
     var x=Math.min(Math.max(8,r.right-pw),vw-pw-8),y=r.bottom+8;
     if(y+ph>vh-8)y=Math.max(8,r.top-ph-8);
     pop.style.left=x+'px';pop.style.top=y+'px';
-    cp.focus({preventScroll:true});
+    (items?pop.querySelector('a'):cp).focus({preventScroll:true});
   }
+
+  // ---- Kalendereintrag für kommende Releases (Karten #soon/#later): .ics-Datei oder Google Kalender ----
+  function calPop(box,btn){
+    var t=box.dataset.at?Date.parse(box.dataset.at):Date.parse(box.dataset.day+'T'+(box.dataset.time||'00:00')+':00+02:00');
+    var slug=box.dataset.slug,title=songTitle(box),name='ABard – '+title+' (New Single)';
+    var z=function(ms){return new Date(ms).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')};
+    var det=title+' – new single by ABard, out now on Spotify & YouTube.\n'+location.origin+'/s/'+slug+'/';
+    shareSong(box,btn,[
+      [T('cal.ics'),'cal/'+slug+'.ics',true],
+      [T('cal.g'),'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(name)+'&dates='+z(t)+'/'+z(t+1800000)+'&details='+encodeURIComponent(det)+'&location='+encodeURIComponent('Spotify / YouTube')]
+    ]);
+  }
+  window.ABARD_CARD_TOOLS=function(box){
+    box.querySelectorAll('.ctool').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();if(b.dataset.act==='cal')calPop(box,b);else shareSong(box,b)})});
+  };
 
   // ---- Merken: Favoriten nur im Browser des Besuchers (localStorage), Schlüssel = Songseiten-Name ----
   function fkey(a){return a.dataset.slug||key(a)}
@@ -455,6 +471,7 @@
     var tm=box.dataset.time,t=box.dataset.at?Date.parse(box.dataset.at):Date.parse(box.dataset.day+'T'+(tm||'00:00')+':00+02:00'),pad=function(n){return String(n).padStart(2,'0')};
     var after=Date.parse(box.dataset.after||'');
     if(!tm)box.classList.add('soon-notime');
+    if(window.ABARD_CARD_TOOLS)window.ABARD_CARD_TOOLS(box);
     function waiting(){return !isNaN(after)&&Date.now()<after}
     function dateText(){
       var d=new Date(box.dataset.day+'T12:00:00+02:00'),l=I.lang()==='de'?'de-CH':'en-US';
@@ -472,7 +489,7 @@
       var s=Math.floor((t-Date.now())/1000);
       if(isNaN(s)||s<=0){
         var eye=g('eye');eye.setAttribute('data-i18n','next.out');eye.textContent=T('next.out');
-        g('cd').hidden=true;g('out').hidden=false;var ps=g('ps');if(ps)ps.hidden=true;
+        g('cd').hidden=true;g('out').hidden=false;var ps=g('ps');if(ps)ps.hidden=true;var cb=box.querySelector('.ctool[data-act="cal"]');if(cb)cb.hidden=true;
         // Kacheln mit Release-Zeit bis zu diesem Release einblenden (Countdown endet schon in der letzten Sekunde davor)
         document.querySelectorAll('.rel[data-at]').forEach(function(a){if(Date.parse(a.dataset.at)<=t)a.hidden=false});return;
       }

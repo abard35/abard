@@ -1,0 +1,24 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABard//Release//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:no-someday-left-release@abard.die-bardewycks.ch
+DTSTAMP:20261011T150000Z
+DTSTART:20261015T220000Z
+DTEND:20261015T223000Z
+SUMMARY:ABard – No Someday Left (New Single)
+DESCRIPTION:No Someday Left – new single by ABard\, out now on Spotify & 
+ YouTube.\n\nStory & lyrics: https://abard.die-bardewycks.ch/s/no-someday-l
+ eft/\nYouTube: https://www.youtube.com/watch?v=PRjUn0dRNEM\nSpotify: https
+ ://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN
+LOCATION:Spotify / YouTube
+URL:https://abard.die-bardewycks.ch/s/no-someday-left/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:ABard – No Someday Left is out now
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
