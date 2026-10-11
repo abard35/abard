@@ -25,3 +25,12 @@ Diese Regeln gelten zusätzlich zum Release-Ablauf (Skill „abard-release-sneak
 ## Sonstiges
 - Deutsche Bio steht in `artist.json` (`bio_de`), ebenfalls mit „ss“ statt „ß“.
 - Kontaktadresse darf nie im Klartext auf der Seite stehen.
+
+## Release-Ergänzungen (seit 11.10.2026, gelten zusätzlich zum Release-Ablauf)
+- **Pre-Save-Button** in der `#soon`-Karte unter dem Sneak Peek (`id="soon-ps"`, Text-Schlüssel `soon.ps`), Link = DistroKid-HyperFollow-Seite des Releases (`https://distrokid.com/hyperfollow/abard1/<slug>`, per Claude in Chrome aus DistroKid holen). Verschwindet zur Release-Zeit automatisch.
+- **Keine Weiterleitungsseiten für Bio-Links.** Instagram-/TikTok-Bio verlinkt immer die Startseite – Pre-Save läuft über den Button dort.
+- Inline-Skripte sind per Content-Security-Policy gesperrt: JS immer als eigene Datei.
+- **Stempel-Teaser** für Instagram/TikTok: Stempel „NEW SINGLE / OUT <MON> <TAG> / ABARD — <Jahr>“ in `#d8a23f` mit den Website-Schriften (Big Shoulders Display, IBM Plex Mono), leicht gedreht, dezente Textur; oben im Unschärfe-Bereich über dem Cover, für TikTok ca. 150 px tiefer (sonst liegt „Following | For You“ darüber); erscheint nach der Video-Einblendung (~2.5 s). Ausgabe `<Titel> Preview 9x16 Stempel.mov` plus Upload-Fassung unter 10 MB `<Titel> Reel.mp4`, beide nach Downloads.
+- **Posten** (Albert klickt, Claude führt; nichts teilen ohne sein Okay): Instagram – Zuschnitt „Original“/9:16, Titelbild aus der Mitte (erstes Bild schwarz), Facebook-Teilen aus, KI-Label an, Zeichenzähler prüfen. TikTok – Dateinamen aus der Beschreibung löschen, Cover aus der Mitte, KI-Inhalt an, Urheberrechtsprüfung; kein Profil-Link → „Search ABard on Spotify and hit follow so you don't miss it.“ Text EN, 5 Hashtags (TikTok + #RockTok), **kein #ABard**.
+- Eigener Ton im Teaser ist ok, solange der Release kein Social Media Pack bei DistroKid hat.
+- HyperFollow-Klicks sind keine Erfolgskennzahl.
