@@ -389,6 +389,21 @@
     play(o);
   });
   favRender();favSync();
+  // Grosser Play-Knopf nach einem geteilten Link: ein Tipp gilt als Erlaubnis für Ton
+  function tapPrompt(title,img,label,go){
+    var o=document.getElementById('tapgo');if(o)o.remove();
+    o=document.createElement('div');o.id='tapgo';o.setAttribute('role','dialog');o.setAttribute('aria-label',title);
+    var b=document.createElement('button');b.type='button';b.className='tg-play';
+    if(img){var i=document.createElement('img');i.src=img;i.alt='';b.appendChild(i)}
+    var tx=document.createElement('span');tx.className='tg-t';
+    var t1=document.createElement('b');t1.textContent=title;var t2=document.createElement('span');t2.textContent='▶ '+label;
+    tx.appendChild(t1);tx.appendChild(t2);b.appendChild(tx);
+    var x=document.createElement('button');x.type='button';x.className='tg-x';x.setAttribute('aria-label',T('close'));x.textContent='×';
+    o.appendChild(b);o.appendChild(x);document.body.appendChild(o);
+    b.addEventListener('click',function(){o.remove();go()});
+    x.addEventListener('click',function(){o.remove()});
+    setTimeout(function(){b.focus({preventScroll:true})},50);
+  }
   // Von der Songseite („▶ Play on ABard“): Song direkt im Player starten statt nur den Songtext zu zeigen.
   // Browser erlauben Ton ohne Klick auf der Seite nicht immer – dann steht der Song bereit, ein Tipp auf ▶ im Player genügt.
   // Erst nach dem übrigen Aufbau ausführen: der Release-Block blendet frisch erschienene Kacheln erst später ein
@@ -397,11 +412,23 @@
     document.querySelectorAll('.rel[data-slug="'+sl.replace(/"/g,'')+'"]').forEach(function(r){if(!r.hidden&&!r.closest('#favs')&&(!pa||pa.classList.contains('big')))pa=r});
     history.replaceState(null,'',location.pathname+location.search);
     // Noch nicht erschienen (Kachel bis zur Release-Zeit versteckt): zur Release-Karte mit Countdown springen
-    if(!pa){var nb=document.querySelector('section[data-slug="'+sl.replace(/"/g,'')+'"]');if(nb)nb.scrollIntoView({block:'start'})}
+    if(!pa){
+      var nb=document.querySelector('.next[data-slug="'+sl.replace(/"/g,'')+'"]:not([hidden]),section[data-slug="'+sl.replace(/"/g,'')+'"]');
+      if(nb){
+        nb.scrollIntoView({block:'center'});
+        var sn=nb.querySelector('.sneak'),im=nb.querySelector('img'),h=nb.querySelector('h2');
+        if(sn&&h)tapPrompt(h.textContent,im&&im.src,T('sneak'),function(){sn.click()});
+      }
+    }
     if(pa){
       pa.scrollIntoView({block:'center'});
-      var w0=Date.now();
+      var w0=Date.now(),P=window.ABARD_PLAYER;
       (function go(){if(spAPI||src==='youtube'||!pa.dataset.id||Date.now()-w0>3000)play(pa);else setTimeout(go,150)})();
+      // Browser (v. a. WhatsApp/Instagram auf dem Handy) blockieren Ton ohne Tipp: dann ein grosser Play-Knopf
+      setTimeout(function(){
+        if(window.ABARD_PLAYER&&window.ABARD_PLAYER.playing())return;
+        var im=pa.querySelector('img');tapPrompt(songTitle(pa),im&&im.src,T('tap.play'),function(){play(pa)});
+      },4000);
     }
   },0);
   if(location.hash.indexOf('#song-')===0){var k0=location.hash.slice(6),a0=document.querySelector('.rel[data-id="'+k0+'"]:not([hidden]),.rel[data-yt="'+k0+'"]:not([hidden]),.rel[data-key="'+k0+'"]:not([hidden])');if(a0)openDetail(a0,true)}
