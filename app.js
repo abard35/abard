@@ -444,51 +444,66 @@
     tick();
     document.addEventListener('abard:lang',function(){document.getElementById('next-date').textContent=dateText()});
   })();
-  // ---- Nächster Release (zweite Karte): Countdown + Sneak Peek ----
+  // ---- Nächste Releases (Karten #soon und #later): Countdown + Sneak Peek ----
   // data-day = Datum, data-time = Uhrzeit (leer, solange nicht bestätigt: dann nur Tage, Uhrzeit "folgt").
-  (function(){
-    var box=document.getElementById('soon');if(!box)return;
-    var tm=box.dataset.time,t=Date.parse(box.dataset.day+'T'+(tm||'00:00')+':00+02:00'),pad=function(n){return String(n).padStart(2,'0')};
+  // data-at (optional) = genaue Release-Zeit mit Zeitzone (z. B. Winterzeit +01:00), sonst data-day/data-time mit +02:00.
+  // #later: data-after = Release-Zeit der Karte davor. Bis dahin nur Datum (ohne Uhr), danach Countdown;
+  // gleichzeitig verschwindet die "Neuester Release"-Karte (#next-card), #soon rückt an ihre Stelle.
+  function releaseCard(id){
+    var box=document.getElementById(id);if(!box)return null;
+    var g=function(s){return document.getElementById(id+'-'+s)};
+    var tm=box.dataset.time,t=box.dataset.at?Date.parse(box.dataset.at):Date.parse(box.dataset.day+'T'+(tm||'00:00')+':00+02:00'),pad=function(n){return String(n).padStart(2,'0')};
+    var after=Date.parse(box.dataset.after||'');
     if(!tm)box.classList.add('soon-notime');
+    function waiting(){return !isNaN(after)&&Date.now()<after}
     function dateText(){
       var d=new Date(box.dataset.day+'T12:00:00+02:00'),l=I.lang()==='de'?'de-CH':'en-US';
       var s=d.toLocaleDateString(l,{day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Zurich'});
-      if(tm)s+=' · '+new Date(t).toLocaleTimeString(I.lang()==='de'?'de-CH':'en-GB',{hour:'2-digit',minute:'2-digit',timeZoneName:'short'});
+      if(waiting())return s;
+      if(tm)s+=' · '+new Date(t).toLocaleTimeString(I.lang()==='de'?'de-CH':'en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Zurich',timeZoneName:'short'});
       else s+=' · '+T('tba');
       return s;
     }
     function tick(){
-      document.getElementById('soon-date').textContent=dateText();
+      g('date').textContent=dateText();
+      if(waiting()){g('cd').hidden=true;setTimeout(tick,Math.min(after-Date.now()+300,60000));return}
+      g('cd').hidden=false;
+      if(!isNaN(after)){var nc=document.getElementById('next-card');if(nc)nc.hidden=true}
       var s=Math.floor((t-Date.now())/1000);
       if(isNaN(s)||s<=0){
-        var eye=document.getElementById('soon-eye');eye.setAttribute('data-i18n','next.out');eye.textContent=T('next.out');
-        document.getElementById('soon-cd').hidden=true;document.getElementById('soon-out').hidden=false;var ps=document.getElementById('soon-ps');if(ps)ps.hidden=true;
+        var eye=g('eye');eye.setAttribute('data-i18n','next.out');eye.textContent=T('next.out');
+        g('cd').hidden=true;g('out').hidden=false;var ps=g('ps');if(ps)ps.hidden=true;
         // Kacheln mit Release-Zeit bis zu diesem Release einblenden (Countdown endet schon in der letzten Sekunde davor)
         document.querySelectorAll('.rel[data-at]').forEach(function(a){if(Date.parse(a.dataset.at)<=t)a.hidden=false});return;
       }
-      document.getElementById('soon-d').textContent=tm?Math.floor(s/86400):Math.ceil(s/86400);
-      document.getElementById('soon-h').textContent=pad(Math.floor(s%86400/3600));
-      document.getElementById('soon-m').textContent=pad(Math.floor(s%3600/60));
-      document.getElementById('soon-s').textContent=pad(s%60);
+      g('d').textContent=tm?Math.floor(s/86400):Math.ceil(s/86400);
+      g('h').textContent=pad(Math.floor(s%86400/3600));
+      g('m').textContent=pad(Math.floor(s%3600/60));
+      g('s').textContent=pad(s%60);
       setTimeout(tick,1000);
     }
     tick();
-    document.addEventListener('abard:lang',function(){document.getElementById('soon-date').textContent=dateText()});
+    document.addEventListener('abard:lang',function(){g('date').textContent=dateText()});
     // Sneak Peek: laufende Musik pausieren, nach dem Sneak Peek dort weiterspielen
-    var btn=document.getElementById('sneak'),au=document.getElementById('sneak-a'),bar=document.getElementById('sneak-p'),lab=document.getElementById('sneak-t'),resume=false;
+    var btn=g('sneak'),au=g('sneak-a'),bar=g('sneak-p'),lab=g('sneak-t'),resume=false;
+    if(!btn||!au)return box;
     function mmss(x){x=Math.max(0,Math.round(x));return Math.floor(x/60)+':'+pad(x%60)}
     function done(){btn.setAttribute('aria-pressed','false');if(resume&&window.ABARD_PLAYER){window.ABARD_PLAYER.resume()}resume=false}
     btn.addEventListener('click',function(){
       if(au.paused){
+        document.querySelectorAll('audio.sneak-a').forEach(function(o){if(o!==au&&!o.paused)o.pause()});
         var P=window.ABARD_PLAYER;resume=!!(P&&P.playing());if(resume)P.pause();
         au.play().catch(function(){done()});btn.setAttribute('aria-pressed','true');
       }else{au.pause();done()}
     });
+    au.addEventListener('pause',function(){if(btn.getAttribute('aria-pressed')==='true'&&au.currentTime<(au.duration||60))btn.setAttribute('aria-pressed','false')});
     au.addEventListener('timeupdate',function(){var d=au.duration||60;bar.style.transform='scaleX('+(au.currentTime/d)+')';lab.textContent=mmss(d-au.currentTime)});
     au.addEventListener('ended',function(){au.currentTime=0;bar.style.transform='scaleX(0)';lab.textContent=mmss(au.duration||60);done()});
     // Startet jemand einen Song im Player, Sneak Peek anhalten
     document.addEventListener('click',function(e){if(!au.paused&&e.target.closest&&e.target.closest('.rel')&&!e.target.closest('.tshare')){au.pause();resume=false;btn.setAttribute('aria-pressed','false')}},true);
-  })();
+    return box;
+  }
+  releaseCard('soon');releaseCard('later');
   // Sprache gewechselt: offenen Songdialog neu beschriften
   document.addEventListener('abard:lang',function(){if(dlg.open&&cur){lyFor=null;openDetail(cur,true)}var v=document.getElementById('vin-p');if(v&&vin.classList.contains('show')&&!nextT)v.textContent=T('vin.now')});
   // Video-Liste: eigene Playlist aus allen YouTube-Songs (neueste zuerst) statt der Kanal-Uploads
