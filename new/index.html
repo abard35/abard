@@ -12,20 +12,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0d0e10">
 <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0d0e10;color:#e9e6df;font:16px/1.5 ui-monospace,Menlo,Consolas,monospace;text-align:center}a{color:#d8a23f}</style>
-<script>
-// Fester Bio-Link (Instagram, TikTok …) für den aktuellen Release.
-// Vor dem Release → Pre-Save (HyperFollow), ab Release → Song.
-// Nach dem Release: Spotify-Album-ID bei "sp" eintragen. Solange leer → Song auf der Website.
-// Beim nächsten Release nur diese vier Werte (und Titel/Bild oben) ändern.
-var R={
-  at:'2026-10-16T00:00:00+02:00',
-  presave:'https://distrokid.com/hyperfollow/abard1/no-someday-left',
-  sp:'',
-  slug:'no-someday-left'
-};
-var url=Date.now()<Date.parse(R.at)?R.presave:(R.sp?'https://open.spotify.com/album/'+R.sp:'/#play-'+R.slug);
-location.replace(url);
-</script>
+<script src="go.js?v=1"></script>
 </head>
 <body><p>ABard – No Someday Left<br><a href="/">Continue →</a></p></body>
 </html>
