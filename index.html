@@ -269,14 +269,20 @@ a.pyt{flex:none;align-self:flex-start;font-family:var(--mono);font-size:.72rem;l
 a.pyt:hover,a.pyt:focus-visible{color:var(--fg);border-color:var(--fg)}
 .pyts{flex:none;display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start}.pyts a.pyt[hidden]{display:none}
 .ps-row{margin-top:14px}
-#tapgo{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);min-width:min(300px,calc(100vw - 24px));z-index:40;display:flex;align-items:stretch;max-width:calc(100vw - 24px);background:var(--panel);border:1px solid var(--sodium);box-shadow:0 18px 50px rgba(0,0,0,.7);animation:tgIn .35s ease-out}
-#tapgo .tg-play{flex:1;display:flex;align-items:center;gap:14px;background:transparent;border:0;color:var(--fg);padding:10px 16px 10px 10px;cursor:pointer;text-align:left;min-width:0}
-#tapgo img{width:72px;height:72px;object-fit:cover;flex:none}
-#tapgo .tg-t{display:flex;flex-direction:column;gap:4px;min-width:0}
-#tapgo .tg-t b{font-family:var(--display);font-weight:900;font-size:1.25rem;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#tapgo .tg-t span{font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--sodium)}
-#tapgo .tg-x{background:transparent;border:0;border-left:1px solid var(--line);color:var(--muted);font-size:1.4rem;padding:0 14px;cursor:pointer}
-@keyframes tgIn{from{opacity:0;transform:translate(-50%,-44%)}to{opacity:1;transform:translate(-50%,-50%)}}
+#tapgo{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(8,8,10,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);animation:tgIn .35s ease-out}
+.tg-open,.tg-open body{overflow:hidden}
+#tapgo .tg-play{display:flex;flex-direction:column;align-items:center;gap:18px;background:transparent;border:0;color:var(--fg);cursor:pointer;padding:0;max-width:min(420px,100%)}
+#tapgo .tg-play img{width:min(72vw,360px);height:auto;aspect-ratio:1;object-fit:cover;box-shadow:0 30px 80px rgba(0,0,0,.8);border:1px solid var(--line)}
+#tapgo .tg-title{font-family:var(--display);font-weight:900;font-size:clamp(2rem,9vw,3.4rem);line-height:1;text-transform:uppercase;text-align:center}
+#tapgo .tg-ic{display:flex;align-items:center;justify-content:center;width:clamp(88px,24vw,112px);height:clamp(88px,24vw,112px);border-radius:50%;background:var(--sodium);box-shadow:0 0 0 0 rgba(216,162,63,.6);animation:tgPulse 1.8s ease-out infinite}
+#tapgo .tg-ic svg{width:46%;height:46%;fill:var(--bg);margin-left:8%}
+#tapgo .tg-lab{font-family:var(--mono);font-size:clamp(.9rem,3.6vw,1.05rem);letter-spacing:.18em;text-transform:uppercase;color:var(--sodium)}
+#tapgo .tg-play:focus{outline:none}
+#tapgo .tg-play:hover .tg-ic,#tapgo .tg-play:focus-visible .tg-ic{transform:scale(1.06)}
+#tapgo .tg-x{position:absolute;top:calc(12px + env(safe-area-inset-top));right:12px;width:52px;height:52px;background:transparent;border:1px solid var(--line);color:var(--fg);font-size:1.8rem;line-height:1;cursor:pointer}
+@keyframes tgIn{from{opacity:0}to{opacity:1}}
+@keyframes tgPulse{0%{box-shadow:0 0 0 0 rgba(216,162,63,.55)}70%{box-shadow:0 0 0 26px rgba(216,162,63,0)}100%{box-shadow:0 0 0 0 rgba(216,162,63,0)}}
+@media (prefers-reduced-motion:reduce){#tapgo,#tapgo .tg-ic{animation:none}}
 .ctools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.ctool{display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--line);color:var(--muted);font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;padding:7px 11px;cursor:pointer}.ctool svg{width:14px;height:14px;fill:currentColor}.ctool:hover,.ctool:focus-visible{border-color:var(--sodium);color:var(--sodium)}.ctool[hidden]{display:none}
 .ps-row .btn[hidden]{display:none}
 body.playing-yt.playing{padding-bottom:220px}
@@ -1283,7 +1289,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
 <script src="i18n.js?v=11"></script>
 <script src="hero.js?v=4"></script>
 <script src="songs.js?v=ee4af142"></script>
-<script src="app.js?v=31"></script>
+<script src="app.js?v=32"></script>
 <script src="globe.js?v=2"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>

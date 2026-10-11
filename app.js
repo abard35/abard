@@ -392,16 +392,19 @@
   // Grosser Play-Knopf nach einem geteilten Link: ein Tipp gilt als Erlaubnis für Ton
   function tapPrompt(title,img,label,go){
     var o=document.getElementById('tapgo');if(o)o.remove();
-    o=document.createElement('div');o.id='tapgo';o.setAttribute('role','dialog');o.setAttribute('aria-label',title);
+    o=document.createElement('div');o.id='tapgo';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');o.setAttribute('aria-label',title);
     var b=document.createElement('button');b.type='button';b.className='tg-play';
     if(img){var i=document.createElement('img');i.src=img;i.alt='';b.appendChild(i)}
-    var tx=document.createElement('span');tx.className='tg-t';
-    var t1=document.createElement('b');t1.textContent=title;var t2=document.createElement('span');t2.textContent='▶ '+label;
-    tx.appendChild(t1);tx.appendChild(t2);b.appendChild(tx);
+    var t1=document.createElement('b');t1.className='tg-title';t1.textContent=title;b.appendChild(t1);
+    var ic=document.createElement('span');ic.className='tg-ic';ic.setAttribute('aria-hidden','true');ic.innerHTML='<svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>';b.appendChild(ic);
+    var t2=document.createElement('span');t2.className='tg-lab';t2.textContent=label;b.appendChild(t2);
     var x=document.createElement('button');x.type='button';x.className='tg-x';x.setAttribute('aria-label',T('close'));x.textContent='×';
-    o.appendChild(b);o.appendChild(x);document.body.appendChild(o);
-    b.addEventListener('click',function(){o.remove();go()});
-    x.addEventListener('click',function(){o.remove()});
+    o.appendChild(b);o.appendChild(x);document.body.appendChild(o);document.documentElement.classList.add('tg-open');
+    function shut(){o.remove();document.documentElement.classList.remove('tg-open')}
+    b.addEventListener('click',function(){shut();go()});
+    x.addEventListener('click',shut);
+    o.addEventListener('click',function(e){if(e.target===o)shut()});
+    document.addEventListener('keydown',function k(e){if(e.key==='Escape'){shut();document.removeEventListener('keydown',k)}});
     setTimeout(function(){b.focus({preventScroll:true})},50);
   }
   // Von der Songseite („▶ Play on ABard“): Song direkt im Player starten statt nur den Songtext zu zeigen.
