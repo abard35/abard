@@ -110,7 +110,7 @@
         frame.src='https://open.spotify.com/embed/album/'+a.dataset.id+'?utm_source=generator&theme=0';
       }
       document.getElementById('pi-t').textContent=a.querySelector('h3').textContent;
-      var pyt=document.getElementById('pyt');pyt.hidden=!useYt;if(useYt)pyt.href='https://www.youtube.com/watch?v='+a.dataset.yt;
+      var pyt=document.getElementById('pyt');pyt.hidden=!useYt;if(useYt)pyt.href='https://www.youtube.com/watch?v='+a.dataset.yt;document.getElementById('psub').hidden=!useYt;
       player.hidden=false;document.body.classList.add('playing');favSync();
       vinShow(a,useYt||!spCtl);
   }
@@ -332,7 +332,10 @@
     toast.innerHTML='';
     var m=document.createElement('span');m.textContent=T('fav.toast');toast.appendChild(m);
     // Spotify-Speichern hilft dem Algorithmus – nur anbieten, wenn der Song auf Spotify ist
-    if(a.dataset.id){var l=document.createElement('a');l.href='https://open.spotify.com/album/'+a.dataset.id;l.target='_blank';l.rel='noopener';l.textContent=T('fav.toast.sp');l.addEventListener('click',toastHide);toast.appendChild(l)}
+    // Hinweis passend zur Plattform: läuft der Song gerade über YouTube (oder gibt es ihn nur dort) → YouTube-Like, sonst Spotify-Speichern
+    var viaYt=a.dataset.yt&&(!a.dataset.id||(cur2&&fkey(cur2)===fkey(a)&&player.classList.contains('yt')));
+    var lh=viaYt?'https://www.youtube.com/watch?v='+a.dataset.yt:(a.dataset.id?'https://open.spotify.com/album/'+a.dataset.id:'');
+    if(lh){var l=document.createElement('a');l.href=lh;l.target='_blank';l.rel='noopener';l.textContent=T(viaYt?'fav.toast.yt':'fav.toast.sp');l.addEventListener('click',toastHide);toast.appendChild(l)}
     var x=document.createElement('button');x.type='button';x.textContent='✕';x.setAttribute('aria-label',T('fav.toast.x'));x.addEventListener('click',toastHide);toast.appendChild(x);
     host(dlg.open?document.getElementById('d-fav'):document.getElementById('pfav')).appendChild(toast);
     toast.hidden=false;if(toastT)clearTimeout(toastT);toastT=setTimeout(toastHide,7000);
@@ -459,7 +462,7 @@
       var s=Math.floor((t-Date.now())/1000);
       if(isNaN(s)||s<=0){
         var eye=document.getElementById('soon-eye');eye.setAttribute('data-i18n','next.out');eye.textContent=T('next.out');
-        document.getElementById('soon-cd').hidden=true;document.getElementById('soon-out').hidden=false;
+        document.getElementById('soon-cd').hidden=true;document.getElementById('soon-out').hidden=false;var ps=document.getElementById('soon-ps');if(ps)ps.hidden=true;
         // Kacheln mit Release-Zeit bis zu diesem Release einblenden (Countdown endet schon in der letzten Sekunde davor)
         document.querySelectorAll('.rel[data-at]').forEach(function(a){if(Date.parse(a.dataset.at)<=t)a.hidden=false});return;
       }

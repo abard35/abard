@@ -266,6 +266,8 @@ body.yt .rel:not([data-yt]) .only,.rel .yt-only{display:block}
 .player.yt iframe{flex:none;width:min(320px,100%);height:auto;aspect-ratio:16/9;border-radius:8px}
 a.pyt{flex:none;align-self:flex-start;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:9px 12px}
 a.pyt:hover,a.pyt:focus-visible{color:var(--fg);border-color:var(--fg)}
+.pyts{flex:none;display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start}.pyts a.pyt[hidden]{display:none}
+.ps-row{margin-top:14px}.ps-row .btn[hidden]{display:none}
 body.playing-yt.playing{padding-bottom:220px}
 .rel h3,.rel .meta{transition:color .2s}
 .rel::after{content:"Story & Lyrics ›";align-self:flex-start;margin-top:auto!important;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sodium);border:1px solid rgba(216,162,63,.45);padding:5px 9px;margin-top:2px;transition:background .2s,color .2s}
@@ -956,6 +958,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
           </div>
           <button type="button" class="sneak" id="sneak" aria-pressed="false"><span class="sn-ic" aria-hidden="true"></span><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-bar" aria-hidden="true"><i id="sneak-p"></i></span><span class="sn-t" id="sneak-t">1:00</span></button>
           <audio id="sneak-a" src="no-someday-left-sneak.m4a?v=2" preload="none"></audio>
+          <p class="cta ps-row"><a class="btn primary" id="soon-ps" href="https://distrokid.com/hyperfollow/abard1/no-someday-left" target="_blank" rel="noopener" data-i18n="soon.ps">Pre-save on Spotify</a></p>
           <p class="out cta" id="soon-out" hidden><a class="btn primary" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener" data-i18n="out.sp">Listen on Spotify</a><a class="btn" href="https://www.youtube.com/watch?v=PRjUn0dRNEM" target="_blank" rel="noopener" data-i18n="out.yt">Watch on YouTube</a><a class="btn" href="s/no-someday-left/" data-i18n="out.st">Story &amp; Lyrics</a></p>
         </div>
       </div>
@@ -1223,17 +1226,17 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
     <i class="pnext-bar" aria-hidden="true"></i>
   </div>
   <div class="in">
-    <div class="pinfo"><span class="pi-eye" data-i18n="vin.now">Now playing</span><b id="pi-t"></b><a class="pyt" id="pyt" href="#" target="_blank" rel="noopener" hidden data-i18n="pyt">Open on YouTube ↗</a></div>
+    <div class="pinfo"><span class="pi-eye" data-i18n="vin.now">Now playing</span><b id="pi-t"></b><span class="pyts"><a class="pyt" id="pyt" href="#" target="_blank" rel="noopener" hidden data-i18n="pyt">Open on YouTube ↗</a><a class="pyt" id="psub" href="https://www.youtube.com/@ABardOfficial?sub_confirmation=1" target="_blank" rel="noopener" hidden data-i18n="psub">Subscribe ↗</a></span></div>
     <div class="spwrap" id="spwrap" hidden><div id="spembed"></div></div>
     <iframe id="pframe" title="Spotify-Player" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
     <div class="pact"><button type="button" class="fav" id="pfav" aria-pressed="false" aria-label="Save to favorites" data-i18n-aria="fav.aria" title="Save to favorites" data-i18n-title="fav.aria"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.6 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.6 0 5.8 3.5 4.5 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg></button><button type="button" id="pshare" aria-label="Share this song" data-i18n-aria="share.aria" title="Share this song" data-i18n-title="share.aria"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.4M8.3 13.2l7.4 4.4"/></svg></button><button type="button" id="pclose" aria-label="Close player" data-i18n-aria="pclose">✕</button></div>
   </div>
 </div>
 <template id="ic-heart"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.6 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.6 0 5.8 3.5 4.5 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg></template><template id="ic-share"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.4M8.3 13.2l7.4 4.4"/></svg></template>
-<script src="i18n.js?v=8"></script>
+<script src="i18n.js?v=9"></script>
 <script src="hero.js?v=4"></script>
 <script src="songs.js?v=78a30236"></script>
-<script src="app.js?v=27"></script>
+<script src="app.js?v=28"></script>
 <script src="globe.js?v=2"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
