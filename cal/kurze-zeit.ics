@@ -1,0 +1,24 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABard//Release//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:kurze-zeit-release@abard.die-bardewycks.ch
+DTSTAMP:20261012T190000Z
+DTSTART:20261023T220000Z
+DTEND:20261023T223000Z
+SUMMARY:ABard – Kurze Zeit (New Single)
+DESCRIPTION:Kurze Zeit – new single by ABard\, out now on Spotify & YouTu
+ be.\n\nStory & lyrics: https://abard.die-bardewycks.ch/s/kurze-zeit/\nYo
+ uTube: https://www.youtube.com/watch?v=Fx8IdUfi31U\nSpotify: https://open
+ .spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN
+LOCATION:Spotify / YouTube
+URL:https://abard.die-bardewycks.ch/s/kurze-zeit/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:ABard – Kurze Zeit is out now
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
