@@ -248,15 +248,29 @@ h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size
 .sn-bar i{position:absolute;inset:0;background:var(--sodium);transform-origin:left;transform:scaleX(0)}
 .sn-t{color:var(--muted);font-variant-numeric:tabular-nums}
 .sn-l{white-space:nowrap}
-/* Sneak Peek nutzt die ganze Spaltenbreite; Fortschrittsbalken füllt den Rest */
-.sneak{display:flex;width:100%;max-width:560px}
-.sn-bar{flex:1;width:auto;min-width:40px}
-.sn-t{margin-left:auto}
-/* Touch-Geräte: grösserer Knopf (auch wenn Chrome die Desktop-Ansicht zeigt) */
-@media (pointer:coarse){.sneak{padding:12px 16px 12px 12px;font-size:.88rem;gap:14px}.sn-ic{width:36px;height:36px}.sn-ic::after{left:14px;top:11px;border-left-width:11px;border-top-width:7px;border-bottom-width:7px}.sneak[aria-pressed="true"] .sn-ic::after{left:12px;top:11px;width:4px;height:14px;box-shadow:8px 0 0 var(--bg)}}
-/* Handy hochkant: Cover über dem Text, damit Player und Buttons die volle Breite haben */
-@media (max-width:600px){.next-row .next{grid-template-columns:1fr}.next-row .next img{width:100%;max-width:280px}.sn-bar{min-width:24px}}
-@media (pointer:coarse) and (min-width:700px){.sneak{font-size:1.05rem;padding:16px 22px 16px 16px;max-width:640px}.sn-ic{width:48px;height:48px}.sn-ic::after{left:19px;top:15px;border-left-width:14px;border-top-width:9px;border-bottom-width:9px}.sneak[aria-pressed="true"] .sn-ic::after{left:16px;top:15px;width:5px;height:18px;box-shadow:11px 0 0 var(--bg)}.ctool{font-size:.85rem;padding:10px 14px}.ctool svg{width:18px;height:18px}}
+/* Release-Karte: Cover ist der Sneak-Peek-Player; darunter eine Aktionszeile (Teilen, Kalender, Pre-Save klein) */
+.sneak.cov{position:relative;display:block;width:max-content;max-width:100%;margin:0;padding:0;border:0;background:none;cursor:pointer;color:var(--fg);letter-spacing:.16em;font-size:.72rem}
+.sneak.cov img{display:block}
+.cov .sn-ic{position:absolute;left:50%;top:50%;width:26%;height:auto;aspect-ratio:1;transform:translate(-50%,-50%);box-shadow:0 0 0 clamp(5px,1.6vw,10px) rgba(13,14,16,.45);transition:transform .15s}
+.cov:hover .sn-ic,.cov:focus-visible .sn-ic{transform:translate(-50%,-50%) scale(1.06)}
+.cov .sn-ic::after{left:54%;top:50%;transform:translate(-50%,-50%);border-left:clamp(12px,3.4vw,24px) solid var(--bg);border-top:clamp(8px,2.2vw,15px) solid transparent;border-bottom:clamp(8px,2.2vw,15px) solid transparent}
+.cov[aria-pressed="true"] .sn-ic::after{left:50%;top:50%;width:clamp(4px,1.1vw,7px);height:clamp(14px,3.8vw,26px);border:0;background:var(--bg);box-shadow:none;transform:translate(-160%,-50%);outline:0}
+.cov[aria-pressed="true"] .sn-ic::before{content:"";position:absolute;left:50%;top:50%;width:clamp(4px,1.1vw,7px);height:clamp(14px,3.8vw,26px);background:var(--bg);transform:translate(60%,-50%)}
+.cov .sn-cap{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:8px;padding:28px 12px 12px;background:linear-gradient(transparent,rgba(13,14,16,.88));text-transform:uppercase;pointer-events:none}
+.cov .sn-t{color:#c9c6bf;margin:0}
+.cov .sn-bar{position:absolute;left:0;right:0;bottom:0;width:auto;height:4px;background:rgba(233,230,223,.15)}
+.cov:focus-visible{outline:2px solid var(--sodium);outline-offset:3px}
+.next .ctools{align-items:center;margin-top:16px}
+.next .ctool{min-height:44px;padding:0 14px;font-size:.72rem;color:var(--fg)}
+.next .ctool svg{width:17px;height:17px}
+.next .ctool[data-act="cal"]{width:44px;padding:0;justify-content:center;color:var(--muted)}
+.next .ctool[data-act="cal"] span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ps-link{margin-left:10px;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:12px 0}
+.ps-link::after{content:" ↗"}
+.ps-link:hover,.ps-link:focus-visible{color:var(--sodium)}
+.ps-link[hidden]{display:none}
+/* Handy hochkant: Cover gross über dem Text */
+@media (max-width:600px){.next-row .next{grid-template-columns:1fr}.next-row .sneak.cov{width:100%}.next-row .next img{width:100%;max-width:none}.cov .sn-cap{font-size:.78rem}.ps-link{margin-left:auto}}
 .featured{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2.5vw,32px)}
 .rel.big h3{font-size:clamp(1.6rem,3vw,2.2rem)}
 .rank{position:absolute;left:0;top:0;z-index:1;background:var(--sodium);color:var(--bg);font-family:var(--display);font-weight:900;font-size:1.5rem;line-height:1;padding:8px 12px}
@@ -1007,7 +1021,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
       </div>
       <!-- Nächster Release. data-time leer = Uhrzeit noch nicht bestätigt: dann nur Tage-Countdown -->
       <div class="next" id="soon" data-slug="no-someday-left" data-day="2026-10-16" data-time="00:00" data-at="2026-10-16T00:00:00+02:00">
-        <img src="no-someday-left.jpg?v=1" alt="Cover: No Someday Left" width="1080" height="1080">
+        <button type="button" class="sneak cov" id="soon-sneak" aria-pressed="false"><img src="no-someday-left.jpg?v=1" alt="Cover: No Someday Left" width="1080" height="1080"><span class="sn-ic" aria-hidden="true"></span><span class="sn-cap"><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-t" id="soon-sneak-t">1:00</span></span><span class="sn-bar" aria-hidden="true"><i id="soon-sneak-p"></i></span></button>
         <div>
           <p class="eyebrow" id="soon-eye" data-i18n="next.soon">Next Release · Single</p>
           <h2>No Someday Left</h2>
@@ -1018,15 +1032,13 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
             <div class="tm"><b id="soon-m">00</b><span data-i18n="cd.m">Min</span></div>
             <div class="tm"><b id="soon-s">00</b><span data-i18n="cd.s">Sec</span></div>
           </div>
-          <button type="button" class="sneak" id="soon-sneak" aria-pressed="false"><span class="sn-ic" aria-hidden="true"></span><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-bar" aria-hidden="true"><i id="soon-sneak-p"></i></span><span class="sn-t" id="soon-sneak-t">1:00</span></button>
           <audio class="sneak-a" id="soon-sneak-a" src="no-someday-left-sneak.m4a?v=2" preload="none"></audio>
-          <p class="cta ps-row"><a class="btn primary" id="soon-ps" href="https://distrokid.com/hyperfollow/abard1/no-someday-left" target="_blank" rel="noopener" data-i18n="soon.ps">Pre-save on Spotify</a></p>
-          <p class="ctools"><button type="button" class="ctool" data-act="share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg><span data-i18n="share">Share</span></button><button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 7h14v10H5V9Zm2 2v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg><span data-i18n="cal">Add to calendar</span></button></p>
+          <p class="ctools"><button type="button" class="ctool" data-act="share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg><span data-i18n="share">Share</span></button><button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 7h14v10H5V9Zm2 2v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg><span data-i18n="cal">Add to calendar</span></button><a class="ps-link" id="soon-ps" href="https://distrokid.com/hyperfollow/abard1/no-someday-left" target="_blank" rel="noopener" data-i18n="soon.ps">Pre-save on Spotify</a></p>
           <p class="out cta" id="soon-out" hidden><a class="btn primary" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener" data-i18n="out.sp">Listen on Spotify</a><a class="btn" href="https://www.youtube.com/watch?v=PRjUn0dRNEM" target="_blank" rel="noopener" data-i18n="out.yt">Watch on YouTube</a><a class="btn" href="s/no-someday-left/" data-i18n="out.st">Story &amp; Lyrics</a></p>
         </div>
       </div>
       <div class="next" id="later" data-slug="kurze-zeit" data-day="2026-10-24" data-time="00:00" data-at="2026-10-24T00:00:00+02:00" data-after="2026-10-16T00:00:00+02:00">
-        <img src="kurze-zeit.jpg?v=1" alt="Cover: Kurze Zeit" width="1080" height="1080" loading="lazy">
+        <button type="button" class="sneak cov" id="later-sneak" aria-pressed="false"><img src="kurze-zeit.jpg?v=1" alt="Cover: Kurze Zeit" width="1080" height="1080" loading="lazy"><span class="sn-ic" aria-hidden="true"></span><span class="sn-cap"><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-t" id="later-sneak-t">0:56</span></span><span class="sn-bar" aria-hidden="true"><i id="later-sneak-p"></i></span></button>
         <div>
           <p class="eyebrow" id="later-eye" data-i18n="next.soon">Next Release · Single</p>
           <h2 lang="de">Kurze Zeit</h2>
@@ -1037,15 +1049,13 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
             <div class="tm"><b id="later-m">00</b><span data-i18n="cd.m">Min</span></div>
             <div class="tm"><b id="later-s">00</b><span data-i18n="cd.s">Sec</span></div>
           </div>
-          <button type="button" class="sneak" id="later-sneak" aria-pressed="false"><span class="sn-ic" aria-hidden="true"></span><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-bar" aria-hidden="true"><i id="later-sneak-p"></i></span><span class="sn-t" id="later-sneak-t">0:56</span></button>
           <audio class="sneak-a" id="later-sneak-a" src="kurze-zeit-sneak.m4a?v=1" preload="none"></audio>
-          <p class="cta ps-row"><a class="btn primary" id="later-ps" href="https://distrokid.com/hyperfollow/abard1/kurze-zeit" target="_blank" rel="noopener" data-i18n="soon.ps">Pre-save on Spotify</a></p>
-          <p class="ctools"><button type="button" class="ctool" data-act="share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg><span data-i18n="share">Share</span></button><button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 7h14v10H5V9Zm2 2v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg><span data-i18n="cal">Add to calendar</span></button></p>
+          <p class="ctools"><button type="button" class="ctool" data-act="share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg><span data-i18n="share">Share</span></button><button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 7h14v10H5V9Zm2 2v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg><span data-i18n="cal">Add to calendar</span></button><a class="ps-link" id="later-ps" href="https://distrokid.com/hyperfollow/abard1/kurze-zeit" target="_blank" rel="noopener" data-i18n="soon.ps">Pre-save on Spotify</a></p>
           <p class="out cta" id="later-out" hidden><a class="btn primary" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener" data-i18n="out.sp">Listen on Spotify</a><a class="btn" href="https://www.youtube.com/watch?v=Fx8IdUfi31U" target="_blank" rel="noopener" data-i18n="out.yt">Watch on YouTube</a><a class="btn" href="s/kurze-zeit/" data-i18n="out.st">Story &amp; Lyrics</a></p>
         </div>
       </div>
       <div class="next" id="later2" data-slug="der-uhrmacher" data-day="2026-10-31" data-time="00:00" data-at="2026-10-31T00:00:00+01:00" data-after="2026-10-24T00:00:00+02:00">
-        <img src="der-uhrmacher.jpg?v=1" alt="Cover: Der Uhrmacher" width="1080" height="1080" loading="lazy">
+        <button type="button" class="sneak cov" id="later2-sneak" aria-pressed="false"><img src="der-uhrmacher.jpg?v=1" alt="Cover: Der Uhrmacher" width="1080" height="1080" loading="lazy"><span class="sn-ic" aria-hidden="true"></span><span class="sn-cap"><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-t" id="later2-sneak-t">1:00</span></span><span class="sn-bar" aria-hidden="true"><i id="later2-sneak-p"></i></span></button>
         <div>
           <p class="eyebrow" id="later2-eye" data-i18n="next.soon">Next Release · Single</p>
           <h2 lang="de" class="long">Der Uhrmacher</h2>
@@ -1056,15 +1066,13 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
             <div class="tm"><b id="later2-m">00</b><span data-i18n="cd.m">Min</span></div>
             <div class="tm"><b id="later2-s">00</b><span data-i18n="cd.s">Sec</span></div>
           </div>
-          <button type="button" class="sneak" id="later2-sneak" aria-pressed="false"><span class="sn-ic" aria-hidden="true"></span><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-bar" aria-hidden="true"><i id="later2-sneak-p"></i></span><span class="sn-t" id="later2-sneak-t">1:00</span></button>
           <audio class="sneak-a" id="later2-sneak-a" src="der-uhrmacher-sneak.m4a?v=1" preload="none"></audio>
-          <p class="cta ps-row"><a class="btn primary" id="later2-ps" href="https://distrokid.com/hyperfollow/abard1/der-uhrmacher" target="_blank" rel="noopener" data-i18n="soon.ps">Pre-save on Spotify</a></p>
-          <p class="ctools"><button type="button" class="ctool" data-act="share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg><span data-i18n="share">Share</span></button><button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 7h14v10H5V9Zm2 2v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg><span data-i18n="cal">Add to calendar</span></button></p>
+          <p class="ctools"><button type="button" class="ctool" data-act="share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg><span data-i18n="share">Share</span></button><button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 7h14v10H5V9Zm2 2v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg><span data-i18n="cal">Add to calendar</span></button><a class="ps-link" id="later2-ps" href="https://distrokid.com/hyperfollow/abard1/der-uhrmacher" target="_blank" rel="noopener" data-i18n="soon.ps">Pre-save on Spotify</a></p>
           <p class="out cta" id="later2-out" hidden><a class="btn primary" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener" data-i18n="out.sp">Listen on Spotify</a><a class="btn" href="https://www.youtube.com/watch?v=nGdRuE5QUXs" target="_blank" rel="noopener" data-i18n="out.yt">Watch on YouTube</a><a class="btn" href="s/der-uhrmacher/" data-i18n="out.st">Story &amp; Lyrics</a></p>
         </div>
       </div>
       <div class="next" id="later3" data-slug="der-leuchtturm" data-day="2026-11-01" data-time="00:00" data-at="2026-11-01T00:00:00+01:00" data-after="2026-10-31T00:00:00+01:00">
-        <img src="der-leuchtturm.jpg?v=1" alt="Cover: Der Leuchtturm" width="1080" height="1080" loading="lazy">
+        <button type="button" class="sneak cov" id="later3-sneak" aria-pressed="false"><img src="der-leuchtturm.jpg?v=1" alt="Cover: Der Leuchtturm" width="1080" height="1080" loading="lazy"><span class="sn-ic" aria-hidden="true"></span><span class="sn-cap"><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-t" id="later3-sneak-t">1:00</span></span><span class="sn-bar" aria-hidden="true"><i id="later3-sneak-p"></i></span></button>
         <div>
           <p class="eyebrow" id="later3-eye" data-i18n="next.soon">Next Release · Single</p>
           <h2 lang="de" class="long">Der Leuchtturm</h2>
@@ -1075,10 +1083,8 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
             <div class="tm"><b id="later3-m">00</b><span data-i18n="cd.m">Min</span></div>
             <div class="tm"><b id="later3-s">00</b><span data-i18n="cd.s">Sec</span></div>
           </div>
-          <button type="button" class="sneak" id="later3-sneak" aria-pressed="false"><span class="sn-ic" aria-hidden="true"></span><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-bar" aria-hidden="true"><i id="later3-sneak-p"></i></span><span class="sn-t" id="later3-sneak-t">1:00</span></button>
           <audio class="sneak-a" id="later3-sneak-a" src="der-leuchtturm-sneak.m4a?v=1" preload="none"></audio>
-          <p class="cta ps-row"><a class="btn primary" id="later3-ps" href="https://distrokid.com/hyperfollow/abard1/der-leuchtturm" target="_blank" rel="noopener" data-i18n="soon.ps">Pre-save on Spotify</a></p>
-          <p class="ctools"><button type="button" class="ctool" data-act="share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg><span data-i18n="share">Share</span></button><button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 7h14v10H5V9Zm2 2v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg><span data-i18n="cal">Add to calendar</span></button></p>
+          <p class="ctools"><button type="button" class="ctool" data-act="share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg><span data-i18n="share">Share</span></button><button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 7h14v10H5V9Zm2 2v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg><span data-i18n="cal">Add to calendar</span></button><a class="ps-link" id="later3-ps" href="https://distrokid.com/hyperfollow/abard1/der-leuchtturm" target="_blank" rel="noopener" data-i18n="soon.ps">Pre-save on Spotify</a></p>
           <p class="out cta" id="later3-out" hidden><a class="btn primary" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener" data-i18n="out.sp">Listen on Spotify</a><a class="btn" href="https://www.youtube.com/watch?v=otkT3tZ3c9k" target="_blank" rel="noopener" data-i18n="out.yt">Watch on YouTube</a><a class="btn" href="s/der-leuchtturm/" data-i18n="out.st">Story &amp; Lyrics</a></p>
         </div>
       </div>
@@ -1368,7 +1374,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
 <script src="i18n.js?v=11"></script>
 <script src="hero.js?v=4"></script>
 <script src="songs.js?v=54376b87"></script>
-<script src="app.js?v=34"></script>
+<script src="app.js?v=35"></script>
 <script src="globe.js?v=2"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
