@@ -248,6 +248,15 @@ h2{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size
 .sn-bar i{position:absolute;inset:0;background:var(--sodium);transform-origin:left;transform:scaleX(0)}
 .sn-t{color:var(--muted);font-variant-numeric:tabular-nums}
 .sn-l{white-space:nowrap}
+/* Sneak Peek nutzt die ganze Spaltenbreite; Fortschrittsbalken füllt den Rest */
+.sneak{display:flex;width:100%;max-width:560px}
+.sn-bar{flex:1;width:auto;min-width:40px}
+.sn-t{margin-left:auto}
+/* Touch-Geräte: grösserer Knopf (auch wenn Chrome die Desktop-Ansicht zeigt) */
+@media (pointer:coarse){.sneak{padding:12px 16px 12px 12px;font-size:.88rem;gap:14px}.sn-ic{width:36px;height:36px}.sn-ic::after{left:14px;top:11px;border-left-width:11px;border-top-width:7px;border-bottom-width:7px}.sneak[aria-pressed="true"] .sn-ic::after{left:12px;top:11px;width:4px;height:14px;box-shadow:8px 0 0 var(--bg)}}
+/* Handy hochkant: Cover über dem Text, damit Player und Buttons die volle Breite haben */
+@media (max-width:600px){.next-row .next{grid-template-columns:1fr}.next-row .next img{width:100%;max-width:280px}.sn-bar{min-width:24px}}
+@media (pointer:coarse) and (min-width:700px){.sneak{font-size:1.05rem;padding:16px 22px 16px 16px;max-width:640px}.sn-ic{width:48px;height:48px}.sn-ic::after{left:19px;top:15px;border-left-width:14px;border-top-width:9px;border-bottom-width:9px}.sneak[aria-pressed="true"] .sn-ic::after{left:16px;top:15px;width:5px;height:18px;box-shadow:11px 0 0 var(--bg)}.ctool{font-size:.85rem;padding:10px 14px}.ctool svg{width:18px;height:18px}}
 .featured{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2.5vw,32px)}
 .rel.big h3{font-size:clamp(1.6rem,3vw,2.2rem)}
 .rank{position:absolute;left:0;top:0;z-index:1;background:var(--sodium);color:var(--bg);font-family:var(--display);font-weight:900;font-size:1.5rem;line-height:1;padding:8px 12px}
