@@ -303,7 +303,7 @@
     (items?pop.querySelector('a'):cp).focus({preventScroll:true});
   }
 
-  // ---- Kalendereintrag für kommende Releases (Karten #soon/#later/#later2): .ics-Datei oder Google Kalender ----
+  // ---- Kalendereintrag für kommende Releases (Karten #soon/#later/#later2/#later3): .ics-Datei oder Google Kalender ----
   function calPop(box,btn){
     var t=box.dataset.at?Date.parse(box.dataset.at):Date.parse(box.dataset.day+'T'+(box.dataset.time||'00:00')+':00+02:00');
     var slug=box.dataset.slug,title=songTitle(box),name='ABard – '+title+' (New Single)';
@@ -490,11 +490,11 @@
     tick();
     document.addEventListener('abard:lang',function(){document.getElementById('next-date').textContent=dateText()});
   })();
-  // ---- Nächste Releases (Karten #soon, #later, #later2): Countdown + Sneak Peek ----
+  // ---- Nächste Releases (Karten #soon, #later, #later2, #later3): Countdown + Sneak Peek ----
   // data-day = Datum, data-time = Uhrzeit (leer, solange nicht bestätigt: dann nur Tage, Uhrzeit "folgt").
   // data-at (optional) = genaue Release-Zeit mit Zeitzone (z. B. Winterzeit +01:00), sonst data-day/data-time mit +02:00.
   // #later: data-after = Release-Zeit der Karte davor. Bis dahin nur Datum (ohne Uhr), danach Countdown;
-  // gleichzeitig verschwindet die Karte zwei Plätze davor (#later blendet #next-card aus, #later2 blendet #soon aus).
+  // gleichzeitig verschwindet die Karte zwei Plätze davor (#later blendet #next-card aus, #later2 blendet #soon aus, #later3 blendet #later aus).
   function releaseCard(id){
     var box=document.getElementById(id);if(!box)return null;
     var g=function(s){return document.getElementById(id+'-'+s)};
@@ -515,7 +515,7 @@
       g('date').textContent=dateText();
       if(waiting()){g('cd').hidden=true;setTimeout(tick,Math.min(after-Date.now()+300,60000));return}
       g('cd').hidden=false;
-      if(!isNaN(after)){var ord=['next-card','soon','later','later2'],pi=ord.indexOf(id)-2,nc=pi>=0?document.getElementById(ord[pi]):null;if(nc)nc.hidden=true}
+      if(!isNaN(after)){var ord=['next-card','soon','later','later2','later3'],pi=ord.indexOf(id)-2,nc=pi>=0?document.getElementById(ord[pi]):null;if(nc)nc.hidden=true}
       var s=Math.floor((t-Date.now())/1000);
       if(isNaN(s)||s<=0){
         var eye=g('eye');eye.setAttribute('data-i18n','next.out');eye.textContent=T('next.out');
@@ -550,7 +550,7 @@
     document.addEventListener('click',function(e){if(!au.paused&&e.target.closest&&e.target.closest('.rel')&&!e.target.closest('.tshare')){au.pause();resume=false;btn.setAttribute('aria-pressed','false')}},true);
     return box;
   }
-  releaseCard('soon');releaseCard('later');releaseCard('later2');
+  releaseCard('soon');releaseCard('later');releaseCard('later2');releaseCard('later3');
   // Sprache gewechselt: offenen Songdialog neu beschriften
   document.addEventListener('abard:lang',function(){if(dlg.open&&cur){lyFor=null;openDetail(cur,true)}var v=document.getElementById('vin-p');if(v&&vin.classList.contains('show')&&!nextT)v.textContent=T('vin.now')});
   // Video-Liste: eigene Playlist aus allen YouTube-Songs (neueste zuerst) statt der Kanal-Uploads

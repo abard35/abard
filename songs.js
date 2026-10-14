@@ -1,6 +1,11 @@
 // Beschreibung und Songtext je Song. Schlüssel = Spotify-ID (oder YouTube-ID bei „nur YouTube“).
 // Fehlt ein Feld, wird der Abschnitt nicht angezeigt. Zeilenumbruch = \n, Leerzeile = \n\n.
 window.SONGINFO = {
+  "otkT3tZ3c9k": {
+    "_title": "Der Leuchtturm",
+    "story": "For thirty years an old lighthouse keeper has climbed the hundred and twelve steps every evening, polished the glass and lit the flame. Not for the ships, but for his son, who waved from the jetty at eighteen, “Leave the light on for me, I’ll come back!”, and was never seen again. Tonight is his last night. From tomorrow, a machine will keep the watch.\n\n“Der Leuchtturm” (“The Lighthouse”) is about a love that refuses to give up, and about the moment when holding on turns into letting go. A thousand ships this light has brought home. Only one it never did. And at the very end, when the flame goes out, a father finally says goodnight.",
+    "story_de": "Dreissig Jahre lang ist ein alter Leuchtturmwärter jeden Abend die hundertzwölf Stufen hinaufgestiegen, hat das Glas geputzt und die Flamme entzündet. Nicht für die Schiffe, sondern für seinen Sohn, der mit achtzehn vom Steg gewinkt hat – „Lass mir das Licht an, ich komm zurück!“ – und nie mehr gesehen wurde. Heute ist seine letzte Nacht. Ab morgen hält eine Maschine die Wacht.\n\n„Der Leuchtturm“ erzählt von einer Liebe, die nicht aufgibt, und von dem Moment, in dem aus Festhalten Loslassen wird. Tausend Schiffe hat dieses Licht nach Hause gebracht. Nur eines nicht. Und ganz am Ende, wenn die Flamme ausgeht, sagt ein Vater endlich gute Nacht."
+  },
   "Fx8IdUfi31U": {
     "_title": "Kurze Zeit",
     "story": "For billions of years we did not exist, and we didn't miss a thing. Then a heart begins to beat, and suddenly there is a school bench, a first love, children with fists full of sand, years that fall like leaves. And when we finally find the time, most of it is already gone.\n\n“Kurze Zeit” (“A Short Time”) is about the tiny spark between two eternities, and about filling it with everything we have, as long as the heart keeps beating. It ends at an open window, a small hand in an old one: “Where were you before you came?” “In nothing. But something stays in your hand.”",

@@ -1,0 +1,24 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABard//Release//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:der-leuchtturm-release@abard.die-bardewycks.ch
+DTSTAMP:20261014T200000Z
+DTSTART:20261031T230000Z
+DTEND:20261031T233000Z
+SUMMARY:ABard – Der Leuchtturm (New Single)
+DESCRIPTION:Der Leuchtturm – new single by ABard\, out now on Spotify & Y
+ ouTube.\n\nStory & lyrics: https://abard.die-bardewycks.ch/s/der-leuchttur
+ m/\nYouTube: https://www.youtube.com/watch?v=otkT3tZ3c9k\nSpotify: https:/
+ /open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN
+LOCATION:Spotify / YouTube
+URL:https://abard.die-bardewycks.ch/s/der-leuchtturm/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:ABard – Der Leuchtturm is out now
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
