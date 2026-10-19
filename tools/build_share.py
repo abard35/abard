@@ -216,6 +216,10 @@ for tr in tracks:
 for m in re.finditer(r'<a data-slug="([^"]+)"[^>]*\sdata-at="([^"]+)"', s2):
     ats[m.group(1)] = m.group(2)
 # Noch nicht erschienene Songs: data-at, die Seite blendet sie bis zur Release-Zeit aus
+# Bereits erschienene Songs als normale, sichtbare Links (Suchmaschinen sollen sie ohne JavaScript finden)
+import datetime as _dt
+_now = _dt.datetime.now(_dt.timezone.utc)
+ats = {k: v for k, v in ats.items() if _dt.datetime.fromisoformat(v) > _now}
 links = "<span class=\"sep\"> · </span>".join(
     f'<a href="s/{sl}/"' + (f' data-at="{ats[sl]}" hidden' if sl in ats else '') + f'>{html.escape(n)}</a>'
     for sl, n in sorted(names.items(), key=lambda x: x[1].lower()))

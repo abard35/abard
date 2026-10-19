@@ -37,6 +37,20 @@ def best(title, table):
     return table[m[0]] if m else None
 
 
+def release_links(s):
+    """Songliste A–Z: Songs, deren Release-Zeit vorbei ist, als normale sichtbare Links
+    (ohne data-at/hidden), damit Suchmaschinen sie auch ohne JavaScript finden."""
+    import datetime as dt
+    now = dt.datetime.now(dt.timezone.utc)
+    def fix(m):
+        try:
+            due = dt.datetime.fromisoformat(m.group(2)) <= now
+        except ValueError:
+            return m.group(0)
+        return m.group(1) + '>' if due else m.group(0)
+    return re.sub(r'(<a href="s/[^"]+/")\s+data-at="([^"]+)"\s+hidden>', fix, s)
+
+
 def main():
     data = json.load(open(sys.argv[1], encoding='utf-8'))
     sp = {norm(k): int(v) for k, v in data.get('spotify', {}).items()}
@@ -108,6 +122,7 @@ def main():
     releases = ''.join(to_normal(x['b']) for x in rest)
     s = s[:r0] + releases + s[r1:]
     s = s[:f0] + featured + s[f1:] if f1 < r0 else None
+    s = release_links(s)
     open(HTML, 'w', encoding='utf-8').write(s)
     print('Top 3:', ', '.join(f"{x['title']} ({x['total']})" for x in top))
     print('\n'.join(report))
