@@ -1,0 +1,24 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABard//Release//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:through-your-eyes-release@abard.die-bardewycks.ch
+DTSTAMP:20261020T160000Z
+DTSTART:20261106T230000Z
+DTEND:20261106T233000Z
+SUMMARY:ABard – Through Your Eyes (New Single)
+DESCRIPTION:Through Your Eyes – new single by ABard\, out now on Spotify 
+ & YouTube.\n\nStory & lyrics: https://abard.die-bardewycks.ch/s/through-yo
+ ur-eyes/\nYouTube: https://www.youtube.com/@ABardOfficial\nSpotify: https:
+ //open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN
+LOCATION:Spotify / YouTube
+URL:https://abard.die-bardewycks.ch/s/through-your-eyes/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:ABard – Through Your Eyes is out now
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
