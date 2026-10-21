@@ -150,7 +150,7 @@ dialog.globe-dlg{width:min(760px,calc(100% - 32px));background:radial-gradient(1
 /* Kopfbereich: Shorts der aktuellen Releases (siehe hero.js) – ein Clip gross, die anderen als Mini-Icons */
 .hero{grid-template-columns:auto minmax(0,1fr);align-items:center;padding-block:clamp(24px,4vw,44px)}
 .hero.no-reel{grid-template-columns:1fr}
-.reel{width:clamp(180px,17vw,210px)}
+.reel{width:clamp(190px,19vw,250px)}
 .rv{position:relative;aspect-ratio:9/16;background:var(--panel);box-shadow:0 0 0 1px var(--line),0 18px 40px rgba(0,0,0,.55);overflow:hidden}
 .rv video{display:block;width:100%;height:100%;object-fit:cover;cursor:pointer}
 .rv-snd{display:flex;width:100%;justify-content:center;align-items:center;gap:8px;margin-top:8px;background:none;color:var(--sodium);border:1px solid var(--sodium);font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;padding:7px 10px;cursor:pointer;transition:background .2s,color .2s}
@@ -165,13 +165,16 @@ dialog.globe-dlg{width:min(760px,calc(100% - 32px));background:radial-gradient(1
 .rv-th button:hover,.rv-th button:focus-visible{opacity:1;transform:translateY(-2px)}
 .rv-th button[aria-current="true"]{opacity:1}
 .rv-th button[aria-current="true"] img{box-shadow:0 0 0 2px var(--sodium)}
-.lede.short{margin-top:16px}
+.hero .lede{max-width:62ch;margin-top:16px}
 .rinfo{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
 .rinfo .eyebrow{margin:0 0 4px;font-size:.72rem}
 .rinfo .ri-t{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:.95;margin:0}
 .ri-date{font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:8px 0 0;display:flex;flex-wrap:wrap;gap:4px 14px}
-.ri-cd{color:var(--sodium);font-variant-numeric:tabular-nums}
-.ri-cd:empty{display:none}
+.ri-cd{display:flex;gap:clamp(14px,2vw,22px);margin-top:12px}
+.ri-cd[hidden]{display:none}
+.ri-cd div{display:flex;flex-direction:column}
+.ri-cd b{font-family:var(--display);font-weight:900;font-size:clamp(1.9rem,3vw,2.4rem);line-height:1;color:var(--sodium);font-variant-numeric:tabular-nums}
+.ri-cd span{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:3px}
 .rinfo .ctools{align-items:center;margin-top:12px}
 .rinfo .ctool[data-act="cal"] span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .rinfo .ctool[data-act="cal"]{padding:7px 9px}
@@ -179,7 +182,6 @@ dialog.globe-dlg{width:min(760px,calc(100% - 32px));background:radial-gradient(1
 .ri-out:empty{display:none}
 .ri-out .btn{padding:8px 12px;font-size:.7rem}
 .ri-out .sp-soon{font-family:var(--mono);font-size:.72rem;color:var(--muted);align-self:center}
-.about .lede{margin:0;max-width:62ch}
 .hero .cta{margin-top:20px}
 .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--sodium);margin:0 0 12px}
 h1{
@@ -1003,7 +1005,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
         <li>Symphonic Rock</li>
         <li>Power Ballads</li>
       </ul>
-      <p class="lede short" data-i18n="lede.short">ABard is a sound, not a backstory.</p>
+      <p class="lede" data-i18n="lede">ABard is a sound, not a backstory. Rooted in 80s hard rock, sharpened by industrial steel and carried by big, cinematic emotion. From crushing riffs and symphonic metal to aching power ballads – every song tells its own story. Press play and decide for yourself.</p>
       <div class="rinfo" id="rinfo" hidden></div>
       <div class="cta">
         <a class="btn primary" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener">
@@ -1343,8 +1345,6 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
 <!--SONGS-->
 <nav class="songlist wrap" aria-label="All songs"><h2 data-i18n="songs.az">All songs A–Z</h2><p><a href="s/aftermath/">Aftermath</a><span class="sep"> · </span><a href="s/chasing-illusions/">Chasing Illusions</a><span class="sep"> · </span><a href="s/der-leuchtturm/" data-at="2026-11-01T00:00:00+01:00" hidden>Der Leuchtturm</a><span class="sep"> · </span><a href="s/der-uhrmacher/" data-at="2026-10-31T00:00:00+01:00" hidden>Der Uhrmacher</a><span class="sep"> · </span><a href="s/dreaming-your-own-life/">Dreaming (Your Own Life)</a><span class="sep"> · </span><a href="s/echoes-of-the-silver-valley/">Echoes Of The Silver Valley</a><span class="sep"> · </span><a href="s/fading-photographs/">Fading Photographs</a><span class="sep"> · </span><a href="s/forever-drawn-to-you/">Forever Drawn To You</a><span class="sep"> · </span><a href="s/fragile-horizons/">Fragile Horizons</a><span class="sep"> · </span><a href="s/golden-venom/">Golden Venom</a><span class="sep"> · </span><a href="s/if-my-heart-could-speak/">If My Heart Could Speak</a><span class="sep"> · </span><a href="s/kurze-zeit/" data-at="2026-10-24T00:00:00+02:00" hidden>Kurze Zeit</a><span class="sep"> · </span><a href="s/koenige-von-nichts/">Könige von Nichts</a><span class="sep"> · </span><a href="s/love-will-haunt-me-forever/">Love Will Haunt Me Forever</a><span class="sep"> · </span><a href="s/lullaby-for-the-stars/">Lullaby For The Stars</a><span class="sep"> · </span><a href="s/master-of-our-time/">Master Of Our Time</a><span class="sep"> · </span><a href="s/mom/">MOM</a><span class="sep"> · </span><a href="s/no-someday-left/">No Someday Left</a><span class="sep"> · </span><a href="s/obsession-with-a-ghost/">Obsession With A Ghost</a><span class="sep"> · </span><a href="s/once-a-lifetime/">Once A Lifetime</a><span class="sep"> · </span><a href="s/passion/">Passion</a><span class="sep"> · </span><a href="s/rising/">Rising</a><span class="sep"> · </span><a href="s/room-404/">Room 404</a><span class="sep"> · </span><a href="s/shadows-of-my-yesterday/">Shadows of my Yesterday</a><span class="sep"> · </span><a href="s/she-s-gone/">She&#x27;s Gone</a><span class="sep"> · </span><a href="s/still-burning/">Still Burning</a><span class="sep"> · </span><a href="s/symphony-of-life/">Symphony of Life</a><span class="sep"> · </span><a href="s/the-blind-kings/">The Blind Kings</a><span class="sep"> · </span><a href="s/the-dash-between-the-years/">The Dash Between The Years</a><span class="sep"> · </span><a href="s/the-digital-heretic/">The Digital Heretic</a><span class="sep"> · </span><a href="s/the-entropy-bell/">The Entropy Bell</a><span class="sep"> · </span><a href="s/the-flame-that-is-ours/">The Flame That Is Ours</a><span class="sep"> · </span><a href="s/the-morning-star/">The Morning Star</a><span class="sep"> · </span><a href="s/the-quiet-space/">The Quiet Space</a><span class="sep"> · </span><a href="s/through-your-eyes/" data-at="2026-11-07T17:00:00+01:00" hidden>Through Your Eyes</a><span class="sep"> · </span><a href="s/toxic-devotion/">Toxic Devotion</a><span class="sep"> · </span><a href="s/what-love-should-be/">What Love Should Be</a><span class="sep"> · </span><a href="s/when-i-have-to-leave/">When I Have To Leave</a><span class="sep"> · </span><a href="s/when-i-saw-you/">When I Saw You</a><span class="sep"> · </span><a href="s/wings-of-wax/">Wings of Wax</a><span class="sep"> · </span><a href="s/you/">You</a></p></nav>
 <!--/SONGS-->
-<section class="block about" id="about"><div class="wrap"><p class="lede" data-i18n="lede">ABard is a sound, not a backstory. Rooted in 80s hard rock, sharpened by industrial steel and carried by big, cinematic emotion. From crushing riffs and symphonic metal to aching power ballads – every song tells its own story. Press play and decide for yourself.</p></div></section>
-
 <footer class="wrap">
   <span>© 2025–<span id="y">2026</span> ABard</span>
   <span class="legal"><a href="disclaimer.html" id="legal-link">Disclaimer</a></span>
@@ -1413,7 +1413,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
 <template id="ic-heart"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.6 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.6 0 5.8 3.5 4.5 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg></template><template id="ic-share"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.4M8.3 13.2l7.4 4.4"/></svg></template>
 <script src="i18n.js?v=13"></script>
 <script src="bgcover.js?v=2"></script>
-<script src="hero.js?v=8"></script>
+<script src="hero.js?v=9"></script>
 <script src="songs.js?v=0fcfd2b6"></script>
 <script src="app.js?v=37"></script>
 <script src="globe.js?v=2"></script>

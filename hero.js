@@ -64,7 +64,7 @@
   // ---- Infozeile zum gezeigten Song ----
   var ri=document.getElementById('rinfo');
   if(ri){
-    ri.innerHTML='<p class="eyebrow ri-eye"></p><h2 class="ri-t"></h2><p class="ri-date"><span class="ri-d"></span><span class="ri-cd"></span></p>'+
+    ri.innerHTML='<p class="eyebrow ri-eye"></p><h2 class="ri-t"></h2><p class="ri-date"><span class="ri-d"></span></p><div class="ri-cd" hidden><div><b></b><span data-i18n="cd.d">'+T('cd.d')+'</span></div><div><b></b><span data-i18n="cd.h">'+T('cd.h')+'</span></div><div><b></b><span data-i18n="cd.m">'+T('cd.m')+'</span></div><div><b></b><span data-i18n="cd.s">'+T('cd.s')+'</span></div></div>'+
       '<p class="ctools ri-tools"><button type="button" class="ctool" data-act="share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg><span data-i18n="share">'+T('share')+'</span></button>'+
       '<button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 7h14v10H5V9Zm2 2v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg><span data-i18n="cal">'+T('cal')+'</span></button>'+
       '<a class="ps-link" target="_blank" rel="noopener" data-i18n="soon.ps">'+T('soon.ps')+'</a></p><p class="ri-out"></p>';
@@ -81,9 +81,9 @@
     ri.querySelector('.ri-t').textContent=L[cur].t;
     var h=q('h2');ri.querySelector('.ri-t').lang=h&&h.lang||'';
     ri.querySelector('.ri-d').textContent=(q('.date')||{}).textContent||'';
-    var cd=q('.cd'),cdt='';
-    if(cd&&!cd.hidden){var b=cd.querySelectorAll('b'),dd=b[0].textContent;cdt=dd+' '+T('cd.d')+' · '+b[1].textContent+':'+b[2].textContent+':'+b[3].textContent}
-    ri.querySelector('.ri-cd').textContent=cdt;
+    // Countdown aus der Karte übernehmen (grosse Ziffern wie früher auf den Karten, nur kompakter)
+    var cd=q('.cd'),rc=ri.querySelector('.ri-cd'),on=!!(cd&&!cd.hidden);rc.hidden=!on;
+    if(on){var b=cd.querySelectorAll('b'),rb=rc.querySelectorAll('b');for(var k=0;k<4;k++)rb[k].textContent=b[k]?b[k].textContent:''}
     var out=q('.out'),isOut=!!(out&&!out.hidden),key=cur+'|'+isOut;
     ri.querySelector('.ri-tools').hidden=isOut;
     if(riOut!==key){
