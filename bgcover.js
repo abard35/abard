@@ -14,11 +14,11 @@
       if(want!==src)return; // inzwischen schon ein anderes Cover gewählt
       var back=front===A?B:A;
       back.style.backgroundImage='url("'+src.replace(/"/g,'%22')+'")';
-      back.classList.add('on');front.classList.remove('on');front=back;curSrc=src;
+      back.classList.add('on');front.classList.remove('on');front=back;curSrc=src;document.body.classList.add('has-bgc');
     };
     im.src=src;
   }
-  function coverOf(el){var i=el&&el.querySelector('img');return i?(i.currentSrc||i.src):''}
+  function coverOf(el){var i=el&&el.querySelector('img');if(!i)return '';var ss=(i.getAttribute('srcset')||'').split(',').pop().trim().split(' ')[0];return ss||i.currentSrc||i.src}
   window.ABARD_BG={
     // Kopfbereich: Cover des gezeigten Clips (Release-Karte)
     hero:function(card){heroSrc=coverOf(card);set(heroSrc)},
