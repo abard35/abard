@@ -3,6 +3,9 @@
 // Die übrigen Clips stehen als Mini-Icons darunter. Gibt es keinen aktuellen Release, entfällt der Bereich.
 // "Aktuell" = Release steht noch bevor oder ist höchstens 7 Tage her.
 // Vor dem Release läuft der Teaser, ab Release-Zeit der Out-Now-Short (falls vorhanden).
+// Rechts neben dem Clip zeigt die Infozeile (#rinfo) Datum/Countdown und Teilen/Kalender/Pre-Save bzw.
+// nach dem Release Spotify/YouTube/Story zum gerade gezeigten Song. Die Daten kommen live aus den
+// (unsichtbaren) Release-Karten im Abschnitt #next – die bleiben die Datenquelle und werden weiter gepflegt.
 // Neuer Release: Clips als clips/<slug>-teaser.mp4 / -out.mp4 (+ .jpg Standbild, -s.jpg Mini-Bild) ablegen
 // und den Slug unten in CLIPS eintragen. Datum und Titel kommen automatisch aus den Release-Karten.
 (function(){
@@ -26,7 +29,7 @@
     var h=c.querySelector('h2');
     L.push({slug:slug,at:at,kinds:k,card:c,t:h?h.textContent.trim():slug});
   });
-  if(!L.length){st.hidden=true;document.querySelector('.hero').classList.add('no-reel');return}
+  if(!L.length){st.hidden=true;document.querySelector('.hero').classList.add('no-reel');var r0=document.getElementById('rinfo');if(r0)r0.hidden=true;return}
   L.sort(function(a,b){return a.at-b.at});
   function kind(s){var out=Date.now()>=s.at;return out&&s.kinds.indexOf('out')>=0?s.slug+'-out':s.kinds.indexOf('teaser')>=0?s.slug+'-teaser':s.slug+'-out'}
   // Start: der nächste kommende Release, sonst der zuletzt erschienene
@@ -58,11 +61,47 @@
     b.addEventListener('click',function(){show(n)});th.appendChild(b);
   });else th.hidden=true;
 
+  // ---- Infozeile zum gezeigten Song ----
+  var ri=document.getElementById('rinfo');
+  if(ri){
+    ri.innerHTML='<p class="eyebrow ri-eye"></p><h2 class="ri-t"></h2><p class="ri-date"><span class="ri-d"></span><span class="ri-cd"></span></p>'+
+      '<p class="ctools ri-tools"><button type="button" class="ctool" data-act="share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg><span data-i18n="share">'+T('share')+'</span></button>'+
+      '<button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 7h14v10H5V9Zm2 2v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg><span data-i18n="cal">'+T('cal')+'</span></button>'+
+      '<a class="ps-link" target="_blank" rel="noopener" data-i18n="soon.ps">'+T('soon.ps')+'</a></p><p class="ri-out"></p>';
+    ri.hidden=false;
+    // Teilen/Kalender: dieselbe Funktion wie auf den Karten (kommt aus app.js, das nach diesem Skript lädt)
+    document.addEventListener('DOMContentLoaded',function(){if(window.ABARD_CARD_TOOLS)window.ABARD_CARD_TOOLS(ri)});
+  }
+  var riOut=null;
+  function sync(){
+    if(!ri)return;
+    var c=L[cur].card,q=function(sel){return c.querySelector(sel)};
+    ['slug','at','day','time'].forEach(function(k){if(c.dataset[k]!==undefined)ri.dataset[k]=c.dataset[k]});
+    ri.querySelector('.ri-eye').textContent=(q('.eyebrow')||{}).textContent||'';
+    ri.querySelector('.ri-t').textContent=L[cur].t;
+    var h=q('h2');ri.querySelector('.ri-t').lang=h&&h.lang||'';
+    ri.querySelector('.ri-d').textContent=(q('.date')||{}).textContent||'';
+    var cd=q('.cd'),cdt='';
+    if(cd&&!cd.hidden){var b=cd.querySelectorAll('b'),dd=b[0].textContent;cdt=dd+' '+T('cd.d')+' · '+b[1].textContent+':'+b[2].textContent+':'+b[3].textContent}
+    ri.querySelector('.ri-cd').textContent=cdt;
+    var out=q('.out'),isOut=!!(out&&!out.hidden),key=cur+'|'+isOut;
+    ri.querySelector('.ri-tools').hidden=isOut;
+    if(riOut!==key){
+      riOut=key;var o=ri.querySelector('.ri-out');o.innerHTML='';o.hidden=!isOut;
+      if(isOut)out.querySelectorAll('a,span').forEach(function(a){if(!a.hidden)o.appendChild(a.cloneNode(true))});
+    }
+    var ps=q('.ps-link'),mp=ri.querySelector('.ps-link');
+    mp.hidden=!ps||ps.hidden;if(ps)mp.href=ps.href;
+    var cb=q('.ctool[data-act="cal"]');ri.querySelector('.ctool[data-act="cal"]').hidden=!cb||cb.hidden;
+  }
+  function loop(){sync();setTimeout(loop,1000-Date.now()%1000+30)}
+  document.addEventListener('abard:lang',function(){riOut=null;sync()});
+
   function show(n){
     cur=n;var k=kind(L[n]);
     vid.poster='clips/'+k+'.jpg'+V;vid.src='clips/'+k+'.mp4'+V;
     th.querySelectorAll('button').forEach(function(b,i){b.setAttribute('aria-current',i===n?'true':'false')});
-    label();
+    label();riOut=null;sync();
     if(!vid.muted||!reduce)vid.play().catch(function(){});
   }
 
@@ -94,4 +133,6 @@
 
   if(reduce)vid.preload='metadata';
   show(cur);
+  // Karten-Skripte (Countdown) laufen erst nach app.js – dann regelmässig abgleichen
+  document.addEventListener('DOMContentLoaded',loop);
 })();
