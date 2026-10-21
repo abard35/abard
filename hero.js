@@ -120,6 +120,8 @@
   }
   // Clip zu Ende: nächsten aktuellen Release zeigen (Ton-Zustand bleibt); nur ein Clip → von vorne
   vid.addEventListener('ended',function(){if(L.length>1)show((cur+1)%L.length);else{vid.currentTime=0;vid.play().catch(function(){})}});
+  // Für onlyone.js: startet unten das YouTube-Fenster, Clip stumm schalten
+  window.ABARD_HERO={mute:function(){if(!vid.muted)soundOff(true)}};
   snd.addEventListener('click',function(){vid.muted?soundOn():soundOff()});
   vid.addEventListener('click',function(){vid.muted?soundOn():soundOff()});
   // Clip-Wechsel mit Ton: Ton bleibt an, neuer Clip startet vorne
