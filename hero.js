@@ -102,6 +102,7 @@
     vid.poster='clips/'+k+'.jpg'+V;vid.src='clips/'+k+'.mp4'+V;
     th.querySelectorAll('button').forEach(function(b,i){b.setAttribute('aria-current',i===n?'true':'false')});
     label();riOut=null;sync();
+    if(window.ABARD_BG)window.ABARD_BG.hero(L[n].card);
     if(!vid.muted||!reduce)vid.play().catch(function(){});
   }
 
