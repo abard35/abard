@@ -26,7 +26,7 @@
     }
     var share='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
     var steps=ios?[T('inst.ios1').replace('{i}',share),T('inst.ios2'),T('inst.ios3')]:[T('inst.and1'),T('inst.and2'),T('inst.and3')];
-    pop.innerHTML='<img src="icon-192.png" alt="" width="48" height="48"><b>'+T('inst.h')+'</b><ol>'+steps.map(function(s){return '<li>'+s+'</li>'}).join('')+'</ol><button type="button" class="ctool">'+T('close')+'</button>';
+    pop.innerHTML='<img src="icon-192.png" alt="" width="28" height="28"><b>'+T('inst.h')+'</b><ol>'+steps.map(function(s){return '<li>'+s+'</li>'}).join('')+'</ol><button type="button" class="ctool">'+T('close')+'</button>';
     pop.querySelector('button').addEventListener('click',close);
     pop.hidden=false;
   }

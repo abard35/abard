@@ -188,19 +188,21 @@ dialog.globe-dlg{width:min(760px,calc(100% - 32px));background:radial-gradient(1
 .ri-out .btn{padding:8px 12px;font-size:.7rem}
 .ri-out .sp-soon{font-family:var(--mono);font-size:.72rem;color:var(--muted);align-self:center}
 .hero .cta{margin-top:20px}
-/* App installieren (install.js) – Knopf nur auf dem Handy sichtbar */
-.instbtn{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--sodium);color:var(--sodium);font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:6px 9px;cursor:pointer}
+/* App installieren (install.js) – dezentes Symbol nur auf dem Handy */
+.instbtn{display:inline-grid;place-items:center;width:32px;height:32px;padding:0;background:none;border:1px solid var(--line);color:var(--muted);cursor:pointer}
 .instbtn[hidden]{display:none}
-.instbtn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.instbtn:hover,.instbtn:focus-visible{background:var(--sodium);color:var(--bg)}
-.instpop{position:fixed;left:12px;right:12px;top:72px;z-index:60;max-width:380px;margin:0 auto;background:var(--panel);border:1px solid var(--sodium);box-shadow:0 20px 50px rgba(0,0,0,.7);padding:18px 18px 14px;font-size:.92rem}
+.instbtn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.instbtn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.instbtn:hover,.instbtn:focus-visible{color:var(--sodium);border-color:var(--sodium)}
+.instpop{position:fixed;right:12px;top:64px;z-index:60;width:min(300px,calc(100vw - 24px));background:var(--panel);border:1px solid var(--line);box-shadow:0 14px 36px rgba(0,0,0,.6);padding:12px 14px 10px;font-size:.8rem;line-height:1.45}
 .instpop[hidden]{display:none}
-.instpop img{float:left;margin:0 12px 6px 0;border-radius:10px}
-.instpop b{display:block;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:1.25rem;line-height:1.05;min-height:48px}
-.instpop ol{clear:both;margin:10px 0 12px;padding-left:20px;line-height:1.5}
-.instpop li{margin:4px 0}
-.instpop li svg{width:18px;height:18px;vertical-align:-3px;fill:none;stroke:var(--sodium);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-@media (max-width:440px){.instbtn span{display:none}.instbtn{padding:6px 7px}.bar nav{gap:10px;letter-spacing:.06em}.lang{margin-left:0}}
+.instpop img{float:left;width:28px;height:28px;margin:0 10px 0 0;border-radius:6px}
+.instpop b{display:block;font-family:var(--mono);font-weight:500;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sodium);line-height:28px}
+.instpop ol{clear:both;margin:8px 0 8px;padding-left:18px;color:var(--muted)}
+.instpop li{margin:2px 0}
+.instpop li svg{width:14px;height:14px;vertical-align:-2px;fill:none;stroke:var(--fg);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.instpop .ctool{padding:4px 9px;font-size:.62rem}
+@media (max-width:440px){.bar nav{gap:10px;letter-spacing:.06em}.lang{margin-left:0}}
 @media (max-width:360px){.bar nav a[href="#watch"]{display:none}}
 .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--sodium);margin:0 0 12px}
 h1{
@@ -1437,7 +1439,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
 <script src="songs.js?v=0fcfd2b6"></script>
 <script src="app.js?v=37"></script>
 <script src="onlyone.js?v=1"></script>
-<script src="install.js?v=1"></script>
+<script src="install.js?v=2"></script>
 <script src="globe.js?v=2"></script>
 <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
