@@ -23,7 +23,7 @@
       'pn.text':'Spotify only plays a 30-second preview because you are not logged in.','pn.yt':'Play the full song on YouTube','pn.login':'Log in to Spotify ↗',
       'nx.in':'Up next in','nx.go':'Play now','nx.x':'Cancel','nx.viayt':'via YouTube',
       'pyt':'Open on YouTube ↗','pclose':'Close player',
-      'lede.short':'ABard is a sound, not a backstory.','hero.on':'Sound on','hero.off':'Sound off','hero.out':'Out now','hero.new':'New single','hero.aria':'Short videos of the current releases','hero.pick':'Show clip:',
+      'lede.short':'ABard is a sound, not a backstory.','inst':'App','inst.aria':'Install ABard as an app','inst.h':'ABard as an app on your phone','inst.ios1':'Tap the Share icon {i} in Safari (bottom bar)','inst.ios2':'Scroll down and choose “Add to Home Screen”','inst.ios3':'Tap “Add” – done.','inst.and1':'Open the browser menu (⋮ top right)','inst.and2':'Choose “Install app” or “Add to Home screen”','inst.and3':'Confirm – done.','hero.on':'Sound on','hero.off':'Sound off','hero.out':'Out now','hero.new':'New single','hero.aria':'Short videos of the current releases','hero.pick':'Show clip:',
       'months':['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
       'monthsLong':['January','February','March','April','May','June','July','August','September','October','November','December']
     },
@@ -48,7 +48,7 @@
       'pn.text':'Spotify spielt nur eine 30-Sekunden-Vorschau, weil du nicht angemeldet bist.','pn.yt':'Ganz auf YouTube hören','pn.login':'Bei Spotify anmelden ↗',
       'nx.in':'Als Nächstes in','nx.go':'Jetzt spielen','nx.x':'Abbrechen','nx.viayt':'über YouTube',
       'pyt':'Auf YouTube öffnen ↗','pclose':'Player schliessen',
-      'lede.short':'ABard ist ein Sound, keine Hintergrundgeschichte.','hero.on':'Ton an','hero.off':'Ton aus','hero.out':'Jetzt draussen','hero.new':'Neue Single','hero.aria':'Kurzvideos der aktuellen Releases','hero.pick':'Clip zeigen:',
+      'lede.short':'ABard ist ein Sound, keine Hintergrundgeschichte.','inst':'App','inst.aria':'ABard als App installieren','inst.h':'ABard als App auf dem Handy','inst.ios1':'In Safari unten auf Teilen {i} tippen','inst.ios2':'Nach unten scrollen und „Zum Home-Bildschirm“ wählen','inst.ios3':'Auf „Hinzufügen“ tippen – fertig.','inst.and1':'Browser-Menü öffnen (⋮ oben rechts)','inst.and2':'„App installieren“ oder „Zum Startbildschirm hinzufügen“ wählen','inst.and3':'Bestätigen – fertig.','hero.on':'Ton an','hero.off':'Ton aus','hero.out':'Jetzt draussen','hero.new':'Neue Single','hero.aria':'Kurzvideos der aktuellen Releases','hero.pick':'Clip zeigen:',
       'months':['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
       'monthsLong':['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']
     }
