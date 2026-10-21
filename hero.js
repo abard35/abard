@@ -1,132 +1,97 @@
-// Kopfbereich-Animation. Bei jedem Besuch wird EINE von vier Varianten zufällig gewählt
-// und bleibt für die ganze Sitzung (Tab) gleich: Cover-Wand, Kachel-Dreher, Kinoplakat, Spotlight.
-// Cover, Titel und Genres kommen automatisch aus den Kacheln der Release-Liste.
+// Kopfbereich: Shorts der aktuellen Releases.
+// Ein Clip läuft gross und STUMM; Ton nur, wenn der Besucher ihn aktiv einschaltet.
+// Die übrigen Clips stehen als Mini-Icons darunter. Gibt es keinen aktuellen Release, entfällt der Bereich.
+// "Aktuell" = Release steht noch bevor oder ist höchstens 7 Tage her.
+// Vor dem Release läuft der Teaser, ab Release-Zeit der Out-Now-Short (falls vorhanden).
+// Neuer Release: Clips als clips/<slug>-teaser.mp4 / -out.mp4 (+ .jpg Standbild, -s.jpg Mini-Bild) ablegen
+// und den Slug unten in CLIPS eintragen. Datum und Titel kommen automatisch aus den Release-Karten.
 (function(){
-  var st=document.getElementById('wall');if(!st)return;
-  var LOGO='apple-touch-icon.png';
-  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var narrow=window.matchMedia&&matchMedia('(max-width:760px)').matches;
-
-  // Songs aus den Kacheln einsammeln (ohne Doppelte)
-  var seen={},S=[];
-  document.querySelectorAll('.rel').forEach(function(a){
-    var im=a.querySelector('.cover img');if(!im)return;
-    var src=im.getAttribute('src');if(!src||seen[src])return;seen[src]=1;
-    var big=((im.getAttribute('srcset')||'').split(',').pop().trim().split(' ')[0])||src;
-    var o={src:src,big:big,t:(a.querySelector('h3')||{}).textContent||'',g:a.dataset.genre||''};
-    // Noch nicht erschienen: Erscheinungsdatum in Orange aufs Cover schreiben
-    var at=Date.parse(a.dataset.at||'');if(!isNaN(at)&&Date.now()<at)o.at=at;
-    S.push(o);
-  });
-  if(S.length<6){st.hidden=true;return}
-  function badge(s){
-    return new Promise(function(done){
-      var im=new Image();im.onload=function(){
-        try{
-          var W=600,c=document.createElement('canvas');c.width=c.height=W;var x=c.getContext('2d');
-          x.drawImage(im,0,0,W,W);
-          var Ix=window.ABARD_I18N,de=Ix&&Ix.lang&&Ix.lang()==='de',d=new Date(s.at);
-          var txt=de?'Ab '+d.toLocaleDateString('de-CH',{day:'numeric',month:'long',timeZone:'Europe/Zurich'}):'Out '+d.toLocaleDateString('en-US',{month:'long',day:'numeric',timeZone:'Europe/Zurich'});
-          txt=txt.toUpperCase();
-          var g=x.createLinearGradient(0,W*.70,0,W);g.addColorStop(0,'rgba(13,14,16,0)');g.addColorStop(.45,'rgba(13,14,16,.82)');g.addColorStop(1,'rgba(13,14,16,.92)');
-          x.fillStyle=g;x.fillRect(0,W*.70,W,W*.30);
-          var fs=Math.round(W*.085);x.font='700 '+fs+'px "Big Shoulders Display","Arial Narrow",Impact,sans-serif';
-          while(x.measureText(txt).width>W*.86&&fs>20){fs-=2;x.font='700 '+fs+'px "Big Shoulders Display","Arial Narrow",Impact,sans-serif'}
-          x.textAlign='center';x.textBaseline='alphabetic';x.fillStyle='#d8a23f';
-          if('letterSpacing' in x)x.letterSpacing=Math.round(fs*.08)+'px';
-          x.fillText(txt,W/2,W*.93);
-          s.src=s.big=c.toDataURL('image/jpeg',.88);
-        }catch(e){}
-        done();
-      };
-      im.onerror=function(){done()};im.src=s.src;
-    });
-  }
-  var pend=S.filter(function(s){return s.at}),waits=[];
-  if(pend.length){
-    // Schrift der Seite abwarten (max. 1 s), damit das Datum im Seitenstil erscheint
-    var fontReady=Promise.race([document.fonts&&document.fonts.load?document.fonts.load('700 40px "Big Shoulders Display"').catch(function(){}):0,new Promise(function(r){setTimeout(r,1000)})]);
-    waits=pend.map(function(s){return fontReady.then(function(){return badge(s)})});
-  }
-
-  function shuf(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1)),t=a[k];a[k]=a[j];a[j]=t}return a}
-  function img(src,cls){var i=document.createElement('img');i.src=src;i.alt='';i.decoding='async';if(cls)i.className=cls;if(src===LOGO)i.classList.add('logo');return i}
-  function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML}
-  function every(ms,fn){if(!reduce)setInterval(function(){if(!document.hidden)fn()},ms)}
-
-  var V={
-    wall:function(){
-      st.classList.add('wall');
-      var srcs=shuf(S.map(function(s){return s.src})),cols=[[],[],[]];
-      srcs.forEach(function(s,n){cols[n%3].push(s)});
-      // Logo nur EINMAL in der ganzen Wand
-      var lc=Math.floor(Math.random()*3);cols[lc].splice(Math.floor(Math.random()*(cols[lc].length+1)),0,LOGO);
-      [46,58,40].forEach(function(d,c){
-        var col=document.createElement('div');col.className='col'+(c===1?' down':'');col.style.setProperty('--dur',d+'s');
-        cols[c].concat(cols[c]).forEach(function(s){var i=img(s);i.width=300;i.height=300;col.appendChild(i)});
-        st.appendChild(col);
-      });
-    },
-    flip:function(){
-      st.classList.add('flip');
-      var n=narrow?12:9;if(narrow)st.style.gridTemplateColumns='repeat(4,1fr)';
-      var pool=shuf(S.map(function(s){return s.src}).concat([LOGO])),rest=pool.slice(n),ts=[];
-      pool.slice(0,n).forEach(function(u){var t=document.createElement('div');t.className='t';t.appendChild(img(u,'f'));t.appendChild(img(rest[0]||u,'b'));st.appendChild(t);ts.push(t)});
-      var last=-1;
-      every(1100,function(){
-        var k;do{k=Math.floor(Math.random()*ts.length)}while(k===last&&ts.length>1);last=k;
-        var t=ts[k],on=t.classList.contains('on'),back=t.querySelector(on?'.f':'.b'),front=t.querySelector(on?'.b':'.f');
-        var nu=rest.shift();rest.push(front.getAttribute('src'));
-        back.src=nu;back.classList.toggle('logo',nu===LOGO);
-        // erst drehen, wenn das neue Bild geladen ist
-        if(back.complete)t.classList.toggle('on');else back.onload=function(){back.onload=null;t.classList.toggle('on')};
-      });
-    },
-    cine:function(){
-      st.classList.add('cine');
-      var L=shuf(S),cur=0,sl=[],O=['30% 30%','70% 30%','50% 70%','30% 70%','70% 60%'];
-      var ti=document.createElement('div');ti.className='ti';ti.innerHTML='<small></small><b></b>';
-      var bar=document.createElement('i');bar.className='cbar';
-      function slide(k){
-        if(sl[k])return sl[k];
-        var d=document.createElement('div');d.className='sl';d.appendChild(img(L[k].big));st.insertBefore(d,ti);sl[k]=d;return d;
-      }
-      st.appendChild(ti);st.appendChild(bar);
-      function show(){
-        var d=slide(cur);slide((cur+1)%L.length); // nächstes Bild schon vorladen
-        sl.forEach(function(x){if(x)x.classList.toggle('on',x===d)});
-        d.style.setProperty('--o',O[cur%O.length]);
-        ti.querySelector('small').textContent=L[cur].g;ti.querySelector('b').textContent=L[cur].t;
-        bar.classList.remove('run');void bar.offsetWidth;if(!reduce)bar.classList.add('run');
-      }
-      show();every(6000,function(){cur=(cur+1)%L.length;show()});
-    },
-    spot:function(){
-      st.classList.add('spot');
-      var n=narrow?24:36,L=shuf(S).slice(0,n-1);
-      L.splice(Math.floor(Math.random()*(L.length+1)),0,{src:LOGO,t:'ABard',g:'Official Artist Site'});
-      while(L.length<n)L.push(L[L.length%S.length]);
-      var ims=L.map(function(s){var i=img(s.src);st.appendChild(i);return i});
-      var lbl=document.createElement('div');lbl.className='lbl';st.appendChild(lbl);
-      var cols=6,rows=Math.ceil(n/cols),last=-1;
-      function go(){
-        ims.forEach(function(i){i.classList.remove('lit')});
-        var k;do{k=Math.floor(Math.random()*ims.length)}while(k===last);last=k;
-        var c=k%cols,r=Math.floor(k/cols);
-        // Randkacheln wachsen nach innen, damit nichts abgeschnitten wird
-        ims[k].style.transformOrigin=(c===0?'0%':c===cols-1?'100%':'50%')+' '+(r===0?'0%':r===rows-1?'100%':'50%');
-        ims[k].classList.add('lit');lbl.innerHTML='<b>'+esc(L[k].t)+'</b> · '+esc(L[k].g);
-      }
-      go();every(2200,go);
-    }
+  var st=document.getElementById('reel');if(!st)return;
+  var CLIPS={
+    'no-someday-left':['out'],
+    'kurze-zeit':['teaser','out'],
+    'der-uhrmacher':['teaser','out'],
+    'der-leuchtturm':['teaser'],
+    'through-your-eyes':['teaser','out']
   };
+  var DAYS_AFTER=7,V='?v=1';
+  var I=window.ABARD_I18N||{T:function(k){return k},lang:function(){return 'en'}};
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var now=Date.now(),L=[];
 
-  // Variante für diese Sitzung: einmal zufällig wählen, dann beibehalten
-  var keys=['wall','flip','cine','spot'],v=null;
-  try{v=sessionStorage.getItem('abard-hero')}catch(e){}
-  if(keys.indexOf(v)<0){v=keys[Math.floor(Math.random()*keys.length)];try{sessionStorage.setItem('abard-hero',v)}catch(e){}}
-  // Zum Testen: #hero-wall, #hero-flip, #hero-cine, #hero-spot erzwingt eine Variante
-  var h=location.hash.match(/^#hero-(wall|flip|cine|spot)$/);if(h)v=h[1];
-  function start(){V[v]();st.dataset.variant=v}
-  if(waits.length)Promise.race([Promise.all(waits),new Promise(function(r){setTimeout(r,1500)})]).then(start);else start();
+  // Releases aus den Karten einsammeln
+  document.querySelectorAll('.next[data-slug][data-at]').forEach(function(c){
+    var slug=c.dataset.slug,k=CLIPS[slug],at=Date.parse(c.dataset.at);
+    if(!k||isNaN(at)||now>at+DAYS_AFTER*864e5)return;
+    var h=c.querySelector('h2');
+    L.push({slug:slug,at:at,kinds:k,card:c,t:h?h.textContent.trim():slug});
+  });
+  if(!L.length){st.hidden=true;document.querySelector('.hero').classList.add('no-reel');return}
+  L.sort(function(a,b){return a.at-b.at});
+  function kind(s){var out=Date.now()>=s.at;return out&&s.kinds.indexOf('out')>=0?s.slug+'-out':s.kinds.indexOf('teaser')>=0?s.slug+'-teaser':s.slug+'-out'}
+  // Start: der nächste kommende Release, sonst der zuletzt erschienene
+  var cur=0;for(var i=0;i<L.length;i++){if(L[i].at>now){cur=i;break}cur=i}
+
+  var T=I.T;
+  // Titel und Datum stehen schon im Clip selbst – daher keine eigene Beschriftung darüber
+  st.innerHTML='<div class="rv"><video muted loop playsinline preload="auto"></video></div>'+
+    '<button type="button" class="rv-snd" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9v6h4l5 4V5L8 9H4Z"/><path class="on" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/><path class="off" d="m16.5 9.5 5 5m0-5-5 5"/></svg><span></span></button>'+
+    '<div class="rv-th" role="group"></div>';
+  var vid=st.querySelector('video'),snd=st.querySelector('.rv-snd'),th=st.querySelector('.rv-th');
+  st.setAttribute('aria-label',T('hero.aria'));
+
+  function dateTxt(s){
+    if(Date.now()>=s.at)return T('hero.out');
+    var d=new Date(s.at),m=(T('months')||[])[+d.toLocaleString('en-US',{month:'numeric',timeZone:'Europe/Zurich'})-1]||'',day=d.toLocaleString('en-US',{day:'numeric',timeZone:'Europe/Zurich'});
+    return T('hero.new')+' · '+(I.lang()==='de'?day+'. '+m:m+' '+day);
+  }
+  function label(){
+    var s=L[cur];vid.setAttribute('aria-label',s.t+' – '+dateTxt(s));
+    snd.querySelector('span').textContent=T(vid.muted?'hero.on':'hero.off');
+    th.setAttribute('aria-label',T('hero.pick'));
+    th.querySelectorAll('button').forEach(function(b,n){b.setAttribute('aria-label',L[n].t+' – '+dateTxt(L[n]));b.title=L[n].t});
+  }
+  // Mini-Icons (nur wenn mehr als ein Clip)
+  if(L.length>1)L.forEach(function(s,n){
+    var b=document.createElement('button');b.type='button';
+    b.innerHTML='<img src="clips/'+kind(s)+'-s.jpg'+V+'" alt="" width="60" height="107" loading="lazy" decoding="async">';
+    b.addEventListener('click',function(){show(n)});th.appendChild(b);
+  });else th.hidden=true;
+
+  function show(n){
+    cur=n;var k=kind(L[n]);
+    vid.poster='clips/'+k+'.jpg'+V;vid.src='clips/'+k+'.mp4'+V;
+    th.querySelectorAll('button').forEach(function(b,i){b.setAttribute('aria-current',i===n?'true':'false')});
+    label();
+    if(!vid.muted||!reduce)vid.play().catch(function(){});
+  }
+
+  // ---- Ton: nur auf aktiven Klick. Laufende Musik/Sneak Peek wird angehalten und danach fortgesetzt ----
+  var resume=false;
+  function soundOn(){
+    document.querySelectorAll('audio.sneak-a').forEach(function(o){if(!o.paused)o.pause()});
+    var P=window.ABARD_PLAYER;resume=!!(P&&P.playing());if(resume)P.pause();
+    vid.muted=false;vid.currentTime=0;vid.play().catch(function(){});snd.setAttribute('aria-pressed','true');label();
+  }
+  function soundOff(keep){
+    vid.muted=true;snd.setAttribute('aria-pressed','false');label();
+    if(reduce)vid.pause();
+    if(resume&&!keep&&window.ABARD_PLAYER)window.ABARD_PLAYER.resume();resume=false;
+  }
+  snd.addEventListener('click',function(){vid.muted?soundOn():soundOff()});
+  vid.addEventListener('click',function(){vid.muted?soundOn():soundOff()});
+  // Clip-Wechsel mit Ton: Ton bleibt an, neuer Clip startet vorne
+  th.addEventListener('click',function(){if(!vid.muted)vid.currentTime=0});
+  // Startet jemand einen Sneak Peek oder einen Song: Clip wieder stumm (ohne Fortsetzen)
+  document.addEventListener('play',function(e){if(e.target.classList&&e.target.classList.contains('sneak-a')&&!vid.muted)soundOff(true)},true);
+  document.addEventListener('click',function(e){if(!vid.muted&&e.target.closest&&e.target.closest('.rel'))soundOff(true)},true);
+  // Stummer Clip ausserhalb des Sichtfelds: anhalten (spart Akku/Daten)
+  if('IntersectionObserver' in window)new IntersectionObserver(function(es){es.forEach(function(e){
+    if(!vid.muted)return;
+    if(e.isIntersecting){if(!reduce)vid.play().catch(function(){})}else vid.pause();
+  })}).observe(st);
+  document.addEventListener('abard:lang',label);
+
+  if(reduce)vid.preload='metadata';
+  show(cur);
 })();

@@ -23,6 +23,7 @@
       'pn.text':'Spotify only plays a 30-second preview because you are not logged in.','pn.yt':'Play the full song on YouTube','pn.login':'Log in to Spotify ↗',
       'nx.in':'Up next in','nx.go':'Play now','nx.x':'Cancel','nx.viayt':'via YouTube',
       'pyt':'Open on YouTube ↗','pclose':'Close player',
+      'hero.on':'Sound on','hero.off':'Sound off','hero.out':'Out now','hero.new':'New single','hero.aria':'Short videos of the current releases','hero.pick':'Show clip:',
       'months':['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
       'monthsLong':['January','February','March','April','May','June','July','August','September','October','November','December']
     },
@@ -47,6 +48,7 @@
       'pn.text':'Spotify spielt nur eine 30-Sekunden-Vorschau, weil du nicht angemeldet bist.','pn.yt':'Ganz auf YouTube hören','pn.login':'Bei Spotify anmelden ↗',
       'nx.in':'Als Nächstes in','nx.go':'Jetzt spielen','nx.x':'Abbrechen','nx.viayt':'über YouTube',
       'pyt':'Auf YouTube öffnen ↗','pclose':'Player schliessen',
+      'hero.on':'Ton an','hero.off':'Ton aus','hero.out':'Jetzt draussen','hero.new':'Neue Single','hero.aria':'Kurzvideos der aktuellen Releases','hero.pick':'Clip zeigen:',
       'months':['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
       'monthsLong':['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']
     }
