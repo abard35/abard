@@ -561,7 +561,7 @@
     var now=Date.now();
     document.querySelectorAll('.rel[data-yt]:not(.big)').forEach(function(r){var v=r.dataset.yt,at=Date.parse(r.dataset.at||'');if(v&&!seen[v]&&!(at>now)){seen[v]=1;ids.push(v)}});
     if(!ids.length)return;
-    f.src='https://www.youtube.com/embed/'+ids[0]+'?rel=0&playsinline=1&playlist='+ids.slice(1,50).join(',')+'&origin='+encodeURIComponent(location.origin);
+    f.src='https://www.youtube.com/embed/'+ids[0]+'?enablejsapi=1&rel=0&playsinline=1&playlist='+ids.slice(1,50).join(',')+'&origin='+encodeURIComponent(location.origin);
   })();
   // ---- Disclaimer als Overlay: Seite bleibt, Musik spielt weiter ----
   (function(){
