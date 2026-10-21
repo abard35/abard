@@ -1,6 +1,6 @@
 // Kopfbereich: Shorts der aktuellen Releases.
 // Ein Clip läuft gross und STUMM; Ton nur, wenn der Besucher ihn aktiv einschaltet.
-// Die übrigen Clips stehen als Mini-Icons darunter. Gibt es keinen aktuellen Release, entfällt der Bereich.
+// Ist ein Clip durch, folgt automatisch der nächste. Die übrigen Clips stehen als Mini-Icons darunter. Gibt es keinen aktuellen Release, entfällt der Bereich.
 // "Aktuell" = Release steht noch bevor oder ist höchstens 7 Tage her.
 // Vor dem Release läuft der Teaser, ab Release-Zeit der Out-Now-Short (falls vorhanden).
 // Rechts neben dem Clip zeigt die Infozeile (#rinfo) Datum/Countdown und Teilen/Kalender/Pre-Save bzw.
@@ -37,7 +37,7 @@
 
   var T=I.T;
   // Titel und Datum stehen schon im Clip selbst – daher keine eigene Beschriftung darüber
-  st.innerHTML='<div class="rv"><video muted loop playsinline preload="auto"></video></div>'+
+  st.innerHTML='<div class="rv"><video muted playsinline preload="auto"></video></div>'+
     '<button type="button" class="rv-snd" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9v6h4l5 4V5L8 9H4Z"/><path class="on" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/><path class="off" d="m16.5 9.5 5 5m0-5-5 5"/></svg><span></span></button>'+
     '<div class="rv-th" role="group"></div>';
   var vid=st.querySelector('video'),snd=st.querySelector('.rv-snd'),th=st.querySelector('.rv-th');
@@ -118,6 +118,8 @@
     if(reduce)vid.pause();
     if(resume&&!keep&&window.ABARD_PLAYER)window.ABARD_PLAYER.resume();resume=false;
   }
+  // Clip zu Ende: nächsten aktuellen Release zeigen (Ton-Zustand bleibt); nur ein Clip → von vorne
+  vid.addEventListener('ended',function(){if(L.length>1)show((cur+1)%L.length);else{vid.currentTime=0;vid.play().catch(function(){})}});
   snd.addEventListener('click',function(){vid.muted?soundOn():soundOff()});
   vid.addEventListener('click',function(){vid.muted?soundOn():soundOff()});
   // Clip-Wechsel mit Ton: Ton bleibt an, neuer Clip startet vorne
