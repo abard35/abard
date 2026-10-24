@@ -65,9 +65,10 @@
   var ri=document.getElementById('rinfo');
   if(ri){
     ri.innerHTML='<p class="eyebrow ri-eye"></p><h2 class="ri-t"></h2><p class="ri-date"><span class="ri-d"></span></p><div class="ri-cd" hidden><div><b></b><span data-i18n="cd.d">'+T('cd.d')+'</span></div><div><b></b><span data-i18n="cd.h">'+T('cd.h')+'</span></div><div><b></b><span data-i18n="cd.m">'+T('cd.m')+'</span></div><div><b></b><span data-i18n="cd.s">'+T('cd.s')+'</span></div></div>'+
+      '<p class="ri-ps"><a class="btn primary ri-psb" target="_blank" rel="noopener" data-i18n="soon.ps">'+T('soon.ps')+'</a><span class="ri-psn" data-i18n="ps.note">'+T('ps.note')+'</span></p>'+
       '<p class="ctools ri-tools"><button type="button" class="ctool" data-act="share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1Z"/></svg><span data-i18n="share">'+T('share')+'</span></button>'+
-      '<button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 7h14v10H5V9Zm2 2v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg><span data-i18n="cal">'+T('cal')+'</span></button>'+
-      '<a class="ps-link" target="_blank" rel="noopener" data-i18n="soon.ps">'+T('soon.ps')+'</a></p><p class="ri-out"></p>';
+      '<button type="button" class="ctool" data-act="cal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6v-5a7 7 0 0 0-5.5-6.84V3a1.5 1.5 0 0 0-3 0v1.16A7 7 0 0 0 5 11v5l-2 2v1h18v-1l-2-2Z"/></svg><span data-i18n="remind">'+T('remind')+'</span></button></p>'+
+      '<p class="ri-out"></p>';
     ri.hidden=false;
     // Teilen/Kalender: dieselbe Funktion wie auf den Karten (kommt aus app.js, das nach diesem Skript lädt)
     document.addEventListener('DOMContentLoaded',function(){if(window.ABARD_CARD_TOOLS)window.ABARD_CARD_TOOLS(ri)});
@@ -90,8 +91,11 @@
       riOut=key;var o=ri.querySelector('.ri-out');o.innerHTML='';o.hidden=!isOut;
       if(isOut)out.querySelectorAll('a,span').forEach(function(a){if(!a.hidden)o.appendChild(a.cloneNode(true))});
     }
-    var ps=q('.ps-link'),mp=ri.querySelector('.ps-link');
-    mp.hidden=!ps||ps.hidden;if(ps)mp.href=ps.href;
+    // Pre-Save auf Spotify = Hauptaufforderung vor dem Release (gratis Spotify-Konto genügt)
+    var ps=q('.ps-link'),mp=ri.querySelector('.ri-ps');
+    mp.hidden=isOut||!ps||ps.hidden;if(ps)mp.querySelector('a').href=ps.href;
+    // YouTube-Premiere (für die Erinnerung ohne Spotify)
+    var yv=out&&out.querySelector('a[href*="youtube.com/watch"]');ri.dataset.yt=yv?yv.href:'';
     var cb=q('.ctool[data-act="cal"]');ri.querySelector('.ctool[data-act="cal"]').hidden=!cb||cb.hidden;
   }
   function loop(){sync();setTimeout(loop,1000-Date.now()%1000+30)}

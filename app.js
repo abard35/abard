@@ -303,16 +303,16 @@
     (items?pop.querySelector('a'):cp).focus({preventScroll:true});
   }
 
-  // ---- Kalendereintrag für kommende Releases (Karten #soon/#later/#later2/#later3/#later4): .ics-Datei oder Google Kalender ----
+  // ---- Erinnerung für kommende Releases (ohne Spotify): YouTube-Premiere, .ics-Datei oder Google Kalender. Kalendereintrag für kommende Releases (Karten #soon/#later/#later2/#later3/#later4): .ics-Datei oder Google Kalender ----
   function calPop(box,btn){
     var t=box.dataset.at?Date.parse(box.dataset.at):Date.parse(box.dataset.day+'T'+(box.dataset.time||'00:00')+':00+02:00');
     var slug=box.dataset.slug,title=songTitle(box),name='ABard – '+title+' (New Single)';
     var z=function(ms){return new Date(ms).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')};
     var det=title+' – new single by ABard, out now on Spotify & YouTube.\n'+location.origin+'/s/'+slug+'/';
-    shareSong(box,btn,[
+    shareSong(box,btn,(box.dataset.yt?[[T('rem.yt'),box.dataset.yt]]:[]).concat([
       [T('cal.ics'),'cal/'+slug+'.ics',true],
       [T('cal.g'),'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(name)+'&dates='+z(t)+'/'+z(t+1800000)+'&details='+encodeURIComponent(det)+'&location='+encodeURIComponent('Spotify / YouTube')]
-    ]);
+    ]));
   }
   window.ABARD_CARD_TOOLS=function(box){
     box.querySelectorAll('.ctool').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();if(b.dataset.act==='cal')calPop(box,b);else shareSong(box,b)})});
