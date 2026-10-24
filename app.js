@@ -135,21 +135,43 @@
   var apBtn=document.getElementById('ap'),pnext=document.getElementById('pnext');
   function setAp(v){ap=v;apBtn.setAttribute('aria-pressed',String(v));try{localStorage.setItem('abard-autoplay',v?'1':'0')}catch(e){}if(!v)nextCancel()}
   apBtn.addEventListener('click',function(){setAp(!ap)});setAp(ap);
+  // Autoplay: nächster Song aus derselben Stimmungsfamilie (neueste zuerst), erst danach
+  // die verwandten Familien in der Reihenfolge von NB. Neuer Song → Slug hier eintragen.
+  var FAM={
+    'the-entropy-bell':1,'the-blind-kings':1,'the-digital-heretic':1,'the-morning-star':1,'koenige-von-nichts':1,
+    'obsession-with-a-ghost':2,'chasing-illusions':2,'der-uhrmacher':2,'der-leuchtturm':2,
+    'fragile-horizons':3,'echoes-of-the-silver-valley':3,'lullaby-for-the-stars':3,'symphony-of-life':3,
+    'room-404':4,'toxic-devotion':4,'golden-venom':4,
+    'once-a-lifetime':5,'what-love-should-be':5,'forever-drawn-to-you':5,'when-i-saw-you':5,'through-your-eyes':5,'the-flame-that-is-ours':5,
+    'the-quiet-space':6,'you':6,'when-i-have-to-leave':6,'the-dash-between-the-years':6,'fading-photographs':6,'wings-of-wax':6,'aftermath':6,'mom':6,
+    'still-burning':7,'she-s-gone':7,'shadows-of-my-yesterday':7,'love-will-haunt-me-forever':7,'if-my-heart-could-speak':7,'passion':7,'rising':7,
+    'dreaming-your-own-life':8,'master-of-our-time':8,'no-someday-left':8,'kurze-zeit':8
+  };
+  // 1 Cyber/Sci-Fi · 2 Gothic/Dark Rock · 3 Cinematic · 4 Sultry · 5 Liebeslieder · 6 Verlust · 7 80s/Metal · 8 Aufbruch
+  var NB={1:[2,3],2:[1,3],3:[2,6],4:[2,5],5:[6,4],6:[5,7],7:[6,8],8:[7,5]};
+  var LAST={'the-flame-that-is-ours':1}; // innerhalb der Familie hinten anstellen
   function words(g){return (g||'').toLowerCase().split(/[\s\-\/]+/).filter(Boolean)}
   function pickNext(a,ytOnly){
-    var g=(a.dataset.genre||'').toLowerCase(),gw=words(g),seen={},best=[],bs=-1,all=[];
+    var g=(a.dataset.genre||'').toLowerCase(),gw=words(g),f=FAM[a.dataset.slug],nb=NB[f]||[],seen={},all=[];
     // Noch nicht erschienene (versteckte) Songs nie automatisch abspielen
     document.querySelectorAll('.rel[data-id]:not([hidden]),.rel[data-yt]:not([hidden])').forEach(function(r){
       var k=key(r);if(seen[k]||k===key(a)||(ytOnly&&!r.dataset.yt))return;seen[k]=1;all.push(r);
     });
     var pool=all.filter(function(r){return !played[key(r)]});
     if(!pool.length){played={};played[key(a)]=1;pool=all}
-    pool.forEach(function(r){
+    function score(r){
+      var rf=FAM[r.dataset.slug];
+      if(f&&rf)return rf===f?100:nb[0]===rf?50:nb[1]===rf?25:0;
+      // Song ohne Familie: Ähnlichkeit über die Genre-Wörter
       var rg=(r.dataset.genre||'').toLowerCase(),sc=0;
-      if(rg&&rg===g)sc=100;else words(rg).forEach(function(w){if(gw.indexOf(w)>=0)sc+=(w==='ballad'||w==='metal'||w==='rock'?3:1)});
-      if(sc>bs){bs=sc;best=[r]}else if(sc===bs)best.push(r);
+      if(rg&&rg===g)return 100;
+      words(rg).forEach(function(w){if(gw.indexOf(w)>=0)sc+=(w==='ballad'||w==='metal'||w==='rock'?3:1)});
+      return sc;
+    }
+    pool.sort(function(x,y){
+      return score(y)-score(x)||(LAST[x.dataset.slug]?1:0)-(LAST[y.dataset.slug]?1:0)||(y.dataset.date||'').localeCompare(x.dataset.date||'');
     });
-    return best.length?best[Math.floor(Math.random()*best.length)]:null;
+    return pool[0]||null;
   }
   function songEnded(){
     if(endFired||!ap||!cur2||player.hidden)return;endFired=true;
