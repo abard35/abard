@@ -210,6 +210,16 @@ if len(parts) == 9:
 # Bio für Besucher mit Browser auf Spanisch/Portugiesisch/Französisch/Italienisch/Griechisch/Filipino
 bio_x = {k: art["bio_" + k] for k in ("es", "pt", "fr", "it", "el", "fil") if art.get("bio_" + k)}
 i18 = re.sub(r"var BIO=\{.*?\};", lambda m: "var BIO=" + json.dumps(bio_x, ensure_ascii=False) + ";", i18, count=1)
+# Meilenstein: Hörer in mehr als der Hälfte der 195 Staaten (Gebiete wie Puerto Rico zählen hier nicht)
+STATES = ("AF AL DZ AD AO AG AR AM AU AT AZ BS BH BD BB BY BE BZ BJ BT BO BA BW BR BN BG BF BI CV KH CM CA CF TD CL CN CO KM CG CD CR CI HR CU CY CZ DK DJ DM DO EC EG SV GQ ER EE SZ ET FJ FI FR GA GM GE DE GH GR GD GT GN GW GY HT HN HU IS IN ID IR IQ IE IL IT JM JP JO KZ KE KI KP KR KW KG LA LV LB LS LR LY LI LT LU MG MW MY MV ML MT MH MR MU MX FM MD MC MN ME MA MZ MM NA NR NP NL NZ NI NE NG MK NO OM PK PW PA PG PY PE PH PL PT QA RO RU RW KN LC VC WS SM ST SA SN RS SC SL SG SK SI SB SO ZA SS ES LK SD SR SE CH SY TJ TZ TH TL TG TO TT TN TR TM TV UG UA AE GB US UY UZ VU VE VN YE ZM ZW VA PS").split()
+_lv = json.loads(re.search(r"levels:(\{.*?\})", open("globe-data.js", encoding="utf-8").read()).group(1))
+n_states = sum(1 for c in STATES if c in _lv)
+half = n_states > len(STATES) // 2
+bh = {k: v for k, v in art.get("bio_half", {}).items() if not k.startswith("_")}
+i18 = re.sub(r"var HALF=(true|false),BH=\{.*?\};", lambda m: "var HALF=" + ("true" if half else "false") + ",BH=" + json.dumps(bh, ensure_ascii=False) + ";", i18, count=1)
+print(f"Weltkarte: {n_states} von {len(STATES)} Staaten" + (" – Bio-Satz „mehr als die Hälfte“ aktiv" if half else f" – Bio-Satz ab {len(STATES)//2+1}"))
+if half and bh.get("en"):
+    s2 = re.sub(r'(<p class="lede" data-i18n="lede">).*?(</p>)', lambda m: m.group(1) + html.escape(art["bio_en"] + " " + bh["en"], quote=False) + m.group(2), s2, count=1, flags=re.S)
 open("i18n.js", "w", encoding="utf-8").write(i18)
 
 # Liste aller Songseiten über dem Footer (echte Links, damit Suchmaschinen jede Songseite finden)

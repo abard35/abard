@@ -40,5 +40,16 @@
       "url": "https://www.facebook.com/albert.bardewyck",
       "footer": false
     }
-  ]
+  ],
+  "bio_half": {
+    "_hinweis": "Satz wird automatisch an die Bio angehängt, sobald Hörer aus mehr als der Hälfte der 195 Staaten (ab 98) in globe-data.js stehen (build_share.py prüft das).",
+    "en": "Somewhere along the way, these songs found listeners in more than half the world’s countries – and every new light on the map still feels like a small miracle.",
+    "de": "Unterwegs haben diese Songs Hörer in mehr als der Hälfte aller Länder der Welt gefunden – und jedes neue Licht auf der Karte fühlt sich noch immer an wie ein kleines Wunder.",
+    "es": "Por el camino, estas canciones encontraron oyentes en más de la mitad de los países del mundo, y cada nueva luz en el mapa sigue pareciendo un pequeño milagro.",
+    "pt": "Pelo caminho, estas músicas encontraram ouvintes em mais da metade dos países do mundo – e cada nova luz no mapa ainda parece um pequeno milagre.",
+    "fr": "En chemin, ces chansons ont trouvé des auditeurs dans plus de la moitié des pays du monde – et chaque nouvelle lumière sur la carte a toujours quelque chose d’un petit miracle.",
+    "it": "Lungo la strada, queste canzoni hanno trovato ascoltatori in più della metà dei paesi del mondo – e ogni nuova luce sulla mappa sembra ancora un piccolo miracolo.",
+    "el": "Κάπου στη διαδρομή, αυτά τα τραγούδια βρήκαν ακροατές σε περισσότερες από τις μισές χώρες του κόσμου – και κάθε νέο φως στον χάρτη μοιάζει ακόμα με ένα μικρό θαύμα.",
+    "fil": "Sa paglalakbay na ito, nakahanap ang mga kantang ito ng mga tagapakinig sa mahigit kalahati ng mga bansa sa mundo – at bawat bagong ilaw sa mapa ay parang maliit na himala pa rin."
+  }
 }

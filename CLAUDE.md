@@ -26,6 +26,7 @@ Diese Regeln gelten zusätzlich zum Release-Ablauf (Skill „abard-release-sneak
 - Deutsche Bio steht in `artist.json` (`bio_de`), ebenfalls mit „ss“ statt „ß“.
 - Sprache (seit 25.10.2026): Ohne eigene Wahl entscheidet die Browsersprache – Deutsch → ganze Seite DE (auch Story auf den Songseiten), sonst EN. Keine IP-Erkennung. Klick auf EN/DE hat immer Vorrang und wird gespeichert.
 - Bio zusätzlich auf Spanisch, Portugiesisch, Französisch, Italienisch, Griechisch, Filipino (`bio_es/pt/fr/it/el/fil` in `artist.json`; Browser `tl` zählt als Filipino): erscheint nur bei entsprechender Browsersprache und ohne eigene EN/DE-Wahl, Rest der Seite bleibt EN. Bei Bio-Änderungen alle Sprachen mitpflegen (Genres englisch, „du“-Form), dann `build_share.py`.
+- Meilenstein „mehr als die Hälfte“ (seit 25.10.2026): Sobald in `globe-data.js` Hörer aus mindestens 98 der 195 Staaten stehen, hängt `build_share.py` automatisch den Satz aus `bio_half` (8 Sprachen, `artist.json`) an die Bio der Website. `build_share.py` meldet den Stand („Weltkarte: X von 195 Staaten“). Wird er erstmals aktiv: Albert Bescheid geben und den englischen Satz auch in die Bio auf Spotify, YouTube, YouTube Music, Instagram, TikTok und Suno übernehmen (Bio überall synchron).
 - Kontaktadresse darf nie im Klartext auf der Seite stehen.
 
 ## Release-Ergänzungen (seit 11.10.2026, gelten zusätzlich zum Release-Ablauf)
