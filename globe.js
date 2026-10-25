@@ -4,6 +4,7 @@
 (function(){
   var btn=document.getElementById('globe-btn'),dlg=document.getElementById('globe');
   if(!btn||!dlg||!dlg.showModal)return;
+  var STATES='AF AL DZ AD AO AG AR AM AU AT AZ BS BH BD BB BY BE BZ BJ BT BO BA BW BR BN BG BF BI CV KH CM CA CF TD CL CN CO KM CG CD CR CI HR CU CY CZ DK DJ DM DO EC EG SV GQ ER EE SZ ET FJ FI FR GA GM GE DE GH GR GD GT GN GW GY HT HN HU IS IN ID IR IQ IE IL IT JM JP JO KZ KE KI KP KR KW KG LA LV LB LS LR LY LI LT LU MG MW MY MV ML MT MH MR MU MX FM MD MC MN ME MA MZ MM NA NR NP NL NZ NI NE NG MK NO OM PK PW PA PG PY PE PH PL PT QA RO RU RW KN LC VC WS SM ST SA SN RS SC SL SG SK SI SB SO ZA SS ES LK SD SR SE CH SY TJ TZ TH TL TG TO TT TN TR TM TV UG UA AE GB US UY UZ VU VE VN YE ZM ZW VA PS';
   var S={
     en:{eye:'Listeners worldwide',h:function(n){return 'Heard in '+n+' countries'},hint:'Drag to spin · tap a light',more:function(m){return '<b>'+m+'</b> more to go'},load:'Loading the world…'},
     de:{eye:'Hörer weltweit',h:function(n){return 'Gehört in '+n+' Ländern'},hint:'Ziehen zum Drehen · Licht antippen',more:function(m){return 'Noch <b>'+m+'</b> to go'},load:'Die Welt wird geladen…'}
@@ -14,8 +15,11 @@
     dlg.querySelector('.g-eye').textContent=s.eye;
     dlg.querySelector('.g-h').textContent=n?s.h(n):s.load;
     dlg.querySelector('.g-hint').textContent=s.hint;
-    // 195 Staaten (UN-Mitglieder plus Vatikan und Palästina)
-    dlg.querySelector('.g-sub').innerHTML=n?s.more(Math.max(0,195-n)):'';
+    // "Gehört in" zählt alle Gebiete (auch Puerto Rico, Taiwan, Hongkong, Kosovo);
+    // "to go" zählt nur die noch fehlenden der 195 Staaten (UN-Mitglieder plus Vatikan und Palästina)
+    var lv=window.ABARD_GLOBE?window.ABARD_GLOBE.levels:{};
+    var m=STATES.split(' ').filter(function(c){return !lv[c]}).length;
+    dlg.querySelector('.g-sub').innerHTML=n?s.more(m):'';
     try{names=new Intl.DisplayNames([lang()],{type:'region'})}catch(e){names=null}
   }
   var names=null;
