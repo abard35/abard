@@ -200,15 +200,15 @@ else:
 s2 = re.sub(r'(<p class="lede" data-i18n="lede">).*?(</p>)', lambda m: m.group(1) + html.escape(art["bio_en"], quote=False) + m.group(2), s2, count=1, flags=re.S)
 plinks = " · ".join(f'<a href="{html.escape(p["url"])}" target="_blank" rel="noopener me">{html.escape(p["name"])}</a>' for p in art["profiles"] if p.get("footer"))
 s2 = re.sub(r"<!--PROFILES-->.*?<!--/PROFILES-->", lambda m: "<!--PROFILES--><span>" + plinks + "</span><!--/PROFILES-->", s2, flags=re.S)
-# Bio in der Sprachdatei (EN und DE, dazu ES/PT/FR/IT)
+# Bio in der Sprachdatei (EN und DE, dazu ES/PT/FR/IT/EL/FIL)
 i18 = open("i18n.js", encoding="utf-8").read()
 q = lambda t: t.replace("\\", "\\\\").replace("'", "\\'")
 parts = re.split(r"('lede':')((?:[^'\\]|\\.)*)(')", i18)
 if len(parts) == 9:
     parts[2] = q(art["bio_en"]); parts[6] = q(art["bio_de"])
     i18 = "".join(parts)
-# Bio für Besucher mit Browser auf Spanisch/Portugiesisch/Französisch/Italienisch
-bio_x = {k: art["bio_" + k] for k in ("es", "pt", "fr", "it") if art.get("bio_" + k)}
+# Bio für Besucher mit Browser auf Spanisch/Portugiesisch/Französisch/Italienisch/Griechisch/Filipino
+bio_x = {k: art["bio_" + k] for k in ("es", "pt", "fr", "it", "el", "fil") if art.get("bio_" + k)}
 i18 = re.sub(r"var BIO=\{.*?\};", lambda m: "var BIO=" + json.dumps(bio_x, ensure_ascii=False) + ";", i18, count=1)
 open("i18n.js", "w", encoding="utf-8").write(i18)
 
