@@ -1,8 +1,9 @@
 // Songseiten /s/<song>/: Umschalter Original | DE für Story und Songtext.
-// Story startet in der zuletzt gewählten Seitensprache, der Songtext startet immer im Original.
+// Story startet in der zuletzt gewählten Seitensprache (ohne Wahl: Browser auf Deutsch → DE), der Songtext startet immer im Original.
 (function(){
   function init(){
-    var de=false;try{de=localStorage.getItem('abard-lang')==='de'}catch(e){}
+    var de=false,st=null;try{st=localStorage.getItem('abard-lang')}catch(e){}
+    if(st)de=st==='de';else try{de=((navigator.languages&&navigator.languages[0])||navigator.language||'').toLowerCase().slice(0,2)==='de'}catch(e){}
     document.querySelectorAll('[data-sw]').forEach(function(sec){
       var tog=sec.querySelector('.tog'),h=sec.querySelector('h2');if(!tog)return;
       function set(v){

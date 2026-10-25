@@ -1,4 +1,5 @@
-// Sprachumschalter EN/DE. Standard: Englisch. Genres und Songtexte bleiben englisch.
+// Sprachumschalter EN/DE. Ohne eigene Wahl: Browser auf Deutsch → DE, sonst EN. Genres und Songtexte bleiben englisch.
+// Bio zusätzlich auf ES/PT/FR/IT, wenn der Browser so eingestellt ist (Rest der Seite bleibt EN). Texte aus artist.json via build_share.py.
 // Texte im HTML sind englisch; Elemente mit data-i18n / data-i18n-aria / data-i18n-title werden umgeschaltet.
 (function(){
   var D={
@@ -53,8 +54,11 @@
       'monthsLong':['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']
     }
   };
-  var lang='en';
-  try{var st=localStorage.getItem('abard-lang');if(st==='de'||st==='en')lang=st}catch(e){}
+  var BIO={"es": "ABard es un sonido, no una biografía. Con raíces en el hard rock de los 80, afilado por acero industrial e impulsado por grandes emociones cinematográficas. De riffs demoledores y symphonic metal a power ballads desgarradoras: cada canción cuenta su propia historia. Dale play y decide por ti mismo.", "pt": "ABard é um som, não uma biografia. Com raízes no hard rock dos anos 80, afiado pelo aço industrial e movido por grandes emoções cinematográficas. De riffs esmagadores e symphonic metal a power ballads de partir o coração – cada música conta a sua própria história. Dê o play e tire suas próprias conclusões.", "fr": "ABard, c’est un son, pas une biographie. Ancré dans le hard rock des années 80, affûté par l’acier industriel et porté par de grandes émotions cinématographiques. Des riffs écrasants et du symphonic metal aux power ballads déchirantes – chaque chanson raconte sa propre histoire. Appuie sur play et juge par toi-même.", "it": "ABard è un suono, non una biografia. Radicato nell’hard rock degli anni ’80, affilato dall’acciaio industriale e sostenuto da grandi emozioni cinematografiche. Dai riff devastanti e dal symphonic metal alle power ballad struggenti – ogni canzone racconta la sua storia. Premi play e giudica da solo."};
+  var lang='en',picked=false,nav='';
+  try{nav=((navigator.languages&&navigator.languages[0])||navigator.language||'').toLowerCase().slice(0,2)}catch(e){}
+  try{var st=localStorage.getItem('abard-lang');if(st==='de'||st==='en'){lang=st;picked=true}}catch(e){}
+  if(!picked&&nav==='de')lang='de';
   function T(k){var v=D[lang][k];return v===undefined?D.en[k]:v}
   // Monatsangabe auf den Kacheln aus data-date neu schreiben (Genre bleibt englisch)
   function metas(){
@@ -72,13 +76,16 @@
       // Status des Release-Blocks entscheidet über den Text der Überzeile
       el.textContent=T(k);
     });
+    // Bio in der Browsersprache (ES/PT/FR/IT), solange der Besucher nicht selbst EN/DE gewählt hat
+    var bl=(lang==='en'&&!picked&&BIO[nav])?nav:'';
+    document.querySelectorAll('[data-i18n="lede"]').forEach(function(el){if(bl){el.textContent=BIO[bl];el.lang=bl}else el.removeAttribute('lang')});
     document.querySelectorAll('[data-i18n-aria]').forEach(function(el){el.setAttribute('aria-label',T(el.getAttribute('data-i18n-aria')))});
     document.querySelectorAll('[data-i18n-title]').forEach(function(el){el.setAttribute('title',T(el.getAttribute('data-i18n-title')))});
     document.querySelectorAll('#lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.lang===lang))});
     metas();
     document.dispatchEvent(new CustomEvent('abard:lang',{detail:lang}));
   }
-  window.ABARD_I18N={T:T,lang:function(){return lang},set:function(l){if(!D[l])return;lang=l;try{localStorage.setItem('abard-lang',l)}catch(e){}apply()}};
+  window.ABARD_I18N={T:T,lang:function(){return lang},set:function(l){if(!D[l])return;lang=l;picked=true;try{localStorage.setItem('abard-lang',l)}catch(e){}apply()}};
   document.querySelectorAll('#lang button').forEach(function(b){b.addEventListener('click',function(){window.ABARD_I18N.set(b.dataset.lang)})});
   apply();
 })();

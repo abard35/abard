@@ -24,6 +24,8 @@ Diese Regeln gelten zusätzlich zum Release-Ablauf (Skill „abard-release-sneak
 
 ## Sonstiges
 - Deutsche Bio steht in `artist.json` (`bio_de`), ebenfalls mit „ss“ statt „ß“.
+- Sprache (seit 25.10.2026): Ohne eigene Wahl entscheidet die Browsersprache – Deutsch → ganze Seite DE (auch Story auf den Songseiten), sonst EN. Keine IP-Erkennung. Klick auf EN/DE hat immer Vorrang und wird gespeichert.
+- Bio zusätzlich auf Spanisch, Portugiesisch, Französisch, Italienisch (`bio_es/pt/fr/it` in `artist.json`): erscheint nur bei entsprechender Browsersprache und ohne eigene EN/DE-Wahl, Rest der Seite bleibt EN. Bei Bio-Änderungen alle Sprachen mitpflegen (Genres englisch, „du“-Form), dann `build_share.py`.
 - Kontaktadresse darf nie im Klartext auf der Seite stehen.
 
 ## Release-Ergänzungen (seit 11.10.2026, gelten zusätzlich zum Release-Ablauf)
