@@ -39,7 +39,7 @@
   var T=I.T;
   // Titel und Datum stehen schon im Clip selbst – daher keine eigene Beschriftung darüber
   var pre=st.querySelector('.rv');// vom Build vorgerendertes Standbild (LCP) weiterverwenden
-  st.innerHTML='<div class="rv"><video muted playsinline preload="auto"></video></div>'+
+  st.innerHTML='<div class="rv"><img class="rv-po" alt=""><video muted playsinline preload="auto"></video></div>'+
     '<button type="button" class="rv-snd" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9v6h4l5 4V5L8 9H4Z"/><path class="on" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/><path class="off" d="m16.5 9.5 5 5m0-5-5 5"/></svg><span></span></button>'+
     '<div class="rv-th" role="group"></div>';
   if(pre){st.replaceChild(pre,st.querySelector('.rv'));pre.querySelector('video').preload='auto'}
@@ -107,11 +107,13 @@
   document.addEventListener('abard:lang',function(){riOut=null;sync()});
 
   // Video erst nach dem Laden der Seite holen (Standbild sofort) – sonst bremst der 1–3 MB grosse Clip den Seitenaufbau
-  var loaded=document.readyState==='complete',pend=null;
+  var loaded=document.readyState==='complete',pend=null,shown=false;
   if(!loaded)window.addEventListener('load',function(){loaded=true;if(pend)setTimeout(pend,250);pend=null});
   function show(n,user){
     cur=n;var k=kind(L[n]);
-    vid.poster='clips/'+k+'.jpg'+V;
+    var po=st.querySelector('.rv-po'),pu='clips/'+k+'.jpg'+V;
+    if(po&&po.getAttribute('src')!==pu)po.src=pu;
+    if(shown)vid.poster=pu;else vid.removeAttribute('poster');shown=true;
     var go=function(){vid.src='clips/'+k+'.mp4'+V;if(!vid.muted||!reduce)vid.play().catch(function(){})};
     if(loaded||user){pend=null;go()}else pend=go;
     th.querySelectorAll('button').forEach(function(b,i){b.setAttribute('aria-current',i===n?'true':'false')});

@@ -56,7 +56,8 @@ def apply(s, root='.'):
             k = slug + '-out'
         link = f'<link rel="preload" as="image" href="clips/{k}.jpg{V}" fetchpriority="high">'
     # Standbild des ersten Clips direkt ins HTML, damit es ohne JavaScript sofort erscheint
-    rv = (f'<div class="rv"><video muted playsinline preload="none" poster="clips/{k}.jpg{V}"></video></div>' if rel else '')
+    # (als <img> unter dem Video: so bleibt das Bild das LCP-Element, auch wenn der Clip später startet)
+    rv = (f'<div class="rv"><img class="rv-po" src="clips/{k}.jpg{V}" alt="" fetchpriority="high"><video muted playsinline preload="none"></video></div>' if rel else '')
     s = re.sub(r'<div class="reel" id="reel" role="region">(?:<div class="rv">.*?</div>)?</div>',
                lambda m: '<div class="reel" id="reel" role="region">' + rv + '</div>', s, count=1, flags=re.S)
     s = re.sub(r'<!--HEROPL-->.*?<!--/HEROPL-->', '<!--HEROPL-->' + link + '<!--/HEROPL-->', s, count=1, flags=re.S)
