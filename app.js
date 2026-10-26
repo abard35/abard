@@ -65,6 +65,11 @@
   vin.addEventListener('click',function(){var t=nextT&&nextA?nextA:cur2;if(t)openDetail(t)});
   var spwrap=document.getElementById('spwrap'),pnote=document.getElementById('pnote');
   window.onSpotifyIframeApiReady=function(API){spAPI=API};
+  // Spotify-Steuerung erst nach dem Seitenaufbau (oder bei der ersten Berührung) laden – bremst sonst das Handy
+  var spLoaded=false;
+  function spLoad(){if(spLoaded)return;spLoaded=true;var sc=document.createElement('script');sc.src='https://open.spotify.com/embed/iframe-api/v1';sc.async=true;document.body.appendChild(sc)}
+  if(document.readyState==='complete')setTimeout(spLoad,1500);else window.addEventListener('load',function(){setTimeout(spLoad,1500)});
+  ['pointerdown','keydown','touchstart'].forEach(function(ev){document.addEventListener(ev,spLoad,{once:true,passive:true,capture:true})});
   function onUpd(e){
     var d=e&&e.data;if(d&&typeof d.isPaused==='boolean'){vinSpin(!d.isPaused);isPlay=!d.isPaused}
     if(d&&d.duration>0&&!player.classList.contains('yt')){
