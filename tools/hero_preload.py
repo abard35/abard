@@ -39,6 +39,7 @@ def apply(s, root='.'):
         rel.append((t, slug.group(1)))
     rel.sort()
     link = ''
+    k = ''
     if rel:
         cur = rel[-1]
         for r in rel:
@@ -54,6 +55,10 @@ def apply(s, root='.'):
         else:
             k = slug + '-out'
         link = f'<link rel="preload" as="image" href="clips/{k}.jpg{V}" fetchpriority="high">'
+    # Standbild des ersten Clips direkt ins HTML, damit es ohne JavaScript sofort erscheint
+    rv = (f'<div class="rv"><video muted playsinline preload="none" poster="clips/{k}.jpg{V}"></video></div>' if rel else '')
+    s = re.sub(r'<div class="reel" id="reel" role="region">(?:<div class="rv">.*?</div>)?</div>',
+               lambda m: '<div class="reel" id="reel" role="region">' + rv + '</div>', s, count=1, flags=re.S)
     s = re.sub(r'<!--HEROPL-->.*?<!--/HEROPL-->', '<!--HEROPL-->' + link + '<!--/HEROPL-->', s, count=1, flags=re.S)
     cls = 'wrap hero' if rel else 'wrap hero no-reel'
     s = re.sub(r'<div class="wrap hero[^"]*">', f'<div class="{cls}">', s, count=1)
