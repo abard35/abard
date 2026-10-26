@@ -18,7 +18,7 @@
     };
     im.src=src;
   }
-  function coverOf(el){var i=el&&el.querySelector('img');if(!i)return '';var ss=(i.getAttribute('srcset')||'').split(',').pop().trim().split(' ')[0];return ss||i.currentSrc||i.src}
+  function coverOf(el){var i=el&&el.querySelector('img');if(!i)return '';var ss=(i.getAttribute('srcset')||i.getAttribute('data-srcset')||'').split(',').pop().trim().split(' ')[0];return ss||i.currentSrc||i.getAttribute('src')||i.getAttribute('data-src')||''}
   window.ABARD_BG={
     // Kopfbereich: Cover des gezeigten Clips (Release-Karte)
     // Beim ersten Aufbau erst nach dem Laden der Seite (das grosse Cover soll den Seitenaufbau nicht bremsen)

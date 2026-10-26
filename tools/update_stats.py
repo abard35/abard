@@ -56,6 +56,10 @@ def main():
     sp = {norm(k): int(v) for k, v in data.get('spotify', {}).items()}
     yt = {norm(k): int(v) for k, v in data.get('youtube', {}).items()}
     s = open(HTML, encoding='utf-8').read()
+    import os
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import lazy_tiles
+    s = lazy_tiles.to_plain(s)
 
     blocks = re.findall(r'        <a data-slug="[^"]+" class="rel[^"]*".*?\n        </a>\n', s, re.S)
     f0 = s.index('<div class="featured">\n') + len('<div class="featured">\n')
@@ -123,10 +127,9 @@ def main():
     s = s[:r0] + releases + s[r1:]
     s = s[:f0] + featured + s[f1:] if f1 < r0 else None
     s = release_links(s)
-    import os
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import hero_preload
     s = hero_preload.apply(s, ROOT)
+    s = lazy_tiles.to_data(s)
     open(HTML, 'w', encoding='utf-8').write(s)
     print('Top 3:', ', '.join(f"{x['title']} ({x['total']})" for x in top))
     print('\n'.join(report))

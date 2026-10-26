@@ -8,6 +8,10 @@ BASE = "https://abard.die-bardewycks.ch"
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(root)
 s = open("index.html", encoding="utf-8").read()
+import sys as _sys0
+_sys0.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import lazy_tiles
+s = lazy_tiles.to_plain(s)
 js = open("songs.js", encoding="utf-8").read()
 info = json.loads(js.split("window.SONGINFO = ", 1)[1].rstrip().rstrip(";"))
 art = json.load(open("artist.json", encoding="utf-8"))
@@ -251,6 +255,7 @@ import sys as _sys
 _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import hero_preload
 s2 = hero_preload.apply(s2, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+s2 = lazy_tiles.to_data(s2)
 open("index.html", "w", encoding="utf-8").write(s2)
 
 # Sitemap: Startseite + Songseiten (Disclaimer ist noindex)

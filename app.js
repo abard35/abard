@@ -1,3 +1,13 @@
+// Cover der Kacheln selbst nachladen (data-src/data-srcset): natives loading="lazy" greift bei Lighthouse/PageSpeed
+// nicht zuverlässig – dort wurden sonst alle ~40 Cover sofort geladen und die Handy-Wertung fiel unter 80.
+(function(){
+  function now(im){if(!im||!im.dataset.src)return;if(im.dataset.srcset){im.sizes=im.dataset.sizes||im.sizes;im.srcset=im.dataset.srcset}im.src=im.dataset.src;im.removeAttribute('data-src');im.removeAttribute('data-srcset')}
+  function url(im){if(!im)return '';var ss=(im.getAttribute('srcset')||im.getAttribute('data-srcset')||'').split(',').pop().trim().split(' ')[0];return ss||im.currentSrc||im.getAttribute('src')||im.getAttribute('data-src')||''}
+  var io='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){io.unobserve(e.target);now(e.target)}})},{rootMargin:'400px 0px'}):null;
+  function scan(root){(root||document).querySelectorAll('img[data-src]').forEach(function(im){io?io.observe(im):now(im)})}
+  window.ABARD_LZ={now:now,url:url,scan:scan};
+  scan();
+})();
 (function(){
   var I=window.ABARD_I18N||{T:function(k){return k},lang:function(){return 'en'}},T=I.T;
   var player=document.getElementById('player'),frame=document.getElementById('pframe');
@@ -43,7 +53,7 @@
   function vinShow(a,assumePlaying,label){
     if(vinSwapT){clearTimeout(vinSwapT);vinSwapT=null;vin.classList.remove('swap')}
     document.getElementById('vin-p').textContent=label||T('vin.now');
-    var im=a.querySelector('.cover img'),u=(im.getAttribute('srcset')||'').split(',').pop().trim().split(' ')[0]||im.getAttribute('src');
+    var im=a.querySelector('.cover img'),u=window.ABARD_LZ.url(im);
     document.getElementById('vin-img').src=u;document.getElementById('vin-lbl').src=u;
     document.getElementById('vin-t').textContent=a.querySelector('h3').textContent;
     vin.classList.add('show');vin.tabIndex=0;vinSpin(assumePlaying);
@@ -230,7 +240,7 @@
   function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML}
   function openDetail(a,noHash){
     cur=a;var k=key(a),SI=window.SONGINFO||{},info=SI[a.dataset.id]||SI[a.dataset.yt]||SI[a.dataset.ytx]||SI[a.dataset.key]||{},d=a.dataset.date||'';
-    document.getElementById('d-img').src=a.querySelector('img').currentSrc||a.querySelector('img').src;
+    var dim=a.querySelector('img');window.ABARD_LZ.now(dim);document.getElementById('d-img').src=dim.currentSrc||window.ABARD_LZ.url(dim);
     document.getElementById('d-title').textContent=a.querySelector('h3').textContent;
     // Songdetails: nur der Stil (ausführlich wie im YouTube-Titel), sonst das Genre
     document.getElementById('d-meta').textContent=a.dataset.style||a.dataset.genre||'';
@@ -395,7 +405,7 @@
       ['data-id','data-yt','data-ytx','data-key','data-at','data-sp','data-ytv'].forEach(function(x){c.removeAttribute(x)});
       c.classList.remove('active','big');c.dataset.fav=k;c.removeAttribute('target');
       var rk=c.querySelector('.rank'),st=c.querySelector('.streams');if(rk)rk.remove();if(st)st.remove();
-      var im=c.querySelector('img');if(im)im.loading='eager';
+      var im=c.querySelector('img');if(im){im.loading='eager';window.ABARD_LZ.now(im)}
       favList.appendChild(c);n++;
     });
     favSec.hidden=!n;
@@ -442,7 +452,7 @@
       if(nb){
         nb.scrollIntoView({block:'center'});
         var sn=nb.querySelector('.sneak'),im=nb.querySelector('img'),h=nb.querySelector('h2');
-        if(sn&&h)tapPrompt(h.textContent,im&&im.src,T('sneak'),function(){sn.click()});
+        if(sn&&h)tapPrompt(h.textContent,window.ABARD_LZ.url(im),T('sneak'),function(){sn.click()});
       }
     }
     if(pa){
@@ -452,7 +462,7 @@
       // Browser (v. a. WhatsApp/Instagram auf dem Handy) blockieren Ton ohne Tipp: dann ein grosser Play-Knopf
       setTimeout(function(){
         if(window.ABARD_PLAYER&&window.ABARD_PLAYER.playing())return;
-        var im=pa.querySelector('img');tapPrompt(songTitle(pa),im&&im.src,T('tap.play'),function(){play(pa)});
+        var im=pa.querySelector('img');tapPrompt(songTitle(pa),window.ABARD_LZ.url(im),T('tap.play'),function(){play(pa)});
       },4000);
     }
   },0);
