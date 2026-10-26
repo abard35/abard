@@ -582,8 +582,14 @@
     // Noch nicht erschienene Releases (Premiere geplant) nie zeigen
     var now=Date.now();
     document.querySelectorAll('.rel[data-yt]:not(.big)').forEach(function(r){var v=r.dataset.yt,at=Date.parse(r.dataset.at||'');if(v&&!seen[v]&&!(at>now)){seen[v]=1;ids.push(v)}});
-    if(!ids.length)return;
-    f.src='https://www.youtube.com/embed/'+ids[0]+'?enablejsapi=1&rel=0&playsinline=1&playlist='+ids.slice(1,50).join(',')+'&origin='+encodeURIComponent(location.origin);
+    var url=ids.length?'https://www.youtube.com/embed/'+ids[0]+'?enablejsapi=1&rel=0&playsinline=1&playlist='+ids.slice(1,50).join(',')+'&origin='+encodeURIComponent(location.origin):f.dataset.src;
+    // Player erst laden, wenn der Besucher in die Nähe scrollt (spart allen anderen 3 MB YouTube-Code und Cookies)
+    var go=function(){if(!f.src||f.src==='about:blank')f.src=url};
+    if(!('IntersectionObserver' in window))return go();
+    var io=new IntersectionObserver(function(es){if(es.some(function(e){return e.isIntersecting})){io.disconnect();go()}},{rootMargin:'1200px 0px'});
+    io.observe(f);
+    // Sprung über das Menü „Videos“ direkt laden
+    window.addEventListener('hashchange',function(){if(location.hash==='#watch'){io.disconnect();go()}});
   })();
   // ---- Disclaimer als Overlay: Seite bleibt, Musik spielt weiter ----
   (function(){
