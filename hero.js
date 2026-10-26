@@ -41,8 +41,9 @@
   var pre=st.querySelector('.rv');// vom Build vorgerendertes Standbild (LCP) weiterverwenden
   st.innerHTML='<div class="rv"><img class="rv-po" alt=""><video muted playsinline preload="auto"></video></div>'+
     '<button type="button" class="rv-snd" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9v6h4l5 4V5L8 9H4Z"/><path class="on" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/><path class="off" d="m16.5 9.5 5 5m0-5-5 5"/></svg><span></span></button>'+
-    '<div class="rv-th" role="group"></div>';
+    '<div class="rv-act"></div><div class="rv-th" role="group"></div>';
   if(pre){st.replaceChild(pre,st.querySelector('.rv'));pre.querySelector('video').preload='auto'}
+  var act=st.querySelector('.rv-act');
   var vid=st.querySelector('video'),snd=st.querySelector('.rv-snd'),th=st.querySelector('.rv-th');
   st.setAttribute('aria-label',T('hero.aria'));
 
@@ -101,6 +102,16 @@
     mp.hidden=isOut||!ps||ps.hidden;if(ps)mp.querySelector('a').href=ps.href;
     // YouTube-Premiere (für die Erinnerung ohne Spotify)
     var yv=out&&out.querySelector('a[href*="youtube.com/watch"]');ri.dataset.yt=yv?yv.href:'';
+    // Handy: Hauptaktion direkt unter dem Clip (vor Release Pre-Save, danach Spotify/YouTube)
+    if(act){
+      var want=isOut?'out|'+cur:'ps|'+cur+'|'+(ps&&!ps.hidden?ps.href:'');
+      if(act.dataset.k!==want){
+        act.dataset.k=want;act.innerHTML='';
+        if(!isOut&&ps&&!ps.hidden){var a=document.createElement('a');a.className='btn primary';a.href=ps.href;a.target='_blank';a.rel='noopener';a.textContent=T('soon.ps');a.setAttribute('data-i18n','soon.ps');act.appendChild(a)}
+        if(isOut)ri.querySelectorAll('.ri-out a').forEach(function(x){if(/spotify\.com|youtube\.com|youtu\.be/.test(x.href)){var c=x.cloneNode(true);c.classList.remove('rv-dup');c.classList.add('btn');act.appendChild(c)}});
+      }
+      ri.querySelectorAll('.ri-out a').forEach(function(x){if(/spotify\.com|youtube\.com|youtu\.be/.test(x.href))x.classList.add('rv-dup')});
+    }
     var cb=q('.ctool[data-act="cal"]');ri.querySelector('.ctool[data-act="cal"]').hidden=!cb||cb.hidden;
   }
   function loop(){sync();setTimeout(loop,1000-Date.now()%1000+30)}

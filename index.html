@@ -520,6 +520,24 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
 .releases .rel .meta{min-height:2.9em}
 /* Streamzahlen ausgeblendet (Albert, 27.10.2026) – Daten und Top-3-Rangfolge werden weiter täglich aktualisiert */
 .rel .streams{display:none}
+
+/* Handy: Hauptaktion (Pre-Save bzw. Spotify/YouTube) direkt unter dem Clip, ohne Scrollen sichtbar (27.10.2026) */
+.rv-act{display:none}
+@media (max-width:760px){
+  .rv-act{display:flex;gap:8px;margin-top:8px}
+  .rv-act:empty{display:none}
+  .rv-act .btn{flex:1 1 0;justify-content:center;min-height:44px;padding:10px 8px;font-size:.8rem;white-space:nowrap}
+  .reel:not(:has(.rv-snd))::after{height:178px}
+  /* dieselben Knöpfe in der Infozeile nicht doppelt zeigen */
+  .rinfo .ri-ps .ri-psb,.rinfo .ri-out .rv-dup{display:none}
+}
+/* Gut antippbare Links (mind. 44 px), 27.10.2026 */
+.bar nav a{display:inline-flex;align-items:center;min-height:44px}
+.lang button{min-height:44px;min-width:44px}
+.instbtn,.gbtn{width:44px;height:44px}
+.songlist p{line-height:2.75}
+.songlist a{display:inline-block;padding:8px 2px;margin:-8px 0;line-height:1.75}
+footer a{display:inline-flex;align-items:center;min-height:44px}
 </style>
 <!--LD-->
 <script type="application/ld+json">
@@ -1259,27 +1277,27 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
       </div>
             <div class="releases">
         <a data-slug="through-your-eyes" class="rel" data-ytv="0" data-id="0Mb245XTKz3BKxHkX8HPze" data-key="throughyoureyes" data-at="2026-11-07T17:00:00+01:00" data-date="2026-11-07" data-style="Soaring Rock Power Ballad / Lifelong Love Anthem" data-genre="Soaring Rock Power Ballad" href="https://www.youtube.com/watch?v=d2Fcrlvp_pI" data-yt="d2Fcrlvp_pI" target="_blank" rel="noopener" hidden>
-          <div class="cover"><img data-src="through-your-eyes.jpg?v=1" alt="Cover: Through Your Eyes" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <div class="cover"><img data-src="through-your-eyes.jpg?v=1" data-srcset="through-your-eyes-300.webp?v=1 300w, through-your-eyes-600.webp?v=1 600w" sizes="(max-width:520px) 46vw, 330px" alt="Cover: Through Your Eyes" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
           <h3>Through Your Eyes</h3><span class="meta">Soaring Rock Power Ballad · Nov 2026</span>
         </a>
         <a data-slug="der-leuchtturm" class="rel" data-ytv="0" data-id="0zd1QfgSw64OXjWKT2DF2T" data-key="derleuchtturm" data-at="2026-11-01T00:00:00+01:00" data-date="2026-11-01" data-style="Epic Gothic Rock Ballad / Homecoming Anthem" data-genre="Epic Gothic Rock Ballad" href="https://www.youtube.com/watch?v=GD9ubn8kA9M" data-yt="GD9ubn8kA9M" target="_blank" rel="noopener" hidden>
-          <div class="cover"><img data-src="der-leuchtturm.jpg?v=1" alt="Cover: Der Leuchtturm" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <div class="cover"><img data-src="der-leuchtturm.jpg?v=1" data-srcset="der-leuchtturm-300.webp?v=1 300w, der-leuchtturm-600.webp?v=1 600w" sizes="(max-width:520px) 46vw, 330px" alt="Cover: Der Leuchtturm" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
           <h3>Der Leuchtturm</h3><span class="meta">Epic Gothic Rock Ballad · Nov 2026</span>
         </a>
         <a data-slug="der-uhrmacher" class="rel" data-ytv="0" data-id="0y0w3L2Sw7IT4eFPu3ARpC" data-key="deruhrmacher" data-at="2026-10-31T00:00:00+01:00" data-date="2026-10-31" data-style="Gothic Progressive Rock / Letting Go Anthem" data-genre="Gothic Progressive Rock" href="https://open.spotify.com/album/0y0w3L2Sw7IT4eFPu3ARpC" data-yt="j-Yl2xqu9GM" target="_blank" rel="noopener" hidden>
-          <div class="cover"><img data-src="der-uhrmacher.jpg?v=1" alt="Cover: Der Uhrmacher" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <div class="cover"><img data-src="der-uhrmacher.jpg?v=1" data-srcset="der-uhrmacher-300.webp?v=1 300w, der-uhrmacher-600.webp?v=1 600w" sizes="(max-width:520px) 46vw, 330px" alt="Cover: Der Uhrmacher" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
           <h3>Der Uhrmacher</h3><span class="meta">Gothic Progressive Rock · Oct 2026</span>
         </a>
         <a data-slug="kurze-zeit" class="rel" data-ytv="47" data-id="5awux96W7BrOvMO9fpump8" data-key="kurzezeit" data-at="2026-10-24T00:00:00+02:00" data-date="2026-10-24" data-style="Dark Symphonic Rock / Memento Mori Anthem" data-genre="Dark Symphonic Rock" href="https://open.spotify.com/album/5awux96W7BrOvMO9fpump8" data-yt="Dfcac6lc1TM" target="_blank" rel="noopener" hidden>
-          <div class="cover"><img data-src="kurze-zeit.jpg?v=1" alt="Cover: Kurze Zeit" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <div class="cover"><img data-src="kurze-zeit.jpg?v=1" data-srcset="kurze-zeit-300.webp?v=1 300w, kurze-zeit-600.webp?v=1 600w" sizes="(max-width:520px) 46vw, 330px" alt="Cover: Kurze Zeit" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
           <h3>Kurze Zeit</h3><span class="meta">Dark Symphonic Rock · Oct 2026</span>
         </a>
         <a data-slug="no-someday-left" class="rel" data-ytv="54" data-id="6yVuVMDpOji698TxzxKQM7" data-key="nosomedayleft" data-at="2026-10-16T00:00:00+02:00" data-date="2026-10-16" data-style="Passionate Rock Ballad / Carpe Diem Anthem" data-genre="Passionate Rock Ballad" href="https://open.spotify.com/album/6yVuVMDpOji698TxzxKQM7" data-yt="PRjUn0dRNEM" target="_blank" rel="noopener" hidden>
-          <div class="cover"><img data-src="no-someday-left.jpg?v=1" alt="Cover: No Someday Left" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <div class="cover"><img data-src="no-someday-left.jpg?v=1" data-srcset="no-someday-left-300.webp?v=1 300w, no-someday-left-600.webp?v=1 600w" sizes="(max-width:520px) 46vw, 330px" alt="Cover: No Someday Left" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
           <h3>No Someday Left</h3><span class="meta">Passionate Rock Ballad · Oct 2026</span>
         </a>
         <a data-slug="room-404" class="rel" data-ytv="43" data-id="1MUnQwkEVSbtJaPI20iFuf" data-at="2026-10-09T12:00:00+02:00" data-date="2026-10-09" data-style="Sultry Heavy Blues Rock" data-genre="Heavy Blues Rock" href="https://open.spotify.com/album/1MUnQwkEVSbtJaPI20iFuf" data-yt="TBKEIhjdTWY" target="_blank" rel="noopener" hidden>
-          <div class="cover"><img data-src="room404.jpg?v=2" alt="Cover: Room 404" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
+          <div class="cover"><img data-src="room404.jpg?v=2" data-srcset="room404-300.webp?v=2 300w, room404-600.webp?v=2 600w" sizes="(max-width:520px) 46vw, 330px" alt="Cover: Room 404" loading="lazy" width="300" height="300"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
           <h3>Room 404</h3><span class="meta">Heavy Blues Rock · Oct 2026</span>
         </a>
         <a data-slug="the-morning-star" class="rel" data-ytv="58" data-date="2026-10-06" data-style="Dark Sci-Fi Anthem / Cinematic Cyber-Symphonic Metal" data-genre="Symphonic Metal" href="https://www.youtube.com/watch?v=f-IVyJZkQU0" data-yt="f-IVyJZkQU0" target="_blank" rel="noopener">
@@ -1498,7 +1516,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
 <template id="ic-heart"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.6 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.6 0 5.8 3.5 4.5 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg></template><template id="ic-share"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.4M8.3 13.2l7.4 4.4"/></svg></template>
 <script src="i18n.js?v=18" defer></script>
 <script src="bgcover.js?v=4" defer></script>
-<script src="hero.js?v=15" defer></script>
+<script src="hero.js?v=16" defer></script>
 <script src="songs.js?v=dd001e4d" defer></script>
 <script src="app.js?v=43" defer></script>
 <script src="onlyone.js?v=1" defer></script>
