@@ -512,9 +512,10 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
-/* Kacheln gleich hoch: "Only on YouTube" als Abzeichen oben links auf dem Cover, Titel und Stil mit festem Platz (je 2 Zeilen) */
-.rel .only,.rel:not([data-yt]) .only,.rel .yt-only{position:absolute;left:8px;top:8px;z-index:1;margin:0;padding:4px 7px;background:rgba(13,14,16,.78);backdrop-filter:blur(4px);color:var(--fg);font-size:.72rem;letter-spacing:.08em;line-height:1.2;pointer-events:none}
-.rel.big .only{top:46px}
+/* Kacheln gleich hoch: "Only on YouTube" als Abzeichen unten links auf dem Cover, Titel und Stil mit festem Platz (je 2 Zeilen) */
+.rel{container-type:inline-size}
+.rel .only,.rel:not([data-yt]) .only,.rel .yt-only{position:absolute;left:8px;top:calc(100cqw - 8px);transform:translateY(-100%);max-width:calc(100% - 66px);z-index:1;margin:0;padding:4px 7px;background:rgba(13,14,16,.78);backdrop-filter:blur(4px);color:var(--fg);font-size:.72rem;letter-spacing:.08em;line-height:1.2;pointer-events:none}
+.rel.is-fav .only{left:44px}
 .releases .rel h3{min-height:2.1em}
 .releases .rel .meta{min-height:2.9em}
 </style>
