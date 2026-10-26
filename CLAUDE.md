@@ -21,6 +21,7 @@ Diese Regeln gelten zusätzlich zum Release-Ablauf (Skill „abard-release-sneak
 - Geänderte JS/CSS: `?v=` in `index.html` hochzählen.
 - Song-Fenster in EN und DE testen (Story, Songtext, Umschalter Original/Deutsch), danach live in Chrome prüfen.
 - Commit-Nachrichten auf Deutsch; Push auf `main` → Plesk deployt automatisch.
+- **Keine KI-Vermerke in Commits** (Alberts Wunsch, 27.10.2026): keine Zeilen „Co-Authored-By: Claude …“, „Claude-Session: …“ oder „Generated with …“ in Commit-Nachrichten oder Pull Requests. Autor ist immer abard35.
 
 ## Sonstiges
 - Deutsche Bio steht in `artist.json` (`bio_de`), ebenfalls mit „ss“ statt „ß“.
