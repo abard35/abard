@@ -44,6 +44,7 @@
     '<div class="rv-act"></div><div class="rv-th" role="group"></div>';
   if(pre){st.replaceChild(pre,st.querySelector('.rv'));pre.querySelector('video').preload='auto'}
   var act=st.querySelector('.rv-act');
+  var rvBox=st.querySelector('.rv');
   var vid=st.querySelector('video'),snd=st.querySelector('.rv-snd'),th=st.querySelector('.rv-th');
   st.setAttribute('aria-label',T('hero.aria'));
 
@@ -146,6 +147,9 @@
     if(resume&&!keep&&window.ABARD_PLAYER)window.ABARD_PLAYER.resume();resume=false;
   }
   // Clip zu Ende: nächsten aktuellen Release zeigen (Ton-Zustand bleibt); nur ein Clip → von vorne
+  // Sichtbar erst, wenn Bilder kommen; neuer Clip -> wieder Standbild bis er läuft
+  vid.addEventListener('playing',function(){rvBox.classList.add('on')});
+  vid.addEventListener('emptied',function(){rvBox.classList.remove('on')});
   vid.addEventListener('ended',function(){if(L.length>1)show((cur+1)%L.length);else{vid.currentTime=0;vid.play().catch(function(){})}});
   // Für onlyone.js: startet unten das YouTube-Fenster, Clip stumm schalten
   window.ABARD_HERO={mute:function(){if(!vid.muted)soundOff(true)}};

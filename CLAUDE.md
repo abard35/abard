@@ -72,3 +72,4 @@ Diese Regeln gelten zusätzlich zum Release-Ablauf (Skill „abard-release-sneak
 - **Handy-Hauptaktion unter dem Clip (seit 27.10.2026):** `hero.js` füllt `.rv-act` (nur bis 760 px Breite sichtbar) mit Pre-Save bzw. nach Release Spotify/YouTube aus der Karte; dieselben Knöpfe in `#rinfo` sind dort auf dem Handy ausgeblendet. Platzreserve dafür in `.reel:not(:has(.rv-snd))::after` (178 px auf dem Handy).
 - **Eigene Cover als WebP:** `lazy_tiles.py` erzeugt für lokale Kachel-Cover (z. B. `room404.jpg`) automatisch `<name>-300.webp`/`-600.webp` (Pillow) und setzt `srcset`. Mitcommitten; bei neuem Cover `?v=` hochzählen.
 - Tippflächen mind. 44 px (Menü, EN/DE, A–Z-Liste, Footer).
+- Kopf-Video ist unsichtbar (`opacity:0`), bis es wirklich läuft (`.rv.on` bei `playing`); vorher sieht man das Standbild. Sonst schwarze Fläche auf Android, wenn Autoplay blockiert ist (Energiesparmodus).

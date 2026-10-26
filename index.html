@@ -179,6 +179,9 @@ dialog.globe-dlg{width:min(760px,calc(100% - 32px));background:radial-gradient(1
 .rv{position:relative;aspect-ratio:9/16;background:var(--panel);box-shadow:0 0 0 1px var(--line),0 18px 40px rgba(0,0,0,.55);overflow:hidden}
 .rv-po{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .rv video{position:relative;display:block;width:100%;height:100%;object-fit:cover;cursor:pointer}
+/* Video erst zeigen, wenn es wirklich läuft – sonst deckt es das Standbild schwarz zu (Android, Energiesparmodus) */
+.rv video{opacity:0;transition:opacity .25s}
+.rv.on video{opacity:1}
 .rv-snd{display:flex;width:100%;justify-content:center;align-items:center;gap:8px;margin-top:8px;background:none;color:var(--sodium);border:1px solid var(--sodium);font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;padding:7px 10px;cursor:pointer;transition:background .2s,color .2s}
 .rv-snd svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .rv-snd .spk{fill:currentColor;stroke:none}
@@ -1516,7 +1519,7 @@ footer a{display:inline-flex;align-items:center;min-height:44px}
 <template id="ic-heart"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.6 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.6 0 5.8 3.5 4.5 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg></template><template id="ic-share"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.4M8.3 13.2l7.4 4.4"/></svg></template>
 <script src="i18n.js?v=18" defer></script>
 <script src="bgcover.js?v=4" defer></script>
-<script src="hero.js?v=16" defer></script>
+<script src="hero.js?v=17" defer></script>
 <script src="songs.js?v=dd001e4d" defer></script>
 <script src="app.js?v=43" defer></script>
 <script src="onlyone.js?v=1" defer></script>
