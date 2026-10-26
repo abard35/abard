@@ -187,14 +187,18 @@ s2 = re.sub(r'<a [^>]*class="rel[^"]*"[^>]*>.*?</a>', fix, s, flags=re.S)
 uniq = {}
 for tr in tracks:
     uniq.setdefault(tr["name"].lower(), tr)
+ld_site = {"@context": "https://schema.org", "@type": "WebSite", "@id": BASE + "/#website",
+           "name": "ABard", "alternateName": ["ABard Official Site", "ABard Music"], "url": BASE + "/",
+           "inLanguage": ["en", "de"], "publisher": {"@id": BASE + "/#artist"}}
 ld = {"@context": "https://schema.org", "@type": "MusicGroup", "@id": BASE + "/#artist",
-      "name": "ABard", "url": BASE + "/",
+      "name": "ABard", "alternateName": "ABard Official", "url": BASE + "/", "mainEntityOfPage": BASE + "/",
       "description": art["bio_en"], "image": BASE + "/og.jpg",
       "genre": art["genres"],
       "sameAs": [p["url"] for p in art["profiles"]],
       "track": list(uniq.values())}
 block = ('<!--LD-->\n<script type="application/ld+json">\n'
-         + json.dumps(ld, ensure_ascii=False, indent=1).replace("</", "<\\/") + '\n</script>\n<!--/LD-->')
+         + json.dumps(ld, ensure_ascii=False, indent=1).replace("</", "<\\/") + '\n</script>\n'
+         + '<script type="application/ld+json">\n' + json.dumps(ld_site, ensure_ascii=False, indent=1) + '\n</script>\n<!--/LD-->')
 if "<!--LD-->" in s2:
     s2 = re.sub(r"<!--LD-->.*?<!--/LD-->", lambda m: block, s2, flags=re.S)
 else:
