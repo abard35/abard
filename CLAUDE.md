@@ -64,3 +64,5 @@ Diese Regeln gelten zusätzlich zum Release-Ablauf (Skill „abard-release-sneak
 - Bilder in den unsichtbaren Release-Karten immer mit `loading="lazy"` (sonst lädt das Handy sie unnötig).
 - YouTube-Fenster „Videos“ (`#ytlist`): hat im HTML **kein** `src` (nur `data-src` als Ersatz); `app.js` setzt es erst, wenn der Besucher in die Nähe scrollt (1200 px) oder über `#watch` springt. Nicht wieder fest einbauen – sonst lädt jeder Besucher 3 MB YouTube-Code (Desktop-Leistung).
 - Alle Skripte am Seitenende mit `defer` laden (Reihenfolge bleibt, blockieren aber den ersten Bildaufbau nicht). Spotify-iframe-API ebenfalls `defer`, nicht `async` – sonst kann sie vor `app.js` laufen und `onSpotifyIframeApiReady` fehlt.
+- Erstes Clip-Standbild im Kopf = kleinere Fassung `clips/<slug>-<art>-m.jpg` (432×768); `hero_preload.py` erzeugt sie bei `build_share.py` automatisch, falls sie fehlt (braucht Pillow). Mitcommitten.
+- Stimmungs-Hintergrund des Kopf-Clips lädt erst nach dem Seiten-Load (`bgcover.js`), damit das grosse Cover den Aufbau nicht bremst.

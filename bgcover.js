@@ -21,7 +21,8 @@
   function coverOf(el){var i=el&&el.querySelector('img');if(!i)return '';var ss=(i.getAttribute('srcset')||'').split(',').pop().trim().split(' ')[0];return ss||i.currentSrc||i.src}
   window.ABARD_BG={
     // Kopfbereich: Cover des gezeigten Clips (Release-Karte)
-    hero:function(card){heroSrc=coverOf(card);set(heroSrc)},
+    // Beim ersten Aufbau erst nach dem Laden der Seite (das grosse Cover soll den Seitenaufbau nicht bremsen)
+    hero:function(card){heroSrc=coverOf(card);var s=heroSrc;if(document.readyState==='complete')set(s);else window.addEventListener('load',function(){if(!curSrc&&heroSrc===s)set(s)})},
     set:set
   };
   // Player: startet ein Song (Kachel wird .active), dessen Cover nehmen

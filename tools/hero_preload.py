@@ -20,6 +20,22 @@ def _clips(root):
             for m in re.finditer(r"'([^']+)':\[([^\]]*)\]", block)}
 
 
+def _medium(root, k):
+    """Kleinere Fassung des Standbilds (432×768, ca. 45 KB statt 95 KB) – wird bei Bedarf erzeugt."""
+    src = os.path.join(root, 'clips', k + '.jpg')
+    dst = os.path.join(root, 'clips', k + '-m.jpg')
+    if os.path.exists(dst):
+        return True
+    if not os.path.exists(src):
+        return False
+    try:
+        from PIL import Image
+    except ImportError:
+        return False
+    Image.open(src).convert('RGB').resize((432, 768), Image.LANCZOS).save(dst, quality=78, optimize=True, progressive=True)
+    return True
+
+
 def apply(s, root='.'):
     clips = _clips(root)
     now = dt.datetime.now(dt.timezone.utc)
@@ -40,6 +56,7 @@ def apply(s, root='.'):
     rel.sort()
     link = ''
     k = ''
+    img = ''
     if rel:
         cur = rel[-1]
         for r in rel:
@@ -54,10 +71,11 @@ def apply(s, root='.'):
             k = slug + '-teaser'
         else:
             k = slug + '-out'
-        link = f'<link rel="preload" as="image" href="clips/{k}.jpg{V}" fetchpriority="high">'
+        img = k + ('-m' if _medium(root, k) else '')
+        link = f'<link rel="preload" as="image" href="clips/{img}.jpg{V}" fetchpriority="high">'
     # Standbild des ersten Clips direkt ins HTML, damit es ohne JavaScript sofort erscheint
     # (als <img> unter dem Video: so bleibt das Bild das LCP-Element, auch wenn der Clip später startet)
-    rv = (f'<div class="rv"><img class="rv-po" src="clips/{k}.jpg{V}" alt="" fetchpriority="high"><video muted playsinline preload="none"></video></div>' if rel else '')
+    rv = (f'<div class="rv"><img class="rv-po" src="clips/{img}.jpg{V}" alt="" fetchpriority="high"><video muted playsinline preload="none"></video></div>' if rel else '')
     s = re.sub(r'<div class="reel" id="reel" role="region">(?:<div class="rv">.*?</div>)?</div>',
                lambda m: '<div class="reel" id="reel" role="region">' + rv + '</div>', s, count=1, flags=re.S)
     s = re.sub(r'<!--HEROPL-->.*?<!--/HEROPL-->', '<!--HEROPL-->' + link + '<!--/HEROPL-->', s, count=1, flags=re.S)

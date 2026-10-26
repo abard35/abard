@@ -112,7 +112,7 @@
   function show(n,user){
     cur=n;var k=kind(L[n]);
     var po=st.querySelector('.rv-po'),pu='clips/'+k+'.jpg'+V;
-    if(po&&po.getAttribute('src')!==pu)po.src=pu;
+    if(po&&(shown||!po.getAttribute('src')))po.src=pu;// erstes Bild: kleinere Fassung aus dem HTML behalten
     if(shown)vid.poster=pu;else vid.removeAttribute('poster');shown=true;
     var go=function(){vid.src='clips/'+k+'.mp4'+V;if(!vid.muted||!reduce)vid.play().catch(function(){})};
     if(loaded||user){pend=null;go()}else pend=go;
