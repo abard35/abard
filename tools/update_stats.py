@@ -123,6 +123,10 @@ def main():
     s = s[:r0] + releases + s[r1:]
     s = s[:f0] + featured + s[f1:] if f1 < r0 else None
     s = release_links(s)
+    import os
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import hero_preload
+    s = hero_preload.apply(s, ROOT)
     open(HTML, 'w', encoding='utf-8').write(s)
     print('Top 3:', ', '.join(f"{x['title']} ({x['total']})" for x in top))
     print('\n'.join(report))

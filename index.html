@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://open.spotify.com https://*.spotify.com https://*.spotifycdn.com https://*.scdn.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.scdn.co https://*.spotifycdn.com https://i.ytimg.com https://*.ytimg.com; frame-src https://open.spotify.com https://*.spotify.com https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://*.spotify.com; media-src 'self' https://*.scdn.co https://*.spotifycdn.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://open.spotify.com https://*.spotify.com https://*.spotifycdn.com https://*.scdn.co; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.scdn.co https://*.spotifycdn.com https://i.ytimg.com https://*.ytimg.com; frame-src https://open.spotify.com https://*.spotify.com https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://*.spotify.com; media-src 'self' https://*.scdn.co https://*.spotifycdn.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>ABard – Hard Rock, Metal &amp; Power Ballads</title>
 <meta name="description" content="From crushing industrial rhythms to aching power ballads – cinematic rock songs that tell stories. Stream ABard on Spotify and YouTube.">
@@ -28,9 +28,25 @@
 <meta name="apple-mobile-web-app-title" content="ABard">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0d0e10">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/big-shoulders-display-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<!--HEROPL--><link rel="preload" as="image" href="clips/der-uhrmacher-teaser.jpg?v=1" fetchpriority="high"><!--/HEROPL-->
+<style>
+@font-face { font-family: 'Big Shoulders Display'; font-style: normal; font-display: swap; font-weight: 700; src: url(fonts/big-shoulders-display-latin-ext-700-normal.woff2) format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'Big Shoulders Display'; font-style: normal; font-display: swap; font-weight: 700; src: url(fonts/big-shoulders-display-latin-700-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Big Shoulders Display'; font-style: normal; font-display: swap; font-weight: 900; src: url(fonts/big-shoulders-display-latin-ext-900-normal.woff2) format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'Big Shoulders Display'; font-style: normal; font-display: swap; font-weight: 900; src: url(fonts/big-shoulders-display-latin-900-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-display: swap; font-weight: 400; src: url(fonts/ibm-plex-sans-greek-400-normal.woff2) format('woff2'); unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF; }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-display: swap; font-weight: 400; src: url(fonts/ibm-plex-sans-latin-ext-400-normal.woff2) format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-display: swap; font-weight: 400; src: url(fonts/ibm-plex-sans-latin-400-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-display: swap; font-weight: 500; src: url(fonts/ibm-plex-sans-greek-500-normal.woff2) format('woff2'); unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF; }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-display: swap; font-weight: 500; src: url(fonts/ibm-plex-sans-latin-ext-500-normal.woff2) format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-display: swap; font-weight: 500; src: url(fonts/ibm-plex-sans-latin-500-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-display: swap; font-weight: 400; src: url(fonts/ibm-plex-mono-latin-ext-400-normal.woff2) format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-display: swap; font-weight: 400; src: url(fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-display: swap; font-weight: 500; src: url(fonts/ibm-plex-mono-latin-ext-500-normal.woff2) format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-display: swap; font-weight: 500; src: url(fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+</style>
 <style>
 /* Layout: one column, industrial poster hero, then releases grid, then listen/watch panels */
 :root{
@@ -155,7 +171,11 @@ dialog.globe-dlg{width:min(760px,calc(100% - 32px));background:radial-gradient(1
 /* Kopfbereich: Shorts der aktuellen Releases (siehe hero.js) – ein Clip gross, die anderen als Mini-Icons */
 .hero{grid-template-columns:auto minmax(0,1fr);align-items:center;padding-block:clamp(24px,4vw,44px)}
 .hero.no-reel{grid-template-columns:1fr}
+.hero.no-reel .reel{display:none}
 .reel{width:clamp(190px,19vw,250px)}
+/* Platz für den Clip reservieren, bevor hero.js ihn einsetzt (sonst springt der Kopfbereich – Lighthouse CLS) */
+.reel:empty::before{content:"";display:block;aspect-ratio:9/16;background:var(--panel);box-shadow:0 0 0 1px var(--line)}
+.reel:empty::after{content:"";display:block;height:var(--reel-extra,126px)}
 .rv{position:relative;aspect-ratio:9/16;background:var(--panel);box-shadow:0 0 0 1px var(--line),0 18px 40px rgba(0,0,0,.55);overflow:hidden}
 .rv video{display:block;width:100%;height:100%;object-fit:cover;cursor:pointer}
 .rv-snd{display:flex;width:100%;justify-content:center;align-items:center;gap:8px;margin-top:8px;background:none;color:var(--sodium);border:1px solid var(--sodium);font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;padding:7px 10px;cursor:pointer;transition:background .2s,color .2s}
@@ -166,12 +186,16 @@ dialog.globe-dlg{width:min(760px,calc(100% - 32px));background:radial-gradient(1
 .rv-snd:hover,.rv-snd:focus-visible{background:var(--sodium);color:var(--bg);border-color:var(--sodium)}
 .rv-th{display:flex;gap:6px;margin-top:8px}
 .rv-th button{flex:1 1 0;min-width:0;max-width:44px;padding:0;border:0;background:none;cursor:pointer;opacity:.5;transition:opacity .2s,transform .2s}
-.rv-th button img{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;box-shadow:0 0 0 1px var(--line)}
+.rv-th button img{display:block;width:100%;height:78px;object-fit:cover;box-shadow:0 0 0 1px var(--line)}
 .rv-th button:hover,.rv-th button:focus-visible{opacity:1;transform:translateY(-2px)}
 .rv-th button[aria-current="true"]{opacity:1}
 .rv-th button[aria-current="true"] img{box-shadow:0 0 0 2px var(--sodium)}
 .hero .lede{max-width:62ch;margin-top:16px}
 .rinfo{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+/* Platzhalter, bis hero.js die Infozeile füllt (verhindert Layout-Sprung) */
+.hero:not(.no-reel) .rinfo[hidden]{display:block!important;visibility:hidden;height:313px}
+@media (min-width:521px){.hero:not(.no-reel) .rinfo[hidden]{height:259px}}
+@media (min-width:1000px){.hero:not(.no-reel) .rinfo[hidden]{height:279px}}
 .rinfo .eyebrow{margin:0 0 4px;font-size:.72rem}
 .rinfo .ri-t{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:.95;margin:0}
 .ri-date{font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:8px 0 0;display:flex;flex-wrap:wrap;gap:4px 14px}
@@ -1050,7 +1074,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
   <section class="block" id="next" hidden data-at="2026-10-09T12:00:00+02:00" data-slug="room-404" data-sp="1MUnQwkEVSbtJaPI20iFuf" data-yt="TBKEIhjdTWY">
     <div class="wrap next-row">
       <div class="next" id="next-card">
-        <img src="room404.jpg?v=2" alt="Cover: Room 404" width="600" height="600">
+        <img loading="lazy" src="room404.jpg?v=2" alt="Cover: Room 404" width="600" height="600">
         <div>
           <p class="eyebrow" id="next-eye" data-i18n="next.soon">Next Release · Single</p>
           <h2>Room 404</h2>
@@ -1066,7 +1090,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
       </div>
       <!-- Nächster Release. data-time leer = Uhrzeit noch nicht bestätigt: dann nur Tage-Countdown -->
       <div class="next" id="soon" data-slug="no-someday-left" data-day="2026-10-16" data-time="00:00" data-at="2026-10-16T00:00:00+02:00">
-        <button type="button" class="sneak cov" id="soon-sneak" aria-pressed="false"><img src="no-someday-left.jpg?v=1" alt="Cover: No Someday Left" width="1080" height="1080"><span class="sn-ic" aria-hidden="true"></span><span class="sn-cap"><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-t" id="soon-sneak-t">1:00</span></span><span class="sn-bar" aria-hidden="true"><i id="soon-sneak-p"></i></span></button>
+        <button type="button" class="sneak cov" id="soon-sneak" aria-pressed="false"><img loading="lazy" src="no-someday-left.jpg?v=1" alt="Cover: No Someday Left" width="1080" height="1080"><span class="sn-ic" aria-hidden="true"></span><span class="sn-cap"><span class="sn-l" data-i18n="sneak">Sneak Peek</span><span class="sn-t" id="soon-sneak-t">1:00</span></span><span class="sn-bar" aria-hidden="true"><i id="soon-sneak-p"></i></span></button>
         <div>
           <p class="eyebrow" id="soon-eye" data-i18n="next.soon">Next Release · Single</p>
           <h2>No Someday Left</h2>
@@ -1439,7 +1463,7 @@ button.fav[aria-pressed="true"] .ic{fill:currentColor}
 <template id="ic-heart"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 8 3.6 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.6 0 5.8 3.5 4.5 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg></template><template id="ic-share"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.4M8.3 13.2l7.4 4.4"/></svg></template>
 <script src="i18n.js?v=18"></script>
 <script src="bgcover.js?v=2"></script>
-<script src="hero.js?v=11"></script>
+<script src="hero.js?v=12"></script>
 <script src="songs.js?v=dd001e4d"></script>
 <script src="app.js?v=40"></script>
 <script src="onlyone.js?v=1"></script>

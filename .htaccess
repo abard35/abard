@@ -22,7 +22,7 @@ Options -Indexes
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
   Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval' https://open.spotify.com https://*.spotify.com https://*.spotifycdn.com https://*.scdn.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.scdn.co https://*.spotifycdn.com https://i.ytimg.com https://*.ytimg.com; frame-src https://open.spotify.com https://*.spotify.com https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://*.spotify.com; media-src 'self' https://*.scdn.co https://*.spotifycdn.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval' https://open.spotify.com https://*.spotify.com https://*.spotifycdn.com https://*.scdn.co; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.scdn.co https://*.spotifycdn.com https://i.ytimg.com https://*.ytimg.com; frame-src https://open.spotify.com https://*.spotify.com https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://*.spotify.com; media-src 'self' https://*.scdn.co https://*.spotifycdn.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
 </IfModule>
 
 # Seiten und Skripte: Browser fragen bei jedem Besuch kurz nach, ob es eine neue Fassung gibt
@@ -32,3 +32,20 @@ Options -Indexes
     Header set Cache-Control "no-cache"
   </FilesMatch>
 </IfModule>
+
+# Bilder, Clips, Audio und Schriften: lange im Browser behalten (Ladezeit, Lighthouse).
+# Mit ?v=… versionierte Dateien 1 Jahr (bei Änderung ?v= hochzählen), alle übrigen 7 Tage.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(jpe?g|png|webp|avif|gif|svg|ico|mp4|m4a|mp3|woff2?)$">
+    <If "%{QUERY_STRING} =~ /(^|&)v=/">
+      Header set Cache-Control "public, max-age=31536000, immutable"
+    </If>
+    <Else>
+      Header set Cache-Control "public, max-age=604800"
+    </Else>
+  </FilesMatch>
+  <FilesMatch "\.css$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
+AddType font/woff2 .woff2

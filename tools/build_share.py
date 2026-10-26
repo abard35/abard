@@ -116,9 +116,8 @@ def fix(m):
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#0d0e10">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="/fonts/big-shoulders-display-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
 <script type="application/ld+json">{ld_txt}</script>
 <style>
 :root{{--bg:#0d0e10;--panel:#16181c;--line:#2a2d33;--fg:#e9e6df;--muted:#8d9099;--sodium:#d8a23f;--display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;--body:"IBM Plex Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;color-scheme:dark}}
@@ -248,6 +247,10 @@ else:
 import hashlib
 _h = hashlib.md5(open("songs.js", "rb").read()).hexdigest()[:8]
 s2 = re.sub(r'<script src="songs\.js(\?v=[^"]*)?"></script>', f'<script src="songs.js?v={_h}"></script>', s2)
+import sys as _sys
+_sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import hero_preload
+s2 = hero_preload.apply(s2, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 open("index.html", "w", encoding="utf-8").write(s2)
 
 # Sitemap: Startseite + Songseiten (Disclaimer ist noindex)

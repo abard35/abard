@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://open.spotify.com https://*.spotify.com https://*.spotifycdn.com https://*.scdn.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.scdn.co https://*.spotifycdn.com https://i.ytimg.com https://*.ytimg.com; frame-src https://open.spotify.com https://*.spotify.com https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://*.spotify.com; media-src 'self' https://*.scdn.co https://*.spotifycdn.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://open.spotify.com https://*.spotify.com https://*.spotifycdn.com https://*.scdn.co; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.scdn.co https://*.spotifycdn.com https://i.ytimg.com https://*.ytimg.com; frame-src https://open.spotify.com https://*.spotify.com https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://*.spotify.com; media-src 'self' https://*.scdn.co https://*.spotifycdn.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Disclaimer – ABard</title>
 <meta name="robots" content="noindex, follow">
+<link rel="stylesheet" href="fonts/fonts.css">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="theme-color" content="#0d0e10">
@@ -50,7 +51,6 @@ footer{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(-
   <ul>
     <li><strong>Spotify</strong> (Spotify AB, Schweden): Musik-Player und Cover-Bilder – <a href="https://www.spotify.com/ch-de/legal/privacy-policy/" target="_blank" rel="noopener">Datenschutzerklärung</a></li>
     <li><strong>YouTube</strong> (Google Ireland Ltd.): Video-Player und Vorschaubilder – <a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="noopener">Datenschutzerklärung</a></li>
-    <li><strong>Google Fonts</strong> (Google Ireland Ltd.): Schriftarten – <a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="noopener">Datenschutzerklärung</a></li>
   </ul>
   <p>Daten können dabei auch in Länder ausserhalb der Schweiz übermittelt werden, etwa in die EU oder die USA. Wer das nicht möchte, kann die Songs über die Links direkt auf den Plattformen hören oder Cookies von Drittanbietern im Browser blockieren.</p>
 
@@ -63,7 +63,7 @@ footer{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(-
 
   <h2>Urheberrechte</h2>
   <p>Musik, Songtexte, Cover und weitere Inhalte auf dieser Website sind urheberrechtlich geschützt und gehören ABard, sofern nicht anders angegeben. Jede Verwendung ausserhalb des privaten Gebrauchs bedarf der vorgängigen schriftlichen Zustimmung.</p>
-  <p>Verwendete Fremdkomponenten: Schriften Big Shoulders Display, IBM Plex Sans und IBM Plex Mono (SIL Open Font License 1.1, über Google Fonts) · Weltkarte d3-array und d3-geo © Mike Bostock (ISC-Lizenz) · Länderdaten Natural Earth (gemeinfrei).</p>
+  <p>Verwendete Fremdkomponenten: Schriften Big Shoulders Display, IBM Plex Sans und IBM Plex Mono (SIL Open Font License 1.1, lokal auf dieser Website gespeichert) · Weltkarte d3-array und d3-geo © Mike Bostock (ISC-Lizenz) · Länderdaten Natural Earth (gemeinfrei).</p>
 
   <hr>
 
@@ -71,11 +71,11 @@ footer{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(-
   <p class="sub" lang="en">English summary</p>
   <div lang="en">
     <p>The content of this website is provided with care, but without any guarantee of accuracy, completeness or timeliness. Figures such as play counts may differ from those shown on the platforms.</p>
-    <p>This website links to and embeds content from third parties, in particular Spotify, YouTube and Google Fonts. When you load this page or play a song, your browser connects to their servers and transmits technical data such as your IP address; these providers may also set cookies or recognise existing logins, and data may be transferred outside Switzerland. We have no influence on this processing and accept no responsibility for third-party content or their privacy practices. Please refer to their privacy policies (<a href="https://www.spotify.com/legal/privacy-policy/" target="_blank" rel="noopener">Spotify</a>, <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google/YouTube</a>). If you prefer, listen directly on the platforms instead.</p>
+    <p>This website links to and embeds content from third parties, in particular Spotify and YouTube. When you load this page or play a song, your browser connects to their servers and transmits technical data such as your IP address; these providers may also set cookies or recognise existing logins, and data may be transferred outside Switzerland. We have no influence on this processing and accept no responsibility for third-party content or their privacy practices. Please refer to their privacy policies (<a href="https://www.spotify.com/legal/privacy-policy/" target="_blank" rel="noopener">Spotify</a>, <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google/YouTube</a>). If you prefer, listen directly on the platforms instead.</p>
     <p>This website itself sets no cookies and uses no tracking or advertising. Only your settings (Spotify or YouTube, language, autoplay) are stored locally in your browser and never transmitted. The hosting provider stores technical access logs for operation and anonymous statistics only.</p>
     <p>Contact: <button type="button" class="mail" data-m="aGMuc2tjeXdlZHJhYi1laWRAcmV0c2FtYmV3">Send e-mail</button></p>
     <p>All music, lyrics, artwork and other content are protected by copyright and belong to ABard unless stated otherwise.</p>
-    <p>Third-party components: fonts Big Shoulders Display, IBM Plex Sans and IBM Plex Mono (SIL Open Font License 1.1, via Google Fonts) · globe d3-array and d3-geo © Mike Bostock (ISC License) · country data Natural Earth (public domain).</p>
+    <p>Third-party components: fonts Big Shoulders Display, IBM Plex Sans and IBM Plex Mono (SIL Open Font License 1.1, hosted locally on this website) · globe d3-array and d3-geo © Mike Bostock (ISC License) · country data Natural Earth (public domain).</p>
   </div>
 
   <footer>© 2025–2026 ABard · <a href="./">abard.die-bardewycks.ch</a></footer>

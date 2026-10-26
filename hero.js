@@ -30,6 +30,7 @@
     L.push({slug:slug,at:at,kinds:k,card:c,t:h?h.textContent.trim():slug});
   });
   if(!L.length){st.hidden=true;document.querySelector('.hero').classList.add('no-reel');var r0=document.getElementById('rinfo');if(r0)r0.hidden=true;return}
+  document.querySelector('.hero').classList.remove('no-reel');st.hidden=false;
   L.sort(function(a,b){return a.at-b.at});
   function kind(s){var out=Date.now()>=s.at;return out&&s.kinds.indexOf('out')>=0?s.slug+'-out':s.kinds.indexOf('teaser')>=0?s.slug+'-teaser':s.slug+'-out'}
   // Start: der nächste kommende Release, sonst der zuletzt erschienene
@@ -58,7 +59,7 @@
   if(L.length>1)L.forEach(function(s,n){
     var b=document.createElement('button');b.type='button';
     b.innerHTML='<img src="clips/'+kind(s)+'-s.jpg'+V+'" alt="" width="60" height="107" loading="lazy" decoding="async">';
-    b.addEventListener('click',function(){show(n)});th.appendChild(b);
+    b.addEventListener('click',function(){show(n,true)});th.appendChild(b);
   });else th.hidden=true;
 
   // ---- Infozeile zum gezeigten Song ----
@@ -74,6 +75,8 @@
     document.addEventListener('DOMContentLoaded',function(){if(window.ABARD_CARD_TOOLS)window.ABARD_CARD_TOOLS(ri)});
   }
   var riOut=null;
+  // Vor app.js (Countdown-Logik der Karten) Countdown bei kommendem Release schon einblenden – sonst springt der Kopf
+  var dcl=false;document.addEventListener('DOMContentLoaded',function(){dcl=true});
   function sync(){
     if(!ri)return;
     var c=L[cur].card,q=function(sel){return c.querySelector(sel)};
@@ -83,7 +86,7 @@
     var h=q('h2');ri.querySelector('.ri-t').lang=h&&h.lang||'';
     ri.querySelector('.ri-d').textContent=(q('.date')||{}).textContent||'';
     // Countdown aus der Karte übernehmen (grosse Ziffern wie früher auf den Karten, nur kompakter)
-    var cd=q('.cd'),rc=ri.querySelector('.ri-cd'),on=!!(cd&&!cd.hidden);rc.hidden=!on;
+    var cd=q('.cd'),rc=ri.querySelector('.ri-cd'),on=!!(cd&&(dcl?!cd.hidden:L[cur].at>Date.now()));rc.hidden=!on;
     if(on){var b=cd.querySelectorAll('b'),rb=rc.querySelectorAll('b');for(var k=0;k<4;k++)rb[k].textContent=b[k]?b[k].textContent:''}
     var out=q('.out'),isOut=!!(out&&!out.hidden),key=cur+'|'+isOut;
     ri.querySelector('.ri-tools').hidden=isOut;
@@ -101,13 +104,17 @@
   function loop(){sync();setTimeout(loop,1000-Date.now()%1000+30)}
   document.addEventListener('abard:lang',function(){riOut=null;sync()});
 
-  function show(n){
+  // Video erst nach dem Laden der Seite holen (Standbild sofort) – sonst bremst der 1–3 MB grosse Clip den Seitenaufbau
+  var loaded=document.readyState==='complete',pend=null;
+  if(!loaded)window.addEventListener('load',function(){loaded=true;if(pend)setTimeout(pend,250);pend=null});
+  function show(n,user){
     cur=n;var k=kind(L[n]);
-    vid.poster='clips/'+k+'.jpg'+V;vid.src='clips/'+k+'.mp4'+V;
+    vid.poster='clips/'+k+'.jpg'+V;
+    var go=function(){vid.src='clips/'+k+'.mp4'+V;if(!vid.muted||!reduce)vid.play().catch(function(){})};
+    if(loaded||user){pend=null;go()}else pend=go;
     th.querySelectorAll('button').forEach(function(b,i){b.setAttribute('aria-current',i===n?'true':'false')});
     label();riOut=null;sync();
     if(window.ABARD_BG)window.ABARD_BG.hero(L[n].card);
-    if(!vid.muted||!reduce)vid.play().catch(function(){});
   }
 
   // ---- Ton: nur auf aktiven Klick. Laufende Musik/Sneak Peek wird angehalten und danach fortgesetzt ----
@@ -115,6 +122,7 @@
   function soundOn(){
     document.querySelectorAll('audio.sneak-a').forEach(function(o){if(!o.paused)o.pause()});
     var P=window.ABARD_PLAYER;resume=!!(P&&P.playing());if(resume)P.pause();
+    if(pend){var pg=pend;pend=null;pg()}
     vid.muted=false;vid.currentTime=0;vid.play().catch(function(){});snd.setAttribute('aria-pressed','true');label();
   }
   function soundOff(keep){
@@ -136,7 +144,7 @@
   // Stummer Clip ausserhalb des Sichtfelds: anhalten (spart Akku/Daten)
   if('IntersectionObserver' in window)new IntersectionObserver(function(es){es.forEach(function(e){
     if(!vid.muted)return;
-    if(e.isIntersecting){if(!reduce)vid.play().catch(function(){})}else vid.pause();
+    if(e.isIntersecting){if(!reduce&&vid.src)vid.play().catch(function(){})}else vid.pause();
   })}).observe(st);
   document.addEventListener('abard:lang',label);
 
