@@ -246,7 +246,7 @@ else:
 # nach jeder Änderung an Story/Lyrics/IDs die neue Fassung laden
 import hashlib
 _h = hashlib.md5(open("songs.js", "rb").read()).hexdigest()[:8]
-s2 = re.sub(r'<script src="songs\.js(\?v=[^"]*)?"></script>', f'<script src="songs.js?v={_h}"></script>', s2)
+s2 = re.sub(r'<script src="songs\.js(\?v=[^"]*)?"( defer)?></script>', f'<script src="songs.js?v={_h}" defer></script>', s2)
 import sys as _sys
 _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import hero_preload

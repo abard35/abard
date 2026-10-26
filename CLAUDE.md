@@ -63,3 +63,4 @@ Diese Regeln gelten zusätzlich zum Release-Ablauf (Skill „abard-release-sneak
 - **Browser-Cache (.htaccess):** Bilder, Clips, Audio, Schriften mit `?v=` 1 Jahr `immutable`, ohne `?v=` 7 Tage. Darum bei jeder ersetzten Datei `?v=` hochzählen, sonst sehen Besucher die alte Fassung.
 - Bilder in den unsichtbaren Release-Karten immer mit `loading="lazy"` (sonst lädt das Handy sie unnötig).
 - YouTube-Fenster „Videos“ (`#ytlist`): hat im HTML **kein** `src` (nur `data-src` als Ersatz); `app.js` setzt es erst, wenn der Besucher in die Nähe scrollt (1200 px) oder über `#watch` springt. Nicht wieder fest einbauen – sonst lädt jeder Besucher 3 MB YouTube-Code (Desktop-Leistung).
+- Alle Skripte am Seitenende mit `defer` laden (Reihenfolge bleibt, blockieren aber den ersten Bildaufbau nicht). Spotify-iframe-API ebenfalls `defer`, nicht `async` – sonst kann sie vor `app.js` laufen und `onSpotifyIframeApiReady` fehlt.
