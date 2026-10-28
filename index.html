@@ -400,6 +400,7 @@ dialog.detail::backdrop{background:rgba(5,6,8,.8);backdrop-filter:blur(4px)}
 .lytog button{font-family:var(--mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--muted);border:0;padding:5px 11px;cursor:pointer;min-height:32px}
 .lytog button:hover,.lytog button:focus-visible{color:var(--fg)}
 .lytog button[aria-pressed="true"]{background:var(--sodium);color:var(--bg)}
+.d-credits{font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;line-height:1.7;color:var(--muted);margin:22px 0 0;padding-top:16px;border-top:1px solid var(--line)}
 .d-text .lynote{font-family:var(--mono);font-size:.8rem;letter-spacing:.08em;color:var(--muted);margin:-2px 0 12px}
 @media (max-width:640px){.d-in{grid-template-columns:1fr;padding:20px;gap:18px}.d-in>img{max-width:260px;position:static}}
 .spwrap{flex:1;min-width:0}
@@ -1473,6 +1474,7 @@ footer a{display:inline-flex;align-items:center;min-height:44px}
       <p class="d-links" id="d-links"></p>
       <section class="d-text" id="d-story" hidden><h3>About the song</h3><p></p></section>
       <section class="d-text" id="d-lyrics" hidden><div class="d-lyhead"><h3>Lyrics</h3><span class="lytog" id="lytog" role="group" aria-label="Songtext" hidden><button type="button" data-ly="orig" aria-pressed="true">Original</button><button type="button" data-ly="de" aria-pressed="false" id="ly-de" title="Sinngemässe deutsche Übersetzung">DE</button></span></div><p class="lynote" id="lynote" hidden>Sinngemässe Übersetzung</p><div class="lybody"></div></section>
+      <p class="d-credits" id="d-credits"></p>
     </div>
   </div>
 </dialog>
@@ -1520,8 +1522,8 @@ footer a{display:inline-flex;align-items:center;min-height:44px}
 <script src="i18n.js?v=18" defer></script>
 <script src="bgcover.js?v=4" defer></script>
 <script src="hero.js?v=17" defer></script>
-<script src="songs.js?v=24044d49" defer></script>
-<script src="app.js?v=44" defer></script>
+<script src="songs.js?v=76003224" defer></script>
+<script src="app.js?v=45" defer></script>
 <script src="onlyone.js?v=1" defer></script>
 <script src="install.js?v=2" defer></script>
 <script src="globe.js?v=3" defer></script>

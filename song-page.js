@@ -4,6 +4,8 @@
   function init(){
     var de=false,st=null;try{st=localStorage.getItem('abard-lang')}catch(e){}
     if(st)de=st==='de';else try{de=((navigator.languages&&navigator.languages[0])||navigator.language||'').toLowerCase().slice(0,2)==='de'}catch(e){}
+    // Credits: Sprache wie die Seite (ohne Wahl: Browsersprache)
+    document.querySelectorAll('.credits [data-en]').forEach(function(x){x.textContent=x.getAttribute(de?'data-de':'data-en')});
     document.querySelectorAll('[data-sw]').forEach(function(sec){
       var tog=sec.querySelector('.tog'),h=sec.querySelector('h2');if(!tog)return;
       function set(v){

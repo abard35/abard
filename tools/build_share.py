@@ -3,6 +3,7 @@
 (für Google und für Vorschauen auf Facebook, WhatsApp usw.), setzt data-slug in index.html,
 aktualisiert die strukturierten Daten (JSON-LD) im <head> und schreibt sitemap.xml.
 Aufruf im Repo-Ordner:  python3 tools/build_share.py"""
+import datetime as dt
 import re, json, os, html, unicodedata
 BASE = "https://abard.die-bardewycks.ch"
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -84,7 +85,10 @@ def fix(m):
             else:
                 story_html = f'<section><h2>The Story</h2>{paras(info_k["story"], True)}</section>'
         lyr_html = ""
-        if info_k.get("lyrics"):
+        # lyrics_at: Songtext erst ab Release-Zeit auf die Songseite (update_stats.py baut dann neu)
+        _la = info_k.get("lyrics_at")
+        _ly_ok = not _la or dt.datetime.fromisoformat(_la) <= dt.datetime.now(dt.timezone.utc)
+        if info_k.get("lyrics") and _ly_ok:
             if info_k.get("lyrics_de"):
                 lyr_html = (f'<section class="lyrics" data-sw="lyrics"><div class="hd"><h2 data-en="Lyrics" data-de="Songtext">Lyrics</h2>{tog("lyrics")}</div>'
                             f'<div class="txt" data-v="orig">{paras(info_k["lyrics"], True)}</div>'
@@ -101,9 +105,16 @@ def fix(m):
         # Noch keine IDs (z. B. Release-Tag): sichere Ausweichlinks auf Künstlerseite/Kanal
         if not sp and not yt: btns += '<a class="btn" href="https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN" target="_blank" rel="noopener">Spotify</a>'
         if not sp and not yt: btns += '<a class="btn" href="https://www.youtube.com/@ABardOfficial/videos" target="_blank" rel="noopener">YouTube</a>'
+        # Credits wie auf YouTube (Jahr = Release-Jahr)
+        cy = (date or str(dt.date.today().year))[:4]
+        cred_html = ('<section class="credits">'
+                     '<p><span data-en="Music &amp; Production" data-de="Musik &amp; Produktion">Music &amp; Production</span>: ABard<br>'
+                     'Artwork: Albert Bardewyck<br>'
+                     f'© {cy} ABard. <span data-en="All rights reserved." data-de="Alle Rechte vorbehalten.">All rights reserved.</span></p></section>')
         ld_song = {"@context": "https://schema.org", "@type": "MusicRecording", "name": title, "url": url, "image": img,
                    "byArtist": {"@type": "MusicGroup", "name": "ABard", "@id": BASE + "/#artist", "url": BASE + "/"},
                    **({"datePublished": date} if date else {}), **({"genre": genre} if genre else {}),
+                   "copyrightYear": int(cy), "copyrightHolder": {"@type": "MusicGroup", "name": "ABard", "@id": BASE + "/#artist"},
                    "sameAs": [u for u in ((f"https://open.spotify.com/album/{sp}" if sp else None), (f"https://www.youtube.com/watch?v={yt}" if yt else None)) if u]}
         ld_txt = json.dumps(ld_song, ensure_ascii=False).replace("</", "<\\/")
         page = f"""<!doctype html>
@@ -112,7 +123,7 @@ def fix(m):
 <title>{e(title)} – ABard{(" | " + e(style)) if style else ""}</title>
 <meta name="description" content="{e(desc)}">
 <script src="/share-go.js"></script>
-<script src="/song-page.js" defer></script>
+<script src="/song-page.js?v=2" defer></script>
 <link rel="canonical" href="{url}">
 <meta property="og:type" content="music.song">
 <meta property="og:site_name" content="ABard">
@@ -157,6 +168,7 @@ section p{{margin:0 0 1em;max-width:65ch}}.lyrics p{{color:#cfccc5}}
 .tog button:hover,.tog button:focus-visible{{color:var(--fg)}}
 .tog button[aria-pressed="true"]{{background:var(--sodium);color:var(--bg)}}
 .orig{{font-size:.82em;font-style:italic;color:var(--muted);margin-left:.3em}}
+.credits{{border-top:1px solid var(--line);padding-top:14px}}.credits p{{font-family:var(--mono);font-size:.74rem;letter-spacing:.04em;line-height:1.7;color:var(--muted)}}
 .lyrics p.note{{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;color:var(--muted)}}
 footer{{border-top:1px solid var(--line);padding-block:28px;font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}}
 footer a{{text-decoration:none}}footer a:hover{{color:var(--sodium)}}
@@ -174,6 +186,7 @@ footer a{{text-decoration:none}}footer a:hover{{color:var(--sodium)}}
 </div>
 {story_html}
 {lyr_html}
+{cred_html}
 </main>
 <footer class="wrap"><a href="/">← abard.die-bardewycks.ch</a><span>© 2025–2026 ABard</span><a href="/disclaimer.html">Disclaimer</a></footer>
 </body></html>

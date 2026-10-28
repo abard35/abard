@@ -260,7 +260,9 @@
     if(lyFor!==a){lyFor=a;lyMode='orig';dlMode=I.lang()==='de'?'de':'orig'}
     var hasSt=!!info.story_de,de=hasSt&&dlMode==='de',st=(de&&info.story_de)||info.story;
     // Deutsche Songs haben lyrics_en (sinngemäss Englisch), englische lyrics_de – derselbe Schalter, nur Beschriftung EN statt DE
-    var trEn=!info.lyrics_de&&!!info.lyrics_en,trTxt=info.lyrics_de||info.lyrics_en,hasDe=!!trTxt,useDe=hasDe&&lyMode==='de';
+    // lyrics_at: Songtext (und Übersetzung) erst ab der Release-Zeit zeigen
+    var lyOk=!info.lyrics_at||Date.now()>=Date.parse(info.lyrics_at),lyr=lyOk?info.lyrics:'';
+    var trEn=!info.lyrics_de&&!!info.lyrics_en,trTxt=lyOk&&(info.lyrics_de||info.lyrics_en),hasDe=!!trTxt,useDe=hasDe&&lyMode==='de';
     story.querySelector('h3').textContent=de?'Über den Song':'About the song';
     ly.querySelector('h3').textContent=de?'Songtext':'Lyrics';
     document.getElementById('lynote').textContent=trEn?(de?'Sinngemässe englische Übersetzung':'Free English translation'):'Sinngemässe Übersetzung';
@@ -270,8 +272,13 @@
     document.querySelectorAll('#dltog button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.dl===(de?'de':'orig')))});
     document.getElementById('lytog').hidden=!hasDe;document.getElementById('lynote').hidden=!useDe;
     document.querySelectorAll('#lytog button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.ly===(useDe?'de':'orig')))});
-    var lt=useDe?trTxt:info.lyrics,lb=ly.querySelector('.lybody');
-    ly.hidden=!info.lyrics;lb.innerHTML=lt?esc(lt).replace(/\n/g,'<br>'):'';if(useDe)lb.lang=trEn?'en':'de';else lb.removeAttribute('lang');
+    var lt=useDe?trTxt:lyr,lb=ly.querySelector('.lybody');
+    ly.hidden=!lyr;lb.innerHTML=lt?esc(lt).replace(/\n/g,'<br>'):'';if(useDe)lb.lang=trEn?'en':'de';else lb.removeAttribute('lang');
+    // Credits wie auf YouTube (Jahr = Release-Jahr); Sprache wie das Fenster
+    var cy=(d||(a.dataset.at||'')).slice(0,4)||String(new Date().getFullYear()),cde=hasSt?de:I.lang()==='de';
+    document.getElementById('d-credits').innerHTML=cde
+      ?'Musik &amp; Produktion: ABard<br>Artwork: Albert Bardewyck<br>© '+cy+' ABard. Alle Rechte vorbehalten.'
+      :'Music &amp; Production: ABard<br>Artwork: Albert Bardewyck<br>© '+cy+' ABard. All rights reserved.';
     favSync();
     if(!noHash)history.replaceState(null,'','#song-'+k);
     if(!dlg.open)dlg.showModal();dlg.scrollTop=0;

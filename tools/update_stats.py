@@ -133,6 +133,24 @@ def main():
     open(HTML, 'w', encoding='utf-8').write(s)
     print('Top 3:', ', '.join(f"{x['title']} ({x['total']})" for x in top))
     print('\n'.join(report))
+    lyrics_due()
+
+
+def lyrics_due():
+    """Songtexte mit lyrics_at (erst ab Release sichtbar): in den 3 Tagen nach der Release-Zeit
+    die Songseiten neu bauen, damit der Text auch auf /s/<song>/ erscheint."""
+    import datetime as dt, os, subprocess
+    t = open(os.path.join(ROOT, 'songs.js'), encoding='utf-8').read()
+    now = dt.datetime.now(dt.timezone.utc)
+    for v in re.findall(r'"lyrics_at": "([^"]+)"', t):
+        try:
+            age = now - dt.datetime.fromisoformat(v)
+        except ValueError:
+            continue
+        if dt.timedelta(0) <= age <= dt.timedelta(days=3):
+            subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'build_share.py')], cwd=ROOT, check=False)
+            print('Songseiten neu gebaut (Songtext ab Release):', v)
+            return
 
 
 if __name__ == '__main__':
