@@ -259,17 +259,19 @@
     // Umschalter „Deutsch“ stellt das ganze Fenster auf Deutsch (Überschriften, Story, Songtext), auch wenn die Seite auf EN steht
     if(lyFor!==a){lyFor=a;lyMode='orig';dlMode=I.lang()==='de'?'de':'orig'}
     var hasSt=!!info.story_de,de=hasSt&&dlMode==='de',st=(de&&info.story_de)||info.story;
-    var hasDe=!!info.lyrics_de,useDe=hasDe&&lyMode==='de';
+    // Deutsche Songs haben lyrics_en (sinngemäss Englisch), englische lyrics_de – derselbe Schalter, nur Beschriftung EN statt DE
+    var trEn=!info.lyrics_de&&!!info.lyrics_en,trTxt=info.lyrics_de||info.lyrics_en,hasDe=!!trTxt,useDe=hasDe&&lyMode==='de';
     story.querySelector('h3').textContent=de?'Über den Song':'About the song';
     ly.querySelector('h3').textContent=de?'Songtext':'Lyrics';
-    document.getElementById('lynote').textContent='Sinngemässe Übersetzung';
+    document.getElementById('lynote').textContent=trEn?(de?'Sinngemässe englische Übersetzung':'Free English translation'):'Sinngemässe Übersetzung';
+    var lyb=document.getElementById('ly-de');lyb.textContent=trEn?'EN':'DE';lyb.title=trEn?(de?'Sinngemässe englische Übersetzung':'Free English translation'):'Sinngemässe deutsche Übersetzung';
     story.hidden=!st;story.querySelector('p').innerHTML=st?fmtText(st):'';
     document.getElementById('dltog').hidden=!hasSt;
     document.querySelectorAll('#dltog button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.dl===(de?'de':'orig')))});
     document.getElementById('lytog').hidden=!hasDe;document.getElementById('lynote').hidden=!useDe;
     document.querySelectorAll('#lytog button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.ly===(useDe?'de':'orig')))});
-    var lt=useDe?info.lyrics_de:info.lyrics;
-    ly.hidden=!info.lyrics;ly.querySelector('.lybody').innerHTML=lt?esc(lt).replace(/\n/g,'<br>'):'';
+    var lt=useDe?trTxt:info.lyrics,lb=ly.querySelector('.lybody');
+    ly.hidden=!info.lyrics;lb.innerHTML=lt?esc(lt).replace(/\n/g,'<br>'):'';if(useDe)lb.lang=trEn?'en':'de';else lb.removeAttribute('lang');
     favSync();
     if(!noHash)history.replaceState(null,'','#song-'+k);
     if(!dlg.open)dlg.showModal();dlg.scrollTop=0;

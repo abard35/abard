@@ -69,10 +69,12 @@ def fix(m):
                 h = re.sub(r"\{\{(.+?)\}\}", r'<span class="orig" lang="en">\1</span>', h)
                 out += "<p>" + h + "</p>"
             return out
-        def tog(kind):
+        def tog(kind, en=False):
+            # en=True: deutscher Song mit sinngemässer englischer Übersetzung (Knopf „EN“)
+            lab, tit = ("EN", "Free English translation") if en else ("DE", "Sinngemässe deutsche Übersetzung")
             return (f'<span class="tog" data-tog="{kind}" role="group" aria-label="Sprache" hidden>'
                     '<button type="button" data-v="orig" aria-pressed="true">Original</button>'
-                    '<button type="button" data-v="de" aria-pressed="false" title="Sinngemässe deutsche Übersetzung">DE</button></span>')
+                    f'<button type="button" data-v="de" aria-pressed="false" title="{tit}">{lab}</button></span>')
         story_html = ""
         if info_k.get("story"):
             if info_k.get("story_de"):
@@ -87,6 +89,10 @@ def fix(m):
                 lyr_html = (f'<section class="lyrics" data-sw="lyrics"><div class="hd"><h2 data-en="Lyrics" data-de="Songtext">Lyrics</h2>{tog("lyrics")}</div>'
                             f'<div class="txt" data-v="orig">{paras(info_k["lyrics"], True)}</div>'
                             f'<div class="txt" data-v="de" lang="de" hidden><p class="note">Sinngemässe Übersetzung</p>{paras(info_k["lyrics_de"], True)}</div></section>')
+            elif info_k.get("lyrics_en"):
+                lyr_html = (f'<section class="lyrics" data-sw="lyrics"><div class="hd"><h2 data-en="Lyrics" data-de="Lyrics">Lyrics</h2>{tog("lyrics", True)}</div>'
+                            f'<div class="txt" data-v="orig" lang="de">{paras(info_k["lyrics"], True)}</div>'
+                            f'<div class="txt" data-v="de" lang="en" hidden><p class="note">Free English translation</p>{paras(info_k["lyrics_en"], True)}</div></section>')
             else:
                 lyr_html = f'<section class="lyrics"><h2>Lyrics</h2>{paras(info_k["lyrics"], True)}</section>'
         btns = f'<a class="btn primary" href="{target}">▶ Play on ABard</a>'
