@@ -283,7 +283,7 @@ open("index.html", "w", encoding="utf-8").write(s2)
 
 # Sitemap: Startseite + Über-Seite + Songseiten (Disclaimer ist noindex)
 # ABOUT_LASTMOD bei inhaltlicher Änderung von about/index.html auf das Datum setzen
-ABOUT_LASTMOD = "2026-11-01"
+ABOUT_LASTMOD = "2026-11-02"
 import datetime
 open("sitemap.xml", "w", encoding="utf-8").write(
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
