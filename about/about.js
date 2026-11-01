@@ -1,5 +1,5 @@
 // Über-Seite: Sprache wie die Startseite (eigene Wahl gespeichert, sonst Browser auf Deutsch → DE, sonst EN),
-// Kopieren der Pressetexte, E-Mail-Knopf (Adresse nie im Klartext).
+// E-Mail-Knopf (Adresse nie im Klartext).
 // Läuft im <head> (nicht defer), damit die richtige Sprache ohne Flackern erscheint.
 (function(){
   var lang='en',st=null;
@@ -20,15 +20,6 @@
       b.addEventListener('click',function(){var l=b.getAttribute('data-lang');try{localStorage.setItem('abard-lang',l)}catch(e){}set(l)});
     });
     set(lang);
-
-    document.querySelectorAll('.cbtn').forEach(function(b){
-      b.addEventListener('click',function(){
-        var p=b.parentNode.querySelector('p[data-l="'+lang+'"]');if(!p)return;
-        var t=p.textContent.trim(),lbl=b.querySelector('[data-l="'+lang+'"]'),old=lbl.textContent;
-        function ok(){lbl.textContent=lang==='de'?'Kopiert ✓':'Copied ✓';setTimeout(function(){lbl.textContent=old},1800)}
-        if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(ok,function(){});
-      });
-    });
 
     document.querySelectorAll('.mail').forEach(function(b){
       b.addEventListener('click',function(){
