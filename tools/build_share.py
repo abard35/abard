@@ -281,14 +281,11 @@ s2 = hero_preload.apply(s2, os.path.dirname(os.path.dirname(os.path.abspath(__fi
 s2 = lazy_tiles.to_data(s2)
 open("index.html", "w", encoding="utf-8").write(s2)
 
-# Sitemap: Startseite + Über-Seite + Songseiten (Disclaimer ist noindex)
-# ABOUT_LASTMOD bei inhaltlicher Änderung von about/index.html auf das Datum setzen
-ABOUT_LASTMOD = "2026-11-02"
+# Sitemap: Startseite + Songseiten (Disclaimer und Über-Seite sind noindex – Albert will die Über-Seite nicht in Google)
 import datetime
 open("sitemap.xml", "w", encoding="utf-8").write(
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     f'  <url><loc>{BASE}/</loc><lastmod>{datetime.date.today().isoformat()}</lastmod></url>\n'
-    f'  <url><loc>{BASE}/about/</loc><lastmod>{ABOUT_LASTMOD}</lastmod></url>\n'
     + "".join(f'  <url><loc>{BASE}/s/{sl}/</loc></url>\n' for sl in seen)
     + '</urlset>\n')
 print(len(seen), "Teilen-Seiten erzeugt")
