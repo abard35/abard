@@ -6,8 +6,8 @@
   if(!btn||!dlg||!dlg.showModal)return;
   var STATES='AF AL DZ AD AO AG AR AM AU AT AZ BS BH BD BB BY BE BZ BJ BT BO BA BW BR BN BG BF BI CV KH CM CA CF TD CL CN CO KM CG CD CR CI HR CU CY CZ DK DJ DM DO EC EG SV GQ ER EE SZ ET FJ FI FR GA GM GE DE GH GR GD GT GN GW GY HT HN HU IS IN ID IR IQ IE IL IT JM JP JO KZ KE KI KP KR KW KG LA LV LB LS LR LY LI LT LU MG MW MY MV ML MT MH MR MU MX FM MD MC MN ME MA MZ MM NA NR NP NL NZ NI NE NG MK NO OM PK PW PA PG PY PE PH PL PT QA RO RU RW KN LC VC WS SM ST SA SN RS SC SL SG SK SI SB SO ZA SS ES LK SD SR SE CH SY TJ TZ TH TL TG TO TT TN TR TM TV UG UA AE GB US UY UZ VU VE VN YE ZM ZW VA PS';
   var S={
-    en:{eye:'Listeners worldwide',h:function(n){return 'Heard in '+n+' countries'},hint:'Drag to spin · tap a light',more:function(m){return '<b>'+m+'</b> more to go'},load:'Loading the world…'},
-    de:{eye:'Hörer weltweit',h:function(n){return 'Gehört in '+n+' Ländern'},hint:'Ziehen zum Drehen · Licht antippen',more:function(m){return 'Noch <b>'+m+'</b> to go'},load:'Die Welt wird geladen…'}
+    en:{eye:'Listeners worldwide',h:function(n){return 'Heard in '+n+' countries'},hint:'Drag to spin · tap a light',seen:function(k){return 'Also seen in <b>'+k+'</b> more'},tag:'seen',more:function(m){return '<b>'+m+'</b> more to go'},load:'Loading the world…'},
+    de:{eye:'Hörer weltweit',h:function(n){return 'Gehört in '+n+' Ländern'},hint:'Ziehen zum Drehen · Licht antippen',seen:function(k){return 'Gesehen in <b>'+k+'</b> weiteren'},tag:'gesehen',more:function(m){return 'Noch <b>'+m+'</b> to go'},load:'Die Welt wird geladen…'}
   };
   function lang(){return (window.ABARD_I18N&&window.ABARD_I18N.lang())||'en'}
   function txt(){
@@ -19,24 +19,27 @@
     // "to go" zählt nur die noch fehlenden der 195 Staaten (UN-Mitglieder plus Vatikan und Palästina)
     var lv=window.ABARD_GLOBE?window.ABARD_GLOBE.levels:{};
     var m=STATES.split(' ').filter(function(c){return !lv[c]}).length;
-    dlg.querySelector('.g-sub').innerHTML=n?s.more(m):'';
+    // "Gesehen": Länder nur aus der Google-Suche (Search Console) – eigener Ring, zählen nicht zu "Gehört"/"to go"
+    var k=window.ABARD_GLOBE?(window.ABARD_GLOBE.seen||[]).filter(function(c){return !lv[c]}).length:0;
+    dlg.querySelector('.g-sub').innerHTML=n?s.more(m)+(k?'<span class="g-seen">'+s.seen(k)+'</span>':''):'';
     try{names=new Intl.DisplayNames([lang()],{type:'region'})}catch(e){names=null}
   }
   var names=null;
   function nameOf(c){try{return names?names.of(c):c}catch(e){return c}}
+  function label(c){var f=feats&&feats.filter(function(x){return x.id===c})[0];return nameOf(c)+(f&&f.seen?' · '+(S[lang()]||S.en).tag:'')}
   document.addEventListener('abard:lang',function(){if(dlg.open)txt()});
 
   function load(src){return new Promise(function(ok,no){var s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)})}
   var ready=null;
   btn.addEventListener('click',function(){
     txt();dlg.showModal();
-    ready=ready||load('globe-lib.js?v=1').then(function(){return load('globe-data.js?v=1')}).then(init);
+    ready=ready||load('globe-lib.js?v=1').then(function(){return load('globe-data.js?v=2')}).then(init);
     ready.then(function(){txt();start()});
   });
   dlg.querySelector('.g-close').addEventListener('click',function(){dlg.close()});
   dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close()});
 
-  var cv,ctx,proj,path,feats,lit=[],dpr=1,W=0,rot=[-10,-18],spin=true,last=0,dragAt=0,hover=null,stars=[],tip;
+  var cv,ctx,proj,path,feats,lit=[],pins=[],dpr=1,W=0,rot=[-10,-18],spin=true,last=0,dragAt=0,hover=null,stars=[],tip;
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ALPHA=[0,.42,.56,.7,.85,1],SOD='216,162,63';
 
@@ -44,6 +47,8 @@
     var G=window.ABARD_GLOBE;
     cv=dlg.querySelector('canvas');ctx=cv.getContext('2d');tip=dlg.querySelector('.g-tip');
     feats=G.countries.map(function(f){return{type:'Feature',id:f.c,geometry:f.g,lv:G.levels[f.c]||0}});
+    var SEEN=G.seen||[];
+    feats.forEach(function(f){if(!f.lv&&SEEN.indexOf(f.id)>-1){f.seen=1;pins.push({c:f.id,p:d3.geoCentroid(f)})}});
     feats.forEach(function(f){if(f.lv)lit.push({c:f.id,p:d3.geoCentroid(f),lv:f.lv,ph:Math.random()*6.3,f:f})});
     Object.keys(G.dots).forEach(function(c){lit.push({c:c,p:G.dots[c],lv:G.levels[c]||1,ph:Math.random()*6.3})});
     for(var i=0;i<140;i++)stars.push([Math.random(),Math.random(),Math.random()*.9+.2,Math.random()*6.3]);
@@ -68,11 +73,11 @@
   function pick(e,tap){
     var b=cv.getBoundingClientRect(),x=e.clientX-b.left,y=e.clientY-b.top,ll=proj.invert([x,y]),hit=null;
     if(ll&&d3.geoDistance(ll,[-rot[0],-rot[1]])<Math.PI/2){
-      for(var i=0;i<feats.length;i++){if(feats[i].lv&&d3.geoContains(feats[i],ll)){hit=feats[i].id;break}}
+      for(var i=0;i<feats.length;i++){if((feats[i].lv||feats[i].seen)&&d3.geoContains(feats[i],ll)){hit=feats[i].id;break}}
       if(!hit)lit.forEach(function(l){if(!l.f){var q=proj(l.p);if(q&&Math.hypot(q[0]-x,q[1]-y)<12)hit=l.c}});
     }
     hover=hit;
-    if(hit){tip.textContent=nameOf(hit);tip.hidden=false;tip.style.left=x+'px';tip.style.top=y+'px'}
+    if(hit){tip.textContent=label(hit);tip.hidden=false;tip.style.left=x+'px';tip.style.top=y+'px'}
     else tip.hidden=true;
     if(tap&&hit){spin=false;dragAt=performance.now()}
   }
@@ -102,6 +107,7 @@
     feats.forEach(function(f){
       ctx.beginPath();path(f);
       if(f.lv){var a=ALPHA[f.lv]*(f.id===hover?1:.88);ctx.fillStyle='rgba('+SOD+','+a+')';ctx.shadowColor='rgba('+SOD+',.6)';ctx.shadowBlur=f.id===hover?18:6+f.lv*2;ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='rgba(13,14,16,.55)'}
+      else if(f.seen){ctx.fillStyle=f.id===hover?'#2c2a24':'#221f1b';ctx.fill();ctx.strokeStyle='rgba('+SOD+',.4)'}
       else{ctx.fillStyle='#1a1c21';ctx.fill();ctx.strokeStyle='#2a2d33'}
       ctx.stroke();
     });
@@ -113,6 +119,13 @@
       var lg=ctx.createRadialGradient(q[0],q[1],0,q[0],q[1],rad*3.2);
       lg.addColorStop(0,'rgba(255,236,190,'+(.95*edge)+')');lg.addColorStop(.25,'rgba('+SOD+','+(.7*edge)+')');lg.addColorStop(1,'rgba('+SOD+',0)');
       ctx.fillStyle=lg;ctx.beginPath();ctx.arc(q[0],q[1],rad*3.2,0,6.3);ctx.fill();
+    });
+    // Ringe (hohl) auf Ländern, in denen ABard nur gesehen wurde
+    pins.forEach(function(l){
+      var d=d3.geoDistance(l.p,ctr);if(d>Math.PI/2-.05)return;
+      var q=proj(l.p),edge=Math.cos(d);
+      ctx.strokeStyle='rgba('+SOD+','+(.85*edge)+')';ctx.lineWidth=l.c===hover?1.8:1.2;
+      ctx.beginPath();ctx.arc(q[0],q[1],l.c===hover?5.5:4,0,6.3);ctx.stroke();
     });
     // Rand
     ctx.strokeStyle='rgba('+SOD+',.35)';ctx.lineWidth=1;ctx.beginPath();path({type:'Sphere'});ctx.stroke();
