@@ -1,0 +1,24 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABard//Release//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:the-whole-wide-world-release@abard.die-bardewycks.ch
+DTSTAMP:20261112T230000Z
+DTSTART:20261126T230000Z
+DTEND:20261126T233000Z
+SUMMARY:ABard – The Whole Wide World (New Single)
+DESCRIPTION:The Whole Wide World – new single by ABard\, out now on Spotif
+ y & YouTube.\n\nStory & lyrics: https://abard.die-bardewycks.ch/s/the-whol
+ e-wide-world/\nYouTube: https://www.youtube.com/watch?v=Je7a2SrSZVs\nSpoti
+ fy: https://open.spotify.com/artist/6Tt5kXSXqcxJ9DmscyOUxN
+LOCATION:Spotify / YouTube
+URL:https://abard.die-bardewycks.ch/s/the-whole-wide-world/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:ABard – The Whole Wide World is out now
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR

@@ -15,7 +15,8 @@
     'kurze-zeit':['teaser','out'],
     'der-uhrmacher':['teaser','out'],
     'der-leuchtturm':['teaser'],
-    'through-your-eyes':['teaser','out']
+    'through-your-eyes':['teaser','out'],
+    'the-whole-wide-world':['teaser']
   };
   var DAYS_AFTER=7,V='?v=1';
   var I=window.ABARD_I18N||{T:function(k){return k},lang:function(){return 'en'}};

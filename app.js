@@ -159,7 +159,7 @@
     'room-404':4,'toxic-devotion':4,'golden-venom':4,
     'once-a-lifetime':5,'what-love-should-be':5,'forever-drawn-to-you':5,'when-i-saw-you':5,'through-your-eyes':5,'the-flame-that-is-ours':5,
     'the-quiet-space':6,'you':6,'when-i-have-to-leave':6,'the-dash-between-the-years':6,'fading-photographs':6,'wings-of-wax':6,'aftermath':6,'mom':6,
-    'still-burning':7,'she-s-gone':7,'shadows-of-my-yesterday':7,'love-will-haunt-me-forever':7,'if-my-heart-could-speak':7,'passion':7,'rising':7,
+    'still-burning':7,'she-s-gone':7,'shadows-of-my-yesterday':7,'love-will-haunt-me-forever':7,'if-my-heart-could-speak':7,'passion':7,'rising':7,'the-whole-wide-world':7,
     'dreaming-your-own-life':8,'master-of-our-time':8,'no-someday-left':8,'kurze-zeit':8
   };
   // 1 Cyber/Sci-Fi · 2 Gothic/Dark Rock · 3 Cinematic · 4 Sultry · 5 Liebeslieder · 6 Verlust · 7 80s/Metal · 8 Aufbruch
@@ -561,7 +561,7 @@
       g('date').textContent=dateText();
       if(waiting()){g('cd').hidden=true;setTimeout(tick,Math.min(after-Date.now()+300,60000));return}
       g('cd').hidden=false;
-      if(!isNaN(after)){var ord=['next-card','soon','later','later2','later3','later4'],pi=ord.indexOf(id)-2,nc=pi>=0?document.getElementById(ord[pi]):null;if(nc)nc.hidden=true}
+      if(!isNaN(after)){var ord=['next-card','soon','later','later2','later3','later4','later5'],pi=ord.indexOf(id)-2,nc=pi>=0?document.getElementById(ord[pi]):null;if(nc)nc.hidden=true}
       var s=Math.floor((t-Date.now())/1000);
       if(isNaN(s)||s<=0){
         var eye=g('eye');eye.setAttribute('data-i18n','next.out');eye.textContent=T('next.out');
@@ -596,7 +596,7 @@
     document.addEventListener('click',function(e){if(!au.paused&&e.target.closest&&e.target.closest('.rel')&&!e.target.closest('.tshare')){au.pause();resume=false;btn.setAttribute('aria-pressed','false')}},true);
     return box;
   }
-  releaseCard('soon');releaseCard('later');releaseCard('later2');releaseCard('later3');releaseCard('later4');
+  releaseCard('soon');releaseCard('later');releaseCard('later2');releaseCard('later3');releaseCard('later4');releaseCard('later5');
   // Sprache gewechselt: offenen Songdialog neu beschriften
   document.addEventListener('abard:lang',function(){if(dlg.open&&cur){lyFor=null;openDetail(cur,true)}var v=document.getElementById('vin-p');if(v&&vin.classList.contains('show')&&!nextT)v.textContent=T('vin.now')});
   // Video-Liste: eigene Playlist aus allen YouTube-Songs (neueste zuerst) statt der Kanal-Uploads
